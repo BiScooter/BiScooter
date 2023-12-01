@@ -28,7 +28,7 @@ class Splash extends StatelessWidget {
         child: Column( // a column to stack the buttons
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Image.asset('imgs/biscooter.png'),
+            Image.asset('assets/imgs/biscooter.png'),
             // the sign up button
             Padding(
               padding: const EdgeInsets.all(12.0),
@@ -36,15 +36,15 @@ class Splash extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()),);
                 },
-                style: const ButtonStyle(
-                  fixedSize: MaterialStatePropertyAll(
+                style: ButtonStyle(
+                  fixedSize: const MaterialStatePropertyAll(
                     Size(300, 60),
                   ),
-                  backgroundColor: MaterialStatePropertyAll(Colors.white),
+                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer),
                 ),
-                child: const Text(
+                child: Text(
                   "Sign up",
-                  style: TextStyle(fontSize: buttonFontSize, color: Colors.black),
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
             ),
@@ -52,17 +52,18 @@ class Splash extends StatelessWidget {
             // log in button
             ElevatedButton(
               onPressed: () {},
-              style: const ButtonStyle(
-                fixedSize: MaterialStatePropertyAll(
+              style: ButtonStyle(
+                fixedSize: const MaterialStatePropertyAll(
                   Size(300, 60),
                 ),
-                backgroundColor: MaterialStatePropertyAll(Colors.white),
+                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer),
               ),
-              child: const Text(
+              child: Text(
                 "Log in",
-                style: TextStyle(fontSize: buttonFontSize, color: Colors.black),
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
+
             const SizedBox(
               height: 140,
             ),
