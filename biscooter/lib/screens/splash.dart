@@ -28,7 +28,7 @@ class Splash extends StatelessWidget {
         child: Column( // a column to stack the buttons
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Image.asset('imgs/biscooter.png'),
+            Image.asset('assets/imgs/biscooter.png'),
             // the sign up button
             Padding(
               padding: const EdgeInsets.all(12.0),
