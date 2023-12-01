@@ -1,3 +1,4 @@
+import 'package:biscooter/screens/log_in.dart';
 import 'package:biscooter/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +52,9 @@ class Splash extends StatelessWidget {
 
             // log in button
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LogIn()));
+              },
               style: ButtonStyle(
                 fixedSize: const MaterialStatePropertyAll(
                   Size(300, 60),
