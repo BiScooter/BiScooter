@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.white,
           primary: const Color(0xFFFFB13D),
-          secondary:const Color(0xFFFF0000),
+          secondary: const Color(0xFFFF0000),
           surface: const Color(0xFFFF9500),
-          surfaceTint: const Color(0xFFFD5A50)
+          surfaceTint: const Color(0xFFFD5A50),
+          primaryContainer: const Color.fromARGB(255, 251, 242, 232), // this is used for buttons background color
         ),
 
         // appBar data theme
@@ -32,6 +33,27 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+
+        // text styles
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 35,
+          ),
+          titleMedium: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+          labelLarge: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+
         useMaterial3: true,
       ),
       home: const Splash(),
