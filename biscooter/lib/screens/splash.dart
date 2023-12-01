@@ -20,7 +20,7 @@ class Splash extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             stops: const [
-              0.5,
+              0.3,
               1,
             ],
           ),
@@ -28,6 +28,7 @@ class Splash extends StatelessWidget {
         child: Column( // a column to stack the buttons
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Image.asset('imgs/biscooter.png'),
             // the sign up button
             Padding(
               padding: const EdgeInsets.all(12.0),
@@ -39,6 +40,7 @@ class Splash extends StatelessWidget {
                   fixedSize: MaterialStatePropertyAll(
                     Size(300, 60),
                   ),
+                  backgroundColor: MaterialStatePropertyAll(Colors.white),
                 ),
                 child: const Text(
                   "Sign up",
@@ -54,6 +56,7 @@ class Splash extends StatelessWidget {
                 fixedSize: MaterialStatePropertyAll(
                   Size(300, 60),
                 ),
+                backgroundColor: MaterialStatePropertyAll(Colors.white),
               ),
               child: const Text(
                 "Log in",
