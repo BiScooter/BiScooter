@@ -19,12 +19,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.white,
-          primary: const Color(0xFF2AF598),
-          secondary:const Color(0xFF009EFD),
+          primary: const Color(0xFFFFB13D),
+          secondary:const Color(0xFFFF0000),
+          surface: const Color(0xFFFF9500),
+          surfaceTint: const Color(0xFFFD5A50)
         ),
+
+        // appBar data theme
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
-            fontSize: 24,
+            fontSize: 42,
             color: Colors.black,
           ),
         ),
