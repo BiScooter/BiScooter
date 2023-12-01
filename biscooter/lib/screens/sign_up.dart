@@ -32,12 +32,17 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
+
+
       appBar: AppBar(
         title: const Text("Sign up"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+
+
       body: Container(
+        // the styling
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -53,6 +58,8 @@ class _SignUpState extends State<SignUp> {
             ],
           ),
         ),
+
+        
         child: Column(
           children: [
             const SizedBox(
@@ -106,13 +113,15 @@ class _SignUpState extends State<SignUp> {
                           ],
                         ),
 
-                        // the rest input fields
+                        // the rest of the input fields
                         Input(
                           width: MediaQuery.of(context).size.width - 30,
                           label: 'Email',
                           controller: _email,
                           password: _email,
                         ),
+
+                        // the username and telephone next ot each other
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -130,6 +139,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ],
                         ),
+                        
                         Input(
                           width: MediaQuery.of(context).size.width - 30,
                           label: 'Password',
