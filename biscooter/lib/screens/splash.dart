@@ -1,3 +1,4 @@
+import 'package:biscooter/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatelessWidget {
@@ -8,29 +9,32 @@ class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
+      body: Container( // use a container to give a gradient background color
+        width: MediaQuery.of(context).size.width, // to take all the width of the screen
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF2AF598),
-              Color(0xFF009EFD),
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.secondary,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [
+            stops: const [
               0.5,
               1,
             ],
           ),
         ),
-        child: Column(
+        child: Column( // a column to stack the buttons
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            // the sign up button
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()),);
+                },
                 style: const ButtonStyle(
                   fixedSize: MaterialStatePropertyAll(
                     Size(300, 60),
@@ -42,6 +46,8 @@ class Splash extends StatelessWidget {
                 ),
               ),
             ),
+
+            // log in button
             ElevatedButton(
               onPressed: () {},
               style: const ButtonStyle(
