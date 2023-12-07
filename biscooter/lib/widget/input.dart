@@ -27,7 +27,7 @@ class Input extends StatelessWidget {
               ? TextInputType.phone
               : (label == "Email")
                   ? TextInputType.emailAddress
-                  : (label == "Password" || label == "Confirm Password")
+                  : (label.contains("Password"))
                       ? TextInputType.visiblePassword
                       : TextInputType.text,
           obscureText: label == "Password" || label == "Confirm Password",
