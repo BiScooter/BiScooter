@@ -1,18 +1,18 @@
-import 'dart:io';
+// ignore_for_file: avoid_print
 
-import 'package:biscooter/widget/bottom.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-class profile extends StatefulWidget {
-  const profile({super.key});
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
   @override
-  State<profile> createState() => _profileState();
+  State<Profile> createState() => _ProfileState();
 }
 
-class _profileState extends State<profile> {
+class _ProfileState extends State<Profile> {
   File? image;
   Future pickImage() async {
     try {

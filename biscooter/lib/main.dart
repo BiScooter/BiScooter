@@ -1,8 +1,4 @@
-
-import 'package:biscooter/screens/my_wallet.dart';
-import 'package:biscooter/screens/verification.dart';
 import 'package:biscooter/screens/profile.dart';
-import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,8 +65,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Scaffold(
-        drawer: drawer(),
-        body: profile(),
+        drawer: MyDrawer(),
+        body: Profile(),
       ),
     );
   }
