@@ -20,9 +20,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _confirmPassword = TextEditingController();
 
   void change() {
-    if (_formController.currentState!.validate())
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const Verification()));
+    _formController.currentState!.validate();
   }
 
   @override

@@ -1,19 +1,22 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'package:biscooter/services/my_dimensions.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 
 class Verification extends StatefulWidget {
-  const Verification({super.key});
+  final String phoneNumber;
+  const Verification({super.key, required this.phoneNumber});
 
   @override
   State<Verification> createState() => _VerificationState();
 }
 
 class _VerificationState extends State<Verification> {
-  static const double spaceHeight = 180;
-
   void verify() {
+  }
+
+  void resend() {
   }
 
   @override
@@ -46,8 +49,8 @@ class _VerificationState extends State<Verification> {
 
         child: Column(
           children: [
-            const SizedBox(
-              height: spaceHeight,
+            SizedBox(
+              height: const MyDimensions().spaceHeight + 30,
             ),
 
             // the white container
@@ -76,11 +79,25 @@ class _VerificationState extends State<Verification> {
                         DigitInput(),
                       ],
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text('Enter the code sent to +2${widget.phoneNumber}.'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Didn\'t receive the code?'),
+                        TextButton(
+                          onPressed: resend,
+                          child: const Text('Resend.', style: TextStyle(fontSize: 16),),
+                        ),
+                      ],
+                    ),
 
                     // the sing up button
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 70.0),
+                        padding: EdgeInsets.only(bottom: const MyDimensions().bottomButtonHeight),
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(

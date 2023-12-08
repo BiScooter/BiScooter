@@ -13,7 +13,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
   final _formController = GlobalKey<FormState>();
   final _firstName = TextEditingController();
   final _middleName = TextEditingController();
@@ -25,7 +24,12 @@ class _SignUpState extends State<SignUp> {
   final _confirmPassword = TextEditingController();
 
   void sign() {
-    if(_formController.currentState!.validate()) Navigator.push(context, MaterialPageRoute(builder: (context)=> const Verification()));
+    if (_formController.currentState!.validate())
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  Verification(phoneNumber: _telephone.text)));
   }
 
   @override
@@ -33,15 +37,11 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
-
-
       appBar: AppBar(
         title: const Text("Sign up"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-
-
       body: Container(
         // the styling
         width: double.infinity,
@@ -60,7 +60,6 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
 
-        
         child: Column(
           children: [
             SizedBox(
@@ -139,7 +138,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ],
                         ),
-                        
+
                         Input(
                           width: MediaQuery.of(context).size.width - 30,
                           label: 'Password',
