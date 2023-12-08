@@ -70,7 +70,7 @@ class _MyWalletState extends State<MyWallet> {
                 children: [
                   Text(
                     '\$${_balance.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
                   ),
                   Text(
                     'Balance',
