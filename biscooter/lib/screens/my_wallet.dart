@@ -110,7 +110,7 @@ class BalanceCard extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/imgs/pattern2.jpg'),
+                image: AssetImage('assets/imgs/pattern1.jpg'),
                 fit: BoxFit.cover),
           ),
           height: _balanceCardHeight,
