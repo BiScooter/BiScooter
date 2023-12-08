@@ -1,7 +1,11 @@
+
 import 'package:biscooter/screens/my_wallet.dart';
 import 'package:biscooter/screens/verification.dart';
-import 'package:flutter/services.dart';
+import 'package:biscooter/screens/profile.dart';
+import 'package:biscooter/widget/bottom.dart';
+import 'package:biscooter/widget/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        /// text ("",style :theme.of(context).bodyMedium)
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.white,
           primary: const Color(0xFFFFB13D),
@@ -25,6 +30,7 @@ class MyApp extends StatelessWidget {
           surface: const Color(0xFFFF9500),
           surfaceTint: const Color(0xFFFD5A50),
           primaryContainer: const Color.fromARGB(255, 251, 242, 232), // this is used for buttons background color
+          shadow: const Color.fromARGB(255, 250, 154, 102),
         ),
 
         // appBar data theme
@@ -37,6 +43,11 @@ class MyApp extends StatelessWidget {
 
         // text styles
         textTheme: const TextTheme(
+          bodyLarge: TextStyle(), //for header
+          bodyMedium: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold
+          ),
           titleLarge: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 35,
@@ -57,7 +68,10 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const MyWallet(),
+      home: const Scaffold(
+        drawer: drawer(),
+        body: profile(),
+      ),
     );
   }
 }
