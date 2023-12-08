@@ -194,6 +194,7 @@ class WhiteCardContent extends StatelessWidget {
           'Transaction History',
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
+        const SizedBox(height: 8),
         SizedBox(
           height: 320,
           child: ListView.builder(
