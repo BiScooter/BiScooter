@@ -1,5 +1,6 @@
 import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/widget/bottom.dart';
+import 'package:biscooter/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -21,12 +22,11 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           bodyLarge: TextStyle(), //for header
           bodySmall: TextStyle(), //for description text and any paragraphs
-          bodyMedium: TextStyle(fontSize: 23,fontWeight: FontWeight.bold),
+          bodyMedium: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
         ),
 
-/// text ("",style :theme.of(context).bodyMedium)
-
-        colorScheme: ColorScheme.fromSeed(
+        /// text ("",style :theme.of(context).bodyMedium)
+ colorScheme: ColorScheme.fromSeed(
             seedColor: Colors.white,
             primary: const Color(0xFFFFB13D),
             secondary: const Color(0xFFFF0000),
@@ -43,7 +43,10 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Scaffold(body:profile(),),
+      home: const Scaffold(
+        drawer: drawer(),
+        body: profile(),
+      ),
     );
   }
 }

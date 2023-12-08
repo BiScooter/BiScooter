@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:biscooter/widget/bottom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class profile extends StatefulWidget {
   const profile({super.key});
@@ -9,50 +13,25 @@ class profile extends StatefulWidget {
 }
 
 class _profileState extends State<profile> {
+  File? image;
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.all(20),
-        child: Column(children: [
-          Container(
-
-            alignment: Alignment.center,
-            height: 300,
-            width: 300,
-            decoration:  BoxDecoration(
-              boxShadow: [
-      BoxShadow(
-        color:Color.fromARGB(255, 155, 154, 154), // Specify the color of the shadow
-
-        blurRadius:1000, // Specify the blur radius of the shadow
-
-      ),],
-              borderRadius: BorderRadius.all(Radius.circular(200)),
-            ),
-            child: CircleAvatar(
-              minRadius: 80,
-              maxRadius: 100,
-              backgroundImage:   AssetImage(('assets/imgs/Scooter.png'),
-
-              )
-          )),
-          Text("Name", style: Theme.of(context).textTheme.bodyMedium),
-
-        Container(margin: EdgeInsets.symmetric(vertical: 30),
-          child: Column(
-          children: [
-            const bottom("Rental History"),
-            SizedBox(height: 20,),
-            const bottom("Transaction History"),
-              SizedBox(height: 20,),
-          const bottom("Change Password"),
-          ],
-        )),
-
-        ]),
-      ),
-    );
+      child: null,
+        ),
+      )
+    ;
   }
 }
-
