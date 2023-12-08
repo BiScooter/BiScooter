@@ -1,6 +1,4 @@
 import 'package:biscooter/screens/my_wallet.dart';
-import 'package:biscooter/screens/profile.dart';
-import 'package:biscooter/widget/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,7 +45,7 @@ class MyApp extends StatelessWidget {
           ),
           titleLarge: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 35,
+            fontSize: 65,
           ),
           titleMedium: TextStyle(
             fontWeight: FontWeight.bold,
