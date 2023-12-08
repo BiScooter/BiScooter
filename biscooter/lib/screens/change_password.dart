@@ -107,7 +107,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       ),
                     ),
 
-                    // the sing up button
+                    // the button
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(bottom: const MyDimensions().bottomButtonHeight),
