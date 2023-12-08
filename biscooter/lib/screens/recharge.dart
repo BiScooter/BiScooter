@@ -62,36 +62,56 @@ class _RechargeState extends State<Recharge> {
   }
 }
 
-class WhiteCardContent extends StatelessWidget {
+class WhiteCardContent extends StatefulWidget {
   const WhiteCardContent({
     super.key,
   });
 
+  @override
+  State<WhiteCardContent> createState() => _WhiteCardContentState();
+}
+
+class _WhiteCardContentState extends State<WhiteCardContent> {
+  double chosenValue = 0;
+
   void recharge() {}
+  setChosenValue(double value) {
+    setState(() {
+      chosenValue = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RechargeCard(
+              chosenValue: chosenValue,
               value: 5,
+              onPressed: setChosenValue,
             ),
             RechargeCard(
+              chosenValue: chosenValue,
               value: 10,
+              onPressed: setChosenValue,
             ),
           ],
         ),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RechargeCard(
+              chosenValue: chosenValue,
               value: 25,
+              onPressed: setChosenValue,
             ),
             RechargeCard(
+              chosenValue: chosenValue,
               value: 50,
+              onPressed: setChosenValue,
             ),
           ],
         ),
@@ -104,7 +124,13 @@ class WhiteCardContent extends StatelessWidget {
             DigitInput(),
           ],
         ),
-        Text('Enter card otp', style: Theme.of(context).textTheme.bodySmall!.copyWith(fontWeight: FontWeight.normal),),
+        Text(
+          'Enter card otp',
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontWeight: FontWeight.normal),
+        ),
         // const SizedBox(height: 20),
 
         // the sing up button
@@ -134,24 +160,46 @@ class WhiteCardContent extends StatelessWidget {
   }
 }
 
-class RechargeCard extends StatelessWidget {
+class RechargeCard extends StatefulWidget {
+  final double chosenValue;
+  final Function onPressed;
   final double value;
   const RechargeCard({
     super.key,
     required this.value,
+    required this.onPressed,
+    required this.chosenValue,
   });
 
+  @override
+  State<RechargeCard> createState() => _RechargeCardState();
+}
+
+class _RechargeCardState extends State<RechargeCard> {
   @override
   Widget build(BuildContext context) {
     return ShadowCard(
       radius: 16,
       filter: 10,
-      child: Container(
-        color: Colors.white,
-        width: 160,
-        height: 90,
-        alignment: Alignment.center,
-        child: Text('\$$value', style: Theme.of(context).textTheme.bodyMedium),
+      child: GestureDetector(
+        onTap: () => widget.onPressed(widget.value),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: (widget.value == widget.chosenValue)
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.transparent, // Color of the border
+              width: 2, // Width of the border
+            ),
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.white,
+          ),
+          width: 160,
+          height: 90,
+          alignment: Alignment.center,
+          child: Text('\$ ${widget.value}',
+              style: Theme.of(context).textTheme.bodyMedium),
+        ),
       ),
     );
   }
