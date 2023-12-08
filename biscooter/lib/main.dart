@@ -1,3 +1,4 @@
+import 'package:biscooter/screens/change_password.dart';
 import 'package:flutter/services.dart';
 import 'package:biscooter/screens/splash.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const Splash(),
+      home: const ChangePassword(),
     );
   }
 }
