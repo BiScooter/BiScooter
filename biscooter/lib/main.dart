@@ -1,3 +1,6 @@
+
+import 'package:biscooter/screens/my_wallet.dart';
+import 'package:biscooter/screens/verification.dart';
 import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/drawer.dart';
@@ -19,20 +22,16 @@ class MyApp extends StatelessWidget {
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(), //for header
-          bodySmall: TextStyle(), //for description text and any paragraphs
-          bodyMedium: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-        ),
-
         /// text ("",style :theme.of(context).bodyMedium)
- colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.white,
-            primary: const Color(0xFFFFB13D),
-            secondary: const Color(0xFFFF0000),
-            surface: const Color(0xFFFF9500),
-            surfaceTint: const Color(0xFFFD5A50),
-            shadow: const Color.fromARGB(255, 250, 154, 102)),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.white,
+          primary: const Color(0xFFFFB13D),
+          secondary: const Color(0xFFFF0000),
+          surface: const Color(0xFFFF9500),
+          surfaceTint: const Color(0xFFFD5A50),
+          primaryContainer: const Color.fromARGB(255, 251, 242, 232), // this is used for buttons background color
+          shadow: const Color.fromARGB(255, 250, 154, 102),
+        ),
 
         // appBar data theme
         appBarTheme: const AppBarTheme(
@@ -41,6 +40,32 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+
+        // text styles
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(), //for header
+          bodyMedium: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold
+          ),
+          titleLarge: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 35,
+          ),
+          titleMedium: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+          labelLarge: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
+
         useMaterial3: true,
       ),
       home: const Scaffold(

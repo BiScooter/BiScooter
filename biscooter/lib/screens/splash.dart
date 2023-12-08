@@ -1,3 +1,4 @@
+import 'package:biscooter/screens/log_in.dart';
 import 'package:biscooter/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
@@ -36,33 +37,36 @@ class Splash extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()),);
                 },
-                style: const ButtonStyle(
-                  fixedSize: MaterialStatePropertyAll(
+                style: ButtonStyle(
+                  fixedSize: const MaterialStatePropertyAll(
                     Size(300, 60),
                   ),
-                  backgroundColor: MaterialStatePropertyAll(Colors.white),
+                  backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer),
                 ),
-                child: const Text(
+                child: Text(
                   "Sign up",
-                  style: TextStyle(fontSize: buttonFontSize, color: Colors.black),
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
             ),
 
             // log in button
             ElevatedButton(
-              onPressed: () {},
-              style: const ButtonStyle(
-                fixedSize: MaterialStatePropertyAll(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LogIn()));
+              },
+              style: ButtonStyle(
+                fixedSize: const MaterialStatePropertyAll(
                   Size(300, 60),
                 ),
-                backgroundColor: MaterialStatePropertyAll(Colors.white),
+                backgroundColor: MaterialStatePropertyAll(Theme.of(context).colorScheme.primaryContainer),
               ),
-              child: const Text(
+              child: Text(
                 "Log in",
-                style: TextStyle(fontSize: buttonFontSize, color: Colors.black),
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
+
             const SizedBox(
               height: 140,
             ),
