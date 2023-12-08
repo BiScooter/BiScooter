@@ -1,12 +1,10 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
-class bottom extends StatelessWidget {
+class Bottom extends StatelessWidget {
   final String title;
   final Function f;
 
-  const bottom(this.title, this.f, {super.key});
+  const Bottom({super.key, required this.title, required this.f});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class bottom extends StatelessWidget {
           onPressed: () => f,
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 20,
             ),

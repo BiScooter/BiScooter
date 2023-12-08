@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   image_picker: ^1.0.4
   flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -71,10 +72,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/imgs/
-    - assets/imgs/biscooter.png
-    - assets/imgs/Scooter.png
-    - assets/imgs/Profile.jpg
-    - assets/imgs/P.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

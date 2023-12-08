@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 
-class drawer extends StatefulWidget {
-  const drawer({super.key});
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({super.key});
 
   @override
-  State<drawer> createState() => _drawerState();
+  State<MyDrawer> createState() => _MyDrawerState();
 }
 
-class _drawerState extends State<drawer> {
+class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -31,23 +31,21 @@ class _drawerState extends State<drawer> {
               colors: [Color(0xffff9500), Color(0xfff75a45)],
             )),
 
-            child: Container(
-              child: Column(
-                children: [
-                  Container(
-                    height: 100,
-                    width: 100,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                    ),
-                    child: Image.asset('assets/imgs/biscooter.png'),
+            child: Column(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
-                  const Text(
-                    'First name second name',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
+                  child: Image.asset('assets/imgs/biscooter.png'),
+                ),
+                const Text(
+                  'First name second name',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )
+              ],
             ),
           ),
 
@@ -77,7 +75,7 @@ class _drawerState extends State<drawer> {
             onTap: () {
               /*Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) =>  Favourit()),
+          MaterialPageRoute(builder: (context) =>  Favorite()),
                       );*/
             },
           ),
