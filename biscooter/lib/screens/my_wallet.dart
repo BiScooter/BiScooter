@@ -49,7 +49,7 @@ class _MyWalletState extends State<MyWallet> {
             Column(
               children: [
                 SizedBox(
-                  height: const MyDimensions().spaceHeight + 90,
+                  height: const MyDimensions().spaceHeight + 70,
                 ),
                 // the white card container
                 const WhiteCard(
@@ -85,7 +85,7 @@ class BalanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: const MyDimensions().spaceHeight,
+      top: const MyDimensions().spaceHeight - 20,
       left: (MediaQuery.of(context).size.width - _balanceCardWidth) / 2,
       child: ShadowCard(
         radius: 16,

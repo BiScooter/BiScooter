@@ -1,3 +1,4 @@
+import 'package:biscooter/screens/my_wallet.dart';
 import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:flutter/material.dart';
@@ -64,10 +65,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        drawer: MyDrawer(),
-        body: Profile(),
-      ),
+      home: const MyWallet(),
     );
   }
 }
