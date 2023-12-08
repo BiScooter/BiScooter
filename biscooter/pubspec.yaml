@@ -36,10 +36,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   image_picker: ^1.0.4
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_launcher_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/imgs/Scooter.png"
+  image_path_android: "assets/imgs/Scooter.png"
+  adaptive_icon_background: "assets/imgs/Scooter.png"
+  adaptive_icon_foreground: "assets/imgs/Scooter.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
