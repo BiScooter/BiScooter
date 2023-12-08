@@ -1,5 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'package:biscooter/services/mydimensions.dart';
 import 'package:biscooter/screens/verification.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
@@ -12,7 +13,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  static const double spaceHeight = 180;
 
   final _formController = GlobalKey<FormState>();
   final _firstName = TextEditingController();
@@ -63,16 +63,14 @@ class _SignUpState extends State<SignUp> {
         
         child: Column(
           children: [
-            const SizedBox(
-              height: spaceHeight,
+            SizedBox(
+              height: const MyDimensions().spaceHeight,
             ),
 
             // the white container
             Expanded(
               child: Container(
-                // height: MediaQuery.of(context).size.height - spaceHeight,
                 padding: const EdgeInsets.only(top: 42),
-                // alignment: Alignment.center,
                 width: double.infinity,
                 decoration: const ShapeDecoration(
                   color: Colors.white,

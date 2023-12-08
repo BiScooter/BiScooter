@@ -1,24 +1,28 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:biscooter/services/mydimensions.dart';
+import 'package:biscooter/screens/verification.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
 
-class LogIn extends StatefulWidget {
-  const LogIn({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<LogIn> createState() => _LogInState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class _LogInState extends State<LogIn> {
+class _ChangePasswordState extends State<ChangePassword> {
 
   final _formController = GlobalKey<FormState>();
-  final _username = TextEditingController();
-  final _password = TextEditingController();
+  final _oldPassword = TextEditingController();
+  final _newPassword = TextEditingController();
+  final _confirmPassword = TextEditingController();
 
-  void login() {
-    _formController.currentState?.validate();
+  void change() {
+    if (_formController.currentState!.validate())
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const Verification()));
   }
 
   @override
@@ -27,7 +31,7 @@ class _LogInState extends State<LogIn> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text("Log in"),
+        title: const Text("Change Password"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -72,7 +76,7 @@ class _LogInState extends State<LogIn> {
                 // the colum of input fields
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
-                  
+
                   children: [
                     SingleChildScrollView(
                       child: Form(
@@ -81,19 +85,25 @@ class _LogInState extends State<LogIn> {
                           children: [
                             // the rest of the input fields
 
-                            // the username and telephone next ot each other
                             Input(
                               width: MediaQuery.of(context).size.width - 30,
-                              label: 'Username',
-                              controller: _username,
-                              password: _username,
+                              label: 'Old Password',
+                              controller: _oldPassword,
+                              password: _oldPassword,
                             ),
 
+                            // new password field
                             Input(
                               width: MediaQuery.of(context).size.width - 30,
-                              label: 'Password',
-                              controller: _password,
-                              password: _password,
+                              label: 'New Password',
+                              controller: _newPassword,
+                              password: _newPassword,
+                            ),
+                            Input(
+                              width: MediaQuery.of(context).size.width - 30,
+                              label: 'Confirm Password',
+                              controller: _confirmPassword,
+                              password: _newPassword,
                             ),
                           ],
                         ),
@@ -107,7 +117,7 @@ class _LogInState extends State<LogIn> {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(
-                            onPressed: login,
+                            onPressed: change,
                             style: ButtonStyle(
                               fixedSize: const MaterialStatePropertyAll(
                                 Size(300, 60),
@@ -117,7 +127,7 @@ class _LogInState extends State<LogIn> {
                                       .colorScheme
                                       .primaryContainer),
                             ),
-                            child: Text("Log in",
+                            child: Text("Change Password",
                                 style: Theme.of(context).textTheme.labelLarge),
                           ),
                         ),
