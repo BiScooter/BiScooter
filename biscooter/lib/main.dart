@@ -1,4 +1,4 @@
-import 'package:biscooter/screens/my_wallet.dart';
+import 'package:biscooter/screens/recharge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           ),
           bodySmall: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 14,
           ),
           labelLarge: TextStyle(
             fontSize: 20,
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const MyWallet(),
+      home: const Recharge(),
     );
   }
 }
