@@ -1,7 +1,6 @@
-import 'package:biscooter/screens/change_password.dart';
+import 'package:biscooter/screens/my_wallet.dart';
 import 'package:biscooter/screens/verification.dart';
 import 'package:flutter/services.dart';
-import 'package:biscooter/screens/splash.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -58,7 +57,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const Verification(phoneNumber: '01100685312',),
+      home: const MyWallet(),
     );
   }
 }
