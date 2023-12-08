@@ -1,6 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
-import 'package:biscooter/services/mydimensions.dart';
+import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/screens/verification.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
