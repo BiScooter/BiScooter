@@ -1,4 +1,4 @@
-import 'package:biscooter/screens/send_complaint.dart';
+import 'package:biscooter/screens/my_statistics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget   {
 
         useMaterial3: true,
       ),
-      home: const SendComplaint(),
+      home: const MyStatistics(),
     );
   }
 }
