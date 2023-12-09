@@ -1,4 +1,4 @@
-import 'package:biscooter/screens/recharge.dart';
+import 'package:biscooter/screens/send_complaint.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,7 +7,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget   {
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const Recharge(),
+      home: const SendComplaint(),
     );
   }
 }
