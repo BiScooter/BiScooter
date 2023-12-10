@@ -1,3 +1,4 @@
+import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -33,20 +34,25 @@ class _MyDrawerState extends State<MyDrawer> {
 
             child: Column(
               children: [
-                Container(
-                  height: 100,
-                  width: 100,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                  child: Image.asset('assets/imgs/biscooter.png'),
-                ),
+                  CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                          radius: 50,
+                          child: CircleAvatar(
+                            radius: 47,
+                            backgroundColor: Colors.white,
+                            backgroundImage:
+                                AssetImage('assets/imgs/profile.jpg'),
+                          ),
+                        ),
                 const Text(
                   'First name second name',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontFamily: 'PlayfairDisplay',fontWeight: FontWeight.bold),
                 )
               ],
             ),
+
+
+
           ),
 
           ListTile(
@@ -79,6 +85,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       );*/
             },
           ),
+
+
           ListTile(
             splashColor: Theme.of(context).colorScheme.shadow,
             contentPadding:
@@ -139,7 +147,7 @@ class _MyDrawerState extends State<MyDrawer> {
               Icons.directions_bike_rounded,
               color: Theme.of(context).colorScheme.primary,
             ),
-            title: const Text('MY Bike',
+            title: const Text('MY Bike & Scooter',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -162,10 +170,10 @@ class _MyDrawerState extends State<MyDrawer> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             leading: Icon(
-              Icons.wallet,
+              Icons.history,
               color: Theme.of(context).colorScheme.primary,
             ),
-            title: const Text('Transaction History',
+            title: const Text('Rental History',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -174,7 +182,32 @@ class _MyDrawerState extends State<MyDrawer> {
                 )),
             trailing: Icon(
               Icons.chevron_right,
-              
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            onTap: () {
+              /*Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Setting()),
+                      );*/
+            },
+          ),
+          ListTile(
+            splashColor: Theme.of(context).colorScheme.shadow,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            leading: Icon(
+              Icons.comment,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            title: const Text('Complaints',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  /* color: Font_color,
+              fontFamily: 'Montserrat'*/
+                )),
+            trailing: Icon(
+              Icons.chevron_right,
               color: Theme.of(context).colorScheme.primary,
             ),
             onTap: () {

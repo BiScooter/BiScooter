@@ -24,7 +24,7 @@ class WhiteCard extends StatelessWidget {
           ),
         ),
 
-        // the colum 
+        // the colum
         child: child,
       ),
     );

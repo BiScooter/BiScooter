@@ -1,7 +1,15 @@
-import 'package:biscooter/screens/profile.dart';
+
+import 'package:biscooter/screens/comp_respond.dart';
+import 'package:biscooter/screens/invite_friend.dart';
+import 'package:biscooter/screens/station.dart';
 import 'package:biscooter/widget/drawer.dart';
+import 'package:biscooter/widget/renal.dart';
+import 'package:biscooter/widget/scooter_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import './screens/profile.dart';
+import './screens/RentalHistory.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -55,6 +63,7 @@ class MyApp extends StatelessWidget {
           bodySmall: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,
+
           ),
           labelLarge: TextStyle(
             fontSize: 20,
@@ -64,10 +73,10 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        drawer: MyDrawer(),
-        body: Profile(),
-      ),
+      home:
+   Profile(),
+
+
     );
   }
 }

@@ -4,7 +4,7 @@ class Bottom extends StatelessWidget {
   final String title;
   final Function f;
 
-  const Bottom({super.key, required this.title, required this.f});
+  const Bottom( this.f,this.title,{super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +13,10 @@ class Bottom extends StatelessWidget {
       height: 70,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(35),
-          gradient: const LinearGradient(
+          gradient:  LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xfff74f4f), Color(0xfff9af4b)],
+            colors: [Theme.of(context).colorScheme.primary,Theme.of(context).colorScheme.secondary],
           )),
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -29,7 +29,9 @@ class Bottom extends StatelessWidget {
             title,
             style: const TextStyle(
               color: Colors.black,
-              fontSize: 20,
+              fontSize: 25,
+              fontFamily: 'PlayfairDisplay',
+              fontWeight: FontWeight.bold,
             ),
           )),
     );
