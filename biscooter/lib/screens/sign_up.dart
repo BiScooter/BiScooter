@@ -26,10 +26,24 @@ class _SignUpState extends State<SignUp> {
   void sign() {
     if (_formController.currentState!.validate())
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  Verification(phoneNumber: _telephone.text)));
+        context,
+        MaterialPageRoute(
+          builder: (context) => Verification(phoneNumber: _telephone.text),
+        ),
+      );
+  }
+
+  @override
+  void dispose() {
+    _firstName.dispose();
+    _middleName.dispose();
+    _lastName.dispose();
+    _email.dispose();
+    _telephone.dispose();
+    _username.dispose();
+    _password.dispose();
+    _confirmPassword.dispose();
+    super.dispose();
   }
 
   @override
