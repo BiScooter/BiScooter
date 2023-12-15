@@ -12,13 +12,19 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-
   final _formController = GlobalKey<FormState>();
   final _username = TextEditingController();
   final _password = TextEditingController();
 
   void login() {
     _formController.currentState?.validate();
+  }
+
+  @override
+  void dispose() {
+    _username.dispose();
+    _password.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,7 +78,7 @@ class _LogInState extends State<LogIn> {
                 // the colum of input fields
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.center,
-                  
+
                   children: [
                     SingleChildScrollView(
                       child: Form(
@@ -103,7 +109,8 @@ class _LogInState extends State<LogIn> {
                     // the sing up button
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: const MyDimensions().bottomButtonHeight),
+                        padding: EdgeInsets.only(
+                            bottom: const MyDimensions().bottomButtonHeight),
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(
