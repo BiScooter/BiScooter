@@ -71,11 +71,14 @@ class _ProfileState extends State<Profile> {
                       ],
                     ),
                   ),
-
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showSearch(
+                              context: context,
+                              delegate: CustomSearchDelegate());
+                        },
                         icon: Icon(
                           Icons.search_outlined,
                           size: 30,
@@ -107,10 +110,11 @@ class _ProfileState extends State<Profile> {
               SizedBox(
                 height: 10,
               ),
-              Container(alignment: Alignment.center,
-                height: 150,
-                width: double.infinity,
-                child: Image.asset('assets/imgs/bike.png')),
+              Container(
+                  alignment: Alignment.center,
+                  height: 150,
+                  width: double.infinity,
+                  child: Image.asset('assets/imgs/bike.png')),
               SizedBox(
                 height: 10,
               ),
@@ -169,6 +173,95 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> searchTerms = [
+    'Apple',
+    'Benana',
+    'Pear',
+    'Watermelons',
+    'Oranges',
+    'Blueberries',
+    'Strawberries',
+    'Raspberries',
+  ];
+  CustomSearchDelegate()
+      : super(
+        searchFieldStyle:TextStyle(fontSize: 20) ,
+          searchFieldLabel: "station",
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+        );
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            query = '';
+          },
+          icon: Icon(
+            Icons.clear,
+            color: Theme.of(context).colorScheme.primary,
+          )),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: Icon(
+          Icons.arrow_back,
+          color: Theme.of(context).colorScheme.primary,
+        ));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in searchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+      ;
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        String r = matchQuery[index];
+        return ListTile(
+          title: Text(r),
+          onTap: () {},
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in searchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+      ;
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        String r = matchQuery[index];
+        return ListTile(
+          title: Text(r),
+          onTap: () {},
+        );
+      },
     );
   }
 }

@@ -17,7 +17,7 @@ class _BikeCardState extends State<BikeCard> {
       color: Colors.white,
 
       child: Container(
-        constraints: BoxConstraints(maxWidth: 240),
+        constraints: BoxConstraints(maxWidth: 300),
         height: 380,
 
         padding: const EdgeInsets.all(10),
@@ -26,7 +26,7 @@ class _BikeCardState extends State<BikeCard> {
           children: [
             SizedBox(
               height: 200,
-              child: Image.asset('assets/imgs/i2.png'),
+              child: Image.asset('assets/imgs/bike.png'),
             ),
             Row(
               children: [
@@ -83,6 +83,9 @@ class _BikeCardState extends State<BikeCard> {
                         end: Alignment.bottomCenter,
                         colors: [Theme.of(context).colorScheme.primary,Theme.of(context).colorScheme.secondary],
                       )),
+
+
+                      
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,

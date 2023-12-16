@@ -3,14 +3,14 @@ import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/scooter_card.dart';
 import 'package:flutter/material.dart';
 
-class Sration extends StatefulWidget {
-  const Sration({super.key});
+class Station extends StatefulWidget {
+  const Station({super.key});
 
   @override
-  State<Sration> createState() => _SrationState();
+  State<Station> createState() => _StationState();
 }
 
-class _SrationState extends State<Sration> {
+class _StationState extends State<Station> {
   final controller_scooter = PageController(initialPage: 1);
   final controller_Bike = PageController(initialPage: 1);
   var index_bike = 0;
@@ -142,7 +142,7 @@ class _SrationState extends State<Sration> {
                        ScooterCard(),
                        ScooterCard(),
 
-                       
+
                        ScooterCard(),
                        ScooterCard(),
                        ScooterCard(),

@@ -1,6 +1,9 @@
 
 import 'package:biscooter/screens/comp_respond.dart';
 import 'package:biscooter/screens/invite_friend.dart';
+import 'package:biscooter/screens/offerbike.dart';
+import 'package:biscooter/screens/rentbike.dart';
+
 import 'package:biscooter/screens/station.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/renal.dart';
@@ -74,7 +77,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home:
-   Profile(),
+   OfferBike(),
 
 
     );

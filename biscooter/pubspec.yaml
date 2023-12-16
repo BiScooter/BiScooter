@@ -39,6 +39,8 @@ dependencies:
 
 
   flutter_cache_manager: ^3.3.1
+  http: ^1.1.2
+  syncfusion_flutter_datepicker: ^23.2.7
 
 
 dev_dependencies:
