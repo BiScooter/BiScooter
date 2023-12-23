@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import '../widget/drawer.dart';
+import '../widget/card.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -12,26 +14,254 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
+enum SampleItem { change_Password, Upload_photo }
+
 class _ProfileState extends State<Profile> {
-  File? image;
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
+  var selectedMenu;
+  int index = 0;
+
+  final controller = PageController(initialPage: 1);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        colors: [
+          Theme.of(context).colorScheme.secondary,
+          Theme.of(context).colorScheme.primary,
+        ],
+      )),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        drawer: MyDrawer(),
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 20, top: 20),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                          radius: 64,
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                            backgroundImage:
+                                AssetImage('assets/imgs/profile.jpg'),
+                          ),
+                        ),
+                        Text(
+                          'Mariam Amin',
+                          style: TextStyle(
+                              fontSize: 18, fontFamily: 'PlayfairDisplay'),
+                        ),
+                        Text('Wanna take a ride today?',
+                            style: TextStyle(
+                                fontSize: 18, fontFamily: 'PlayfairDisplay')),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showSearch(
+                              context: context,
+                              delegate: CustomSearchDelegate());
+                        },
+                        icon: Icon(
+                          Icons.search_outlined,
+                          size: 30,
+                          color: Colors.black,
+                        ),
+                      ),
+                      PopupMenuButton(
+                        color: Colors.white,
+                        initialValue: selectedMenu,
+                        // Callback that sets the selected popup menu item.
+                        onSelected: (item) {
+                          setState(() {});
+                        },
+                        itemBuilder: (BuildContext context) =>
+                            <PopupMenuEntry<SampleItem>>[
+                          const PopupMenuItem(
+                            value: SampleItem.change_Password,
+                            child: Text('Change Password'),
+                          ),
+                          const PopupMenuItem<SampleItem>(
+                              value: SampleItem.Upload_photo,
+                              child: Text('Upload a new photo ')),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                  alignment: Alignment.center,
+                  height: 150,
+                  width: double.infinity,
+                  child: Image.asset('assets/imgs/bike.png')),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 20, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Stations",
+                      style: TextStyle(
+                          fontFamily: 'PlayfairDisplay', fontSize: 24),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        controller.animateToPage(index + 1,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.easeInOut);
+                        setState(() {
+                          index = (index + 1) % 6;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.navigate_next_outlined,
+                        size: 35,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 324,
+                child: SingleChildScrollView(
+                  controller: controller,
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                      MYCard(),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> searchTerms = [
+    'Apple',
+    'Benana',
+    'Pear',
+    'Watermelons',
+    'Oranges',
+    'Blueberries',
+    'Strawberries',
+    'Raspberries',
+  ];
+  CustomSearchDelegate()
+      : super(
+        searchFieldStyle:TextStyle(fontSize: 20) ,
+          searchFieldLabel: "station",
+          keyboardType: TextInputType.text,
+          textInputAction: TextInputAction.search,
+        );
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            query = '';
+          },
+          icon: Icon(
+            Icons.clear,
+            color: Theme.of(context).colorScheme.primary,
+          )),
+    ];
   }
 
   @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-      child: null,
-        ),
-      )
-    ;
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          close(context, null);
+        },
+        icon: Icon(
+          Icons.arrow_back,
+          color: Theme.of(context).colorScheme.primary,
+        ));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in searchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+      ;
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        String r = matchQuery[index];
+        return ListTile(
+          title: Text(r),
+          onTap: () {},
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> matchQuery = [];
+    for (var fruit in searchTerms) {
+      if (fruit.toLowerCase().contains(query.toLowerCase())) {
+        matchQuery.add(fruit);
+      }
+      ;
+    }
+
+    return ListView.builder(
+      itemCount: matchQuery.length,
+      itemBuilder: (context, index) {
+        String r = matchQuery[index];
+        return ListTile(
+          title: Text(r),
+          onTap: () {},
+        );
+      },
+    );
   }
 }
