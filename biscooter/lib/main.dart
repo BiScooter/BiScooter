@@ -1,5 +1,4 @@
-import 'package:biscooter/screens/profile.dart';
-import 'package:biscooter/widget/drawer.dart';
+import 'package:biscooter/screens/add_biscooter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,7 +7,7 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget   {
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -41,12 +40,12 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           bodyLarge: TextStyle(), //for header
           bodyMedium: TextStyle(
-            fontSize: 23,
+            fontSize: 26,
             fontWeight: FontWeight.bold
           ),
           titleLarge: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 35,
+            fontSize: 65,
           ),
           titleMedium: TextStyle(
             fontWeight: FontWeight.bold,
@@ -54,7 +53,7 @@ class MyApp extends StatelessWidget {
           ),
           bodySmall: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 14,
           ),
           labelLarge: TextStyle(
             fontSize: 20,
@@ -64,10 +63,7 @@ class MyApp extends StatelessWidget {
 
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        drawer: MyDrawer(),
-        body: Profile(),
-      ),
+      home: const AddBiscooter(),
     );
   }
 }

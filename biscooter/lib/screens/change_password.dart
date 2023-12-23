@@ -12,7 +12,6 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-
   final _formController = GlobalKey<FormState>();
   final _oldPassword = TextEditingController();
   final _newPassword = TextEditingController();
@@ -20,6 +19,14 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   void change() {
     _formController.currentState!.validate();
+  }
+
+  @override
+  void dispose() {
+    _oldPassword.dispose();
+    _newPassword.dispose();
+    _confirmPassword.dispose();
+    super.dispose();
   }
 
   @override
@@ -110,7 +117,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                     // the button
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: const MyDimensions().bottomButtonHeight),
+                        padding: EdgeInsets.only(
+                            bottom: const MyDimensions().bottomButtonHeight),
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: ElevatedButton(

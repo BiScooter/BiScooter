@@ -14,6 +14,8 @@ class MyWallet extends StatefulWidget {
 class _MyWalletState extends State<MyWallet> {
   final double _balanceCardWidth = 320;
   final double _balanceCardHeight = 200;
+
+  final double _balance = 10.50;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,19 +51,33 @@ class _MyWalletState extends State<MyWallet> {
             Column(
               children: [
                 SizedBox(
-                  height: const MyDimensions().spaceHeight + 90,
+                  height: const MyDimensions().spaceHeight + 70,
                 ),
                 // the white card container
-                const WhiteCard(
+                WhiteCard(
                   top: 0,
-                  child: WhiteCardContent(),
+                  child: WhiteCardContent(
+                    spareHeight: _balanceCardHeight,
+                  ),
                 ),
               ],
             ),
             BalanceCard(
               balanceCardWidth: _balanceCardWidth,
               balanceCardHeight: _balanceCardHeight,
-              child: const Text('data')
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '\$${_balance.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+                  ),
+                  Text(
+                    'Balance',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -75,7 +91,8 @@ class BalanceCard extends StatelessWidget {
   const BalanceCard({
     super.key,
     required double balanceCardWidth,
-    required double balanceCardHeight, required this.child,
+    required double balanceCardHeight,
+    required this.child,
   })  : _balanceCardWidth = balanceCardWidth,
         _balanceCardHeight = balanceCardHeight;
 
@@ -85,7 +102,7 @@ class BalanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: const MyDimensions().spaceHeight,
+      top: const MyDimensions().spaceHeight - 40,
       left: (MediaQuery.of(context).size.width - _balanceCardWidth) / 2,
       child: ShadowCard(
         radius: 16,
@@ -93,7 +110,7 @@ class BalanceCard extends StatelessWidget {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/imgs/pattern.jpeg'),
+                image: AssetImage('assets/imgs/pattern.jpg'),
                 fit: BoxFit.cover),
           ),
           height: _balanceCardHeight,
@@ -104,8 +121,8 @@ class BalanceCard extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color.fromARGB(0, 255, 255, 255),
-                  Color.fromARGB(173, 255, 255, 255),
+                  Color.fromARGB(2, 0, 0, 0),
+                  Color.fromARGB(62, 255, 255, 255),
                 ],
               ),
             ),
@@ -117,16 +134,87 @@ class BalanceCard extends StatelessWidget {
   }
 }
 
+class Transaction {
+  final String date;
+  final double amount;
+  final String cardOtp;
+
+  Transaction(
+      {required this.date, required this.amount, required this.cardOtp});
+}
+
 class WhiteCardContent extends StatelessWidget {
+  final double spareHeight;
   const WhiteCardContent({
     super.key,
+    required this.spareHeight,
   });
+
+  static List<Transaction> transactionHistory = [
+    Transaction(
+      date: '12/12/2021',
+      amount: 10.50,
+      cardOtp: '1234',
+    ),
+    Transaction(
+      date: '13/12/2021',
+      amount: 15.50,
+      cardOtp: '1244',
+    ),
+    Transaction(
+      date: '14/12/2021',
+      amount: 20.50,
+      cardOtp: '1234',
+    ),
+    Transaction(
+      date: '12/12/2021',
+      amount: 10.50,
+      cardOtp: '1234',
+    ),
+    Transaction(
+      date: '13/12/2021',
+      amount: 15.50,
+      cardOtp: '1244',
+    ),
+    Transaction(
+      date: '14/12/2021',
+      amount: 20.50,
+      cardOtp: '1234',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text('data'),
+        SizedBox(
+          height: spareHeight / 1.5,
+        ),
+        Text(
+          'Transaction History',
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 320,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: transactionHistory.length,
+            itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(
+                '\$${transactionHistory[index].amount.toStringAsFixed(2)}'),
+            titleTextStyle: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 20,
+            ),
+            subtitle: Text('card otp ${transactionHistory[index].cardOtp}'),
+            subtitleTextStyle: const TextStyle(fontSize: 12, color: Colors.grey),
+            trailing: Text(transactionHistory[index].date, style: const TextStyle(fontSize: 16),),
+          );
+            },
+          ),
+        ),
         // The bottom button
         Expanded(
           child: Padding(
