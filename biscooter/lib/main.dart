@@ -1,4 +1,4 @@
-import 'package:biscooter/screens/add_biscooter.dart';
+import 'package:biscooter/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget   {
 
         useMaterial3: true,
       ),
-      home: const AddBiscooter(),
+      home: const Splash(),
     );
   }
 }
