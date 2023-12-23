@@ -1,5 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/shadow_card.dart';
 import 'package:biscooter/widget/white_card.dart';
 import "package:flutter/material.dart";
@@ -25,6 +26,7 @@ class _MyStatisticsState extends State<MyStatistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

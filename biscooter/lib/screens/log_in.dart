@@ -17,7 +17,11 @@ class _LogInState extends State<LogIn> {
   final _password = TextEditingController();
 
   void login() {
-    _formController.currentState?.validate();
+     if(_formController.currentState!.validate())
+     {
+        FocusScope.of(context).unfocus();
+        Navigator.of(context).pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
+     }
   }
 
   @override

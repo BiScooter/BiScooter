@@ -1,6 +1,7 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/shadow_card.dart';
 import "package:flutter/material.dart";
 import 'package:biscooter/widget/white_card.dart';
@@ -19,6 +20,7 @@ class _MyWalletState extends State<MyWallet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -223,7 +225,9 @@ class WhiteCardContent extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/recharge');  
+                },
                 style: ButtonStyle(
                   fixedSize: const MaterialStatePropertyAll(
                     Size(300, 60),
