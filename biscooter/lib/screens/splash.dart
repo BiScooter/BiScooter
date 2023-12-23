@@ -1,5 +1,3 @@
-import 'package:biscooter/screens/log_in.dart';
-import 'package:biscooter/screens/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatelessWidget {
