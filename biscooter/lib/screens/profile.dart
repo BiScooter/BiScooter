@@ -42,6 +42,7 @@ class _ProfileState extends State<Profile> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: const EdgeInsets.only(left: 20, top: 20),
@@ -69,42 +70,46 @@ class _ProfileState extends State<Profile> {
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            showSearch(
-                                context: context,
-                                delegate: CustomSearchDelegate());
-                          },
-                          icon: const Icon(
-                            Icons.search_outlined,
-                            size: 30,
-                            color: Colors.black,
-                          ),
-                        ),
-                        PopupMenuButton(
-                          color: Colors.white,
-                          initialValue: selectedMenu,
-                          // Callback that sets the selected popup menu item.
-                          onSelected: (item) {
-                            setState(() {});
-                          },
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<SampleItem>>[
-                            PopupMenuItem(
-                              value: SampleItem.changePassword,
-                              child: const Text('Change Password'),
-                              onTap: () {
-                                Navigator.pushNamed(context, '/change_password');
-                              },
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0,23.0,0,0),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showSearch(
+                                  context: context,
+                                  delegate: CustomSearchDelegate());
+                            },
+                            icon: const Icon(
+                              Icons.search_outlined,
+                              size: 30,
+                              color: Colors.black,
                             ),
-                            const PopupMenuItem<SampleItem>(
-                                value: SampleItem.uploadPhoto,
-                                child: Text('Upload a new photo ')),
-                          ],
-                        ),
-                      ],
+                          ),
+                          PopupMenuButton(
+                            icon: const Icon(Icons.settings),
+                            color: Colors.white,
+                            initialValue: selectedMenu,
+                            // Callback that sets the selected popup menu item.
+                            onSelected: (item) {
+                              setState(() {});
+                            },
+                            itemBuilder: (BuildContext context) =>
+                                <PopupMenuEntry<SampleItem>>[
+                              PopupMenuItem(
+                                value: SampleItem.changePassword,
+                                child: const Text('Change Password'),
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/change_password');
+                                },
+                              ),
+                              const PopupMenuItem<SampleItem>(
+                                  value: SampleItem.uploadPhoto,
+                                  child: Text('Upload a new photo ')),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
