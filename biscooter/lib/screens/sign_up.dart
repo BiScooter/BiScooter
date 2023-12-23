@@ -1,9 +1,11 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
 import 'package:biscooter/services/my_dimensions.dart';
-import 'package:biscooter/screens/verification.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
+// TODO: remove the commenting when the server is ready
+// import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:http/http.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -23,14 +25,46 @@ class _SignUpState extends State<SignUp> {
   final _password = TextEditingController();
   final _confirmPassword = TextEditingController();
 
-  void sign() {
-    if (_formController.currentState!.validate())
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Verification(phoneNumber: _telephone.text),
-        ),
-      );
+  void sign() async {
+    if (_formController.currentState!.validate()) {
+      // TODO: activate this when the server is ready
+      // try {
+      //   Response response = await post(
+      //     Uri.parse("http://localhost:3000/signup"),
+      //     body: {
+      //       "firstName": _firstName.text,
+      //       "middleName": _middleName.text,
+      //       "lastName": _lastName.text,
+      //       "email": _email.text,
+      //       "telephone": _telephone.text,
+      //       "username": _username.text,
+      //       "password": _password.text,
+      //     },
+      //   );
+
+      //   if (response.statusCode == 200) {
+      //     if (mounted) {
+      //       Navigator.pushNamed(context, '/verification',
+      //           arguments: {'phoneNumber': '1234567890'});
+      //     }
+      //   } else {
+      //     Fluttertoast.showToast(
+      //       msg: "Something went wrong",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.BOTTOM,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16,
+      //     );
+      //   }
+      // } catch (e) {
+      //   debugPrint(e.toString());
+      // }
+    }
+
+    // TODO: remove this when the server is ready
+    Navigator.pushNamed(context, '/verification',
+        arguments: {'phoneNumber': '1234567890'});
   }
 
   @override

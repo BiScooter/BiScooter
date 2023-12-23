@@ -3,7 +3,8 @@
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
-// TODO: remove this when the server is ready
+// TODO: remove the commenting when the server is ready
+// import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:http/http.dart';
 
 class LogIn extends StatefulWidget {
@@ -41,7 +42,16 @@ class _LogInState extends State<LogIn> {
     //             "/profile", (Route<dynamic> route) => false);
     //       }
     //     } // if the login was not successful
-    //     else {}
+    //     else {
+    //       Fluttertoast.showToast(
+    //         msg: "Something went wrong",
+    //         toastLength: Toast.LENGTH_SHORT,
+    //         gravity: ToastGravity.BOTTOM,
+    //         backgroundColor: Colors.red,
+    //         textColor: Colors.white,
+    //         fontSize: 16,
+    //       );
+    //     }
     //   } catch (e) {
     //     debugPrint(e.toString());
     //   }
