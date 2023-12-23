@@ -148,7 +148,9 @@ class BiscooterDrawerTile extends StatelessWidget {
       ),
       // splashColor:theme,
       onTap: () {
+        Navigator.pop(context);
         if (ModalRoute.of(context)!.settings.name != '/profile') {
+          Navigator.pop(context);
           Navigator.of(context).pushNamed(route);
         } else {
           Navigator.of(context).pushNamed(route);

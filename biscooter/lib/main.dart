@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget   {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // onGenerateRoute: AppRouts.generateRoute,
       routes: {
       "/splash": (context) => const Splash(),
       "/profile": (context) => const Profile(),
