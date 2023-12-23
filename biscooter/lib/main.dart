@@ -1,4 +1,15 @@
+import 'package:biscooter/screens/add_biscooter.dart';
+import 'package:biscooter/screens/change_password.dart';
+import 'package:biscooter/screens/comp_respond.dart';
+import 'package:biscooter/screens/invite_friend.dart';
+import 'package:biscooter/screens/my_statistics.dart';
+import 'package:biscooter/screens/my_wallet.dart';
+import 'package:biscooter/screens/offerbike.dart';
+import 'package:biscooter/screens/profile.dart';
+import 'package:biscooter/screens/recharge.dart';
+import 'package:biscooter/screens/rentalhistory.dart';
 import 'package:biscooter/screens/splash.dart';
+import 'package:biscooter/screens/station.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,6 +26,23 @@ class MyApp extends StatelessWidget   {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // onGenerateRoute: AppRouts.generateRoute,
+      routes: {
+      "/splash": (context) => const Splash(),
+      "/profile": (context) => const Profile(),
+      "/station": (context) => const Station(),
+      "/my_wallet": (context) => const MyWallet(),
+      "/recharge": (context) => const Recharge(),
+      "/invite_friend": (context) => const InviteFriend(),
+      "/rental_history": (context) => const RentalHistory(),
+      "/complaint_respond": (context) => const CompRespond(),
+      "/change_password": (context) => const ChangePassword(),
+      "/my_statistics": (context) => const MyStatistics(),
+      "/my_biscooter": (context) => const OfferBike(),
+      "/add_bike": (context) => const AddBiscooter(),
+      },
+
+      initialRoute: "/splash",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
