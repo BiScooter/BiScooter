@@ -1,7 +1,5 @@
-import 'package:biscooter/widget/bike_card.dart';
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/drawer.dart';
-import 'package:biscooter/widget/input.dart';
 import 'package:biscooter/widget/rentbike.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,7 @@ class _RentBikeState extends State<RentBike> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -50,10 +48,10 @@ class _RentBikeState extends State<RentBike> {
             ),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 180,
                 ),
-                WhiteCard(child: Container(), top: 10)
+                WhiteCard(top: 10, child: Container())
               ],
             ),
           ),
@@ -63,10 +61,10 @@ class _RentBikeState extends State<RentBike> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  RentBikeCard(),
-                  Container(
+                  const RentBikeCard(),
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.30,
-                    child: SingleChildScrollView(
+                    child: const SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(children: [
                         // TextButton(

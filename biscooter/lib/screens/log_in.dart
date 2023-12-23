@@ -3,7 +3,8 @@
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
-import 'package:http/http.dart';
+// TODO: remove this when the server is ready
+//import 'package:http/http.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
