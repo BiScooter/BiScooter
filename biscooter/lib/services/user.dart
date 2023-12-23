@@ -5,8 +5,6 @@ class User
   String fName;
   String mName;
   String lName;
-  String email;
-  String phone;
   String invitationCode;
   String profileImage;
   double balance;
@@ -18,15 +16,13 @@ class User
   factory User() => _instance;
 
   //initialize variables in here
-  User._internal() :_myVariable = 35.0, fName = "", mName = "", lName = "", email = "", balance = 0.0, ridingTime = 0.0, phone = "", invitationCode = "", profileImage = "";
+  User._internal() :_myVariable = 35.0, fName = "", mName = "", lName = "", balance = 0.0, ridingTime = 0.0, invitationCode = "", profileImage = "";
 
   // getter for my variable
   double get myVariable => _myVariable;
   String get getFName => fName;
   String get getMName => mName;
   String get getLName => lName;
-  String get getEmail => email;
-  String get getPhone => phone;
   String get getInvitationCode => invitationCode;
   String get getProfileImage => profileImage;
   double get getBalance => balance;
