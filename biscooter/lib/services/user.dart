@@ -1,5 +1,6 @@
 class User {
   // Define here the variables that you want to use as dimensions
+  int _id;
   String _fName;
   String _mName;
   String _lName;
@@ -20,9 +21,11 @@ class User {
         _balance = 0.0,
         _ridingTime = 0.0,
         _invitationCode = "",
-        _profileImage = "";
+        _profileImage = "",
+        _id = 0;
 
   // getter for my variable
+  int get getId => _id;
   String get getFName => _fName;
   String get getMName => _mName;
   String get getLName => _lName;
@@ -30,6 +33,11 @@ class User {
   String get getProfileImage => _profileImage;
   double get getBalance => _balance;
   double get getRidingTime => _ridingTime;
+
+  // setter for my variable
+  set setId(int value) {
+    _id = value;
+  }
 
   set setFName(String value) {
     _fName = value;
