@@ -70,7 +70,7 @@ class _OfferBikeState extends State<OfferBike> {
           ),
           PageView(
             controller: _PageController,
-            physics:  const NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               Column(
                 children: [
@@ -89,7 +89,6 @@ class _OfferBikeState extends State<OfferBike> {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                         children: [
                           SizedBox(
                             height: 200,
@@ -262,11 +261,15 @@ class _OfferBikeState extends State<OfferBike> {
                     ),
                   ),
                   Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Bottom(() {}, 'Drop BiScooter')),
+                    alignment: Alignment.bottomCenter,
+                    child: Bottom(() {
+                      Navigator.pushNamed(context, '/add_biscooter');
+                      print("hellow");
+                    }, 'Drop BiScooter'),
+                  ),
                 ],
               ),
-               Column(
+              Column(
                 children: [
                   SizedBox(
                     height: 96,
@@ -283,25 +286,21 @@ class _OfferBikeState extends State<OfferBike> {
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-
                         children: [
                           SizedBox(
                             height: 200,
                             child: Image.asset('assets/imgs/bike.png'),
                           ),
                           data(context, 'No ', ' BiScooter'),
-
                         ],
                       ),
                     ),
                   ),
-
                   Container(
-
                       alignment: Alignment.bottomCenter,
                       child: Bottom(() {}, 'Add BiScooter')),
                 ],
-                             ),
+              ),
             ],
           ),
         ],

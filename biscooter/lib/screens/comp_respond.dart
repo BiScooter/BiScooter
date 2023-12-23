@@ -12,11 +12,7 @@ class CompRespond extends StatefulWidget {
 }
 
 class _CompRespondState extends State<CompRespond> {
-
-  void  GoTosendComplaint()
-  {
-
-  }
+  void GoTosendComplaint() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +30,6 @@ class _CompRespondState extends State<CompRespond> {
       body: Stack(
         children: [
           Container(
-
             // the styling
             width: double.infinity,
             decoration: BoxDecoration(
@@ -61,34 +56,29 @@ class _CompRespondState extends State<CompRespond> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top:100),
+            margin: EdgeInsets.only(top: 100),
             width: double.infinity,
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height * 0.77,
-
             child: SingleChildScrollView(
-              child:Column (
-                children:
-              [
-              CompCard(),
-              CompCard(),
-              CompCard(),
-              CompCard(),
-              CompCard(),
-              CompCard(),
-              CompCard(),
-
+              child: Column(children: [
+                CompCard(),
+                CompCard(),
+                CompCard(),
+                CompCard(),
+                CompCard(),
+                CompCard(),
+                CompCard(),
               ]),
             ),
           ),
-Container(
-  margin: EdgeInsets.only(bottom: 20),
-  width: double.infinity,
-alignment: Alignment.bottomCenter,
-  child: Bottom(GoTosendComplaint,"Add Complaints")),
-
+          Container(
+              margin: EdgeInsets.only(bottom: 20),
+              width: double.infinity,
+              alignment: Alignment.bottomCenter,
+              child: Bottom(GoTosendComplaint, "Add Complaints")),
         ],
       ),
     );
-  }
+  } 
 }

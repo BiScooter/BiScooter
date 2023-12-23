@@ -8,6 +8,7 @@ import 'package:biscooter/screens/offerbike.dart';
 import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/screens/recharge.dart';
 import 'package:biscooter/screens/rentalhistory.dart';
+import 'package:biscooter/screens/send_complaint.dart';
 import 'package:biscooter/screens/splash.dart';
 import 'package:biscooter/screens/station.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget   {
       "/change_password": (context) => const ChangePassword(),
       "/my_statistics": (context) => const MyStatistics(),
       "/my_biscooter": (context) => const OfferBike(),
-      "/add_bike": (context) => const AddBiscooter(),
+      "/add_biscooter": (context) => const AddBiscooter(),
+      "/add_complaint": (context) => const SendComplaint(),
       },
 
       initialRoute: "/splash",

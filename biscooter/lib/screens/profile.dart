@@ -92,9 +92,12 @@ class _ProfileState extends State<Profile> {
                         },
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<SampleItem>>[
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: SampleItem.change_Password,
-                            child: Text('Change Password'),
+                            child: const Text('Change Password'),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/change_password');
+                            },
                           ),
                           const PopupMenuItem<SampleItem>(
                               value: SampleItem.Upload_photo,

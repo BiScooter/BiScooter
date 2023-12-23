@@ -24,7 +24,7 @@ class Bottom extends StatelessWidget {
               shadowColor: Colors.transparent
 
               ),
-          onPressed: () => f,
+          onPressed: () {f();},
           child: Text(
             title,
             style: const TextStyle(
