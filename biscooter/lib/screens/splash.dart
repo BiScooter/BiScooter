@@ -35,7 +35,7 @@ class Splash extends StatelessWidget {
               padding: const EdgeInsets.all(12.0),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()),);
+                  Navigator.pushNamed(context, "/sign_up");
                 },
                 style: ButtonStyle(
                   fixedSize: const MaterialStatePropertyAll(
@@ -53,7 +53,7 @@ class Splash extends StatelessWidget {
             // log in button
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LogIn()));
+                Navigator.pushNamed(context, "/log_in");
               },
               style: ButtonStyle(
                 fixedSize: const MaterialStatePropertyAll(
