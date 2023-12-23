@@ -1,6 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
-import 'package:biscooter/screens/my_wallet.dart';
+import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
@@ -15,10 +15,10 @@ class Verification extends StatefulWidget {
 
 class _VerificationState extends State<Verification> {
   void verify() {
-  //   Navigator.of(context).pushAndRemoveUntil(
-  //   MaterialPageRoute(builder: (context) => const MyWallet()),
-  //   (Route<dynamic> route) => false,
-  // );
+    Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (context) => const Profile()),
+    (Route<dynamic> route) => false,
+  );
   }
 
   void resend() {

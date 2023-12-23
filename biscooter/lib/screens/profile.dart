@@ -1,9 +1,7 @@
 // ignore_for_file: avoid_print
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import '../widget/drawer.dart';
 import '../widget/card.dart';
 

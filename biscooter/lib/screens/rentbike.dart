@@ -5,7 +5,7 @@ import 'package:biscooter/widget/input.dart';
 import 'package:biscooter/widget/rentbike.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+// import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class RentBike extends StatefulWidget {
   const RentBike({super.key});
@@ -64,51 +64,39 @@ class _RentBikeState extends State<RentBike> {
               child: Column(
                 children: [
                   RentBikeCard(),
-
-              Container(
-                height: MediaQuery.of(context).size.height * 0.30,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(children: [
-TextButton(
-          child: Text('pick a day'),
-          onPressed: () {
-            showDialog<Widget>(
-                context: context,
-                builder: (BuildContext context) {
-                  return SfDateRangePicker(
-                    showActionButtons: true,
-                    onSubmit: ( value) {
-                      Navigator.pop(context);
-                    },
-                    onCancel: () {
-                     Navigator.pop(context);
-                    },
-                  );
-                });
-          },
-        ),
-
-
-                  ]),
-                ),
-              ),
-
-
-
-
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.30,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(children: [
+                        // TextButton(
+                        //   child: Text('pick a day'),
+                        //   onPressed: () {
+                        //     showDialog<Widget>(
+                        //         context: context,
+                        //         builder: (BuildContext context) {
+                        //           return SfDateRangePicker(
+                        //             showActionButtons: true,
+                        //             onSubmit: (value) {
+                        //               Navigator.pop(context);
+                        //             },
+                        //             onCancel: () {
+                        //               Navigator.pop(context);
+                        //             },
+                        //           );
+                        //         });
+                        //   },
+                        // ),
+                      ]),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-
-
-
-
           Container(
               alignment: Alignment.bottomCenter,
               child: Bottom(() {}, 'RENT NOW')),
-
         ],
       ),
     );
