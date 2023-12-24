@@ -65,7 +65,8 @@ class _SignUpState extends State<SignUp> {
       //     String profileImage = responseData['profileImage'];
 
       //     // fill the user service with the data
-      //     setUserService(id, invitationCode, profileImage);
+      //     User.setUserService(id, _firstName.text, _middleName.text,
+      //         _lastName.text, invitationCode, profileImage, 0, 0);
       //     User.setLoggedIn();
 
       //     if (mounted) {

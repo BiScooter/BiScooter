@@ -26,6 +26,18 @@ class User {
     prefs.setBool('isLoggedIn', false);
   }
 
+  static void setUserService(int id, String firstName, String middleName, String lastName, String invitationCode, String profileImage, double balance, double ridingTime) {
+    User user = User();
+    user.setId = id;
+    user.setFName = firstName;
+    user.setMName = middleName;
+    user.setLName = lastName;
+    user.setInvitationCode = invitationCode;
+    user.setProfileImage = profileImage;
+    user.setBalance = balance;
+    user.setRidingTime = ridingTime;
+  }
+
   //initialize variables in here
   User._internal()
       : _fName = "",
