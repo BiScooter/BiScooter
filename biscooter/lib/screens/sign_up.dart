@@ -1,10 +1,10 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 import 'package:biscooter/services/my_dimensions.dart';
-import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
 // TODO: remove the commenting when the server is ready
 // import 'dart:convert';
+// import 'package:biscooter/services/user.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:http/http.dart';
 
@@ -25,18 +25,6 @@ class _SignUpState extends State<SignUp> {
   final _username = TextEditingController();
   final _password = TextEditingController();
   final _confirmPassword = TextEditingController();
-
-  void setUserService(int id, String invitationCode, String profileImage) {
-    User user = User();
-    user.setId = id;
-    user.setFName = _firstName.text;
-    user.setMName = _middleName.text;
-    user.setLName = _lastName.text;
-    user.setInvitationCode = invitationCode;
-    user.setProfileImage = profileImage;
-    user.setBalance = 0;
-    user.setRidingTime = 0;
-  }
 
   void sign() async {
     if (_formController.currentState!.validate()) {
@@ -88,9 +76,9 @@ class _SignUpState extends State<SignUp> {
       // }
 
       // TODO: remove those lines when the server is ready
-      setUserService(0, "", "");
       Navigator.pushNamed(context, '/verification',
           arguments: {'phoneNumber': '1234567890'});
+      //  setUserService(0, "", "");
     }
   }
 

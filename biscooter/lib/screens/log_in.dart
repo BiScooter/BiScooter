@@ -4,8 +4,10 @@ import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
 // TODO: remove the commenting when the server is ready
+// import 'dart:convert';
+// import 'package:biscooter/services/user.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
-//import 'package:http/http.dart';
+// import 'package:http/http.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -24,42 +26,58 @@ class _LogInState extends State<LogIn> {
 
     // if the form is valid go and send the login request
     // TODO: activate this when the server is ready
-    // if (_formController.currentState!.validate()) {
-    //   try {
-    //     // send a login request to the server
-    //     Response response = await post(
-    //       Uri.parse("http://localhost:3000/login"),
-    //       body: {
-    //         "username": _username.text,
-    //         "password": _password.text,
-    //       },
-    //     );
+    if (_formController.currentState!.validate()) {
+      // try {
+      //   // send a login request to the server
+      //   Response response = await post(
+      //     Uri.parse("http://localhost:3000/login"),
+      //     body: {
+      //       "username": _username.text,
+      //       "password": _password.text,
+      //     },
+      //   );
 
-    //     // check if the login was successful
-    //     if (response.statusCode == 200) {
-    //       if (mounted) {
-    //         Navigator.of(context).pushNamedAndRemoveUntil(
-    //             "/profile", (Route<dynamic> route) => false);
-    //       }
-    //     } // if the login was not successful
-    //     else {
-    //       Fluttertoast.showToast(
-    //         msg: "Something went wrong",
-    //         toastLength: Toast.LENGTH_SHORT,
-    //         gravity: ToastGravity.BOTTOM,
-    //         backgroundColor: Colors.red,
-    //         textColor: Colors.white,
-    //         fontSize: 16,
-    //       );
-    //     }
-    //   } catch (e) {
-    //     debugPrint(e.toString());
-    //   }
-    // }
+      //   // check if the login was successful
+      //   if (response.statusCode == 200) {
+      //     // Decode the response body
+      //     Map<String, dynamic> responseData = jsonDecode(response.body);
+      //     // set the user service
+      //     User.setUserService(
+      //       responseData['id'],
+      //       responseData['firstName'],
+      //       responseData['middleName'],
+      //       responseData['lastName'],
+      //       responseData['invitationCode'],
+      //       responseData['profileImage'],
+      //       responseData['balance'],
+      //       responseData['ridingTime'],
+      //     );
+      //     // set the login status to true
+      //     User.setLoggedIn();
+      //     // go to the profile page
+      //     if (mounted) {
+      //       Navigator.of(context).pushNamedAndRemoveUntil(
+      //           "/profile", (Route<dynamic> route) => false);
+      //     }
+      //   } // if the login was not successful
+      //   else {
+      //     Fluttertoast.showToast(
+      //       msg: "Something went wrong",
+      //       toastLength: Toast.LENGTH_SHORT,
+      //       gravity: ToastGravity.BOTTOM,
+      //       backgroundColor: Colors.red,
+      //       textColor: Colors.white,
+      //       fontSize: 16,
+      //     );
+      //   }
+      // } catch (e) {
+      //   debugPrint(e.toString());
+      // }
 
-    // TODO: remove this when the server is ready
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
+      // TODO: remove this line when the server is ready
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
+    }
   }
 
   @override
