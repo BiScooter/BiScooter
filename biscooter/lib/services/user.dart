@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 class User {
   // Define here the variables that you want to use as dimensions
   int _id;
@@ -12,6 +14,17 @@ class User {
   static final User _instance = User._internal();
   // passes the instantiation to the _instance object
   factory User() => _instance;
+  // this function is used to set the login status to true
+  static void setLoggedIn() async {
+    SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', true);
+  }
+  static void clearLoggedIn() async {
+    SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', false);
+  }
 
   //initialize variables in here
   User._internal()
@@ -66,4 +79,5 @@ class User {
   set setRidingTime(double value) {
     _ridingTime = value;
   }
+
 }
