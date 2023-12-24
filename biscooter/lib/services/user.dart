@@ -18,12 +18,12 @@ class User {
   static void setLoggedIn() async {
     SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', true);
+    prefs.setBool('isUserLoggedInBiscooter', true);
   }
   static void clearLoggedIn() async {
     SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isLoggedIn', false);
+    prefs.setBool('isUserLoggedInBiscooter', false);
   }
 
   static void setUserService(int id, String firstName, String middleName, String lastName, String invitationCode, String profileImage, double balance, double ridingTime) {
