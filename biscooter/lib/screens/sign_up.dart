@@ -1,9 +1,10 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
 // TODO: remove the commenting when the server is ready
+// import 'dart:convert';
 // import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:http/http.dart';
 
@@ -25,6 +26,18 @@ class _SignUpState extends State<SignUp> {
   final _password = TextEditingController();
   final _confirmPassword = TextEditingController();
 
+  void setUserService(int id, String invitationCode, String profileImage) {
+    User user = User();
+    user.setId = id;
+    user.setFName = _firstName.text;
+    user.setMName = _middleName.text;
+    user.setLName = _lastName.text;
+    user.setInvitationCode = invitationCode;
+    user.setProfileImage = profileImage;
+    user.setBalance = 0;
+    user.setRidingTime = 0;
+  }
+
   void sign() async {
     if (_formController.currentState!.validate()) {
       // TODO: activate this when the server is ready
@@ -43,9 +56,21 @@ class _SignUpState extends State<SignUp> {
       //   );
 
       //   if (response.statusCode == 200) {
+      //     // Decode the response body
+      //     Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      //     // Get the data from the response
+      //     int id = responseData['id'];
+      //     String invitationCode = responseData['invitationCode'];
+      //     String profileImage = responseData['profileImage'];
+
+      //     // fill the user service with the data
+      //     setUserService(id, invitationCode, profileImage);
+      //     User.setLoggedIn();
+
       //     if (mounted) {
       //       Navigator.pushNamed(context, '/verification',
-      //           arguments: {'phoneNumber': '1234567890'});
+      //           arguments: {'phoneNumber': _telephone.text});
       //     }
       //   } else {
       //     Fluttertoast.showToast(
@@ -60,11 +85,12 @@ class _SignUpState extends State<SignUp> {
       // } catch (e) {
       //   debugPrint(e.toString());
       // }
-    }
 
-    // TODO: remove this when the server is ready
-    Navigator.pushNamed(context, '/verification',
-        arguments: {'phoneNumber': '1234567890'});
+      // TODO: remove those lines when the server is ready
+      setUserService(0, "", "");
+      Navigator.pushNamed(context, '/verification',
+          arguments: {'phoneNumber': '1234567890'});
+    }
   }
 
   @override
