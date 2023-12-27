@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         "/verification": (context) {
           final args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
-          return Verification(phoneNumber: args['phoneNumber']);
+          return Verification(email: args['email']);
         },
       },
       initialRoute: "/",

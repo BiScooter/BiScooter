@@ -1,12 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
 // TODO: remove the commenting when the server is ready
-// import 'dart:convert';
-// import 'package:biscooter/services/user.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:biscooter/services/user.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -27,57 +28,74 @@ class _SignUpState extends State<SignUp> {
   final _confirmPassword = TextEditingController();
 
   void sign() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (_formController.currentState!.validate()) {
       // TODO: activate this when the server is ready
-      // try {
-      //   Response response = await post(
-      //     Uri.parse("http://localhost:3000/signup"),
-      //     body: {
-      //       "firstName": _firstName.text,
-      //       "middleName": _middleName.text,
-      //       "lastName": _lastName.text,
-      //       "email": _email.text,
-      //       "telephone": _telephone.text,
-      //       "username": _username.text,
-      //       "password": _password.text,
-      //     },
-      //   );
+      try {
+        Response response = await post(
+          Uri.parse("${const Connection().baseUrl}/auth/signup"),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(<String, String>{
+            "FName": _firstName.text,
+            "MName": _middleName.text,
+            "LName": _lastName.text,
+            "Email": _email.text,
+            "Username": _username.text,
+            "Telephone": _telephone.text,
+            "Password": _password.text,
+            "ConfirmPassword": _confirmPassword.text,
+          }),
+        );
 
-      //   if (response.statusCode == 200) {
-      //     // Decode the response body
-      //     Map<String, dynamic> responseData = jsonDecode(response.body);
+        if (response.statusCode == 200) {
+          // Decode the response body
+          Map<String, dynamic> responseData = jsonDecode(response.body);
 
-      //     // Get the data from the response
-      //     int id = responseData['id'];
-      //     String invitationCode = responseData['invitationCode'];
-      //     String profileImage = responseData['profileImage'];
+          // Get the data from the response
+          int id = int.parse(responseData["SignUp_Retrivals"][0]['id']);
+          String invitationCode = responseData["SignUp_Retrivals"][0]['invitation_code'];
 
-      //     // fill the user service with the data
-      //     User.setUserService(id, _firstName.text, _middleName.text,
-      //         _lastName.text, invitationCode, profileImage, 0, 0);
-      //     User.setLoggedIn();
+          // fill the user service with the data
+          User.setUserService(id, _firstName.text, _middleName.text,
+              _lastName.text, invitationCode, "", 0, 0);
 
-      //     if (mounted) {
-      //       Navigator.pushNamed(context, '/verification',
-      //           arguments: {'phoneNumber': _telephone.text});
-      //     }
-      //   } else {
-      //     Fluttertoast.showToast(
-      //       msg: "Something went wrong",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.BOTTOM,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16,
-      //     );
-      //   }
-      // } catch (e) {
-      //   debugPrint(e.toString());
-      // }
+          User.setLoggedIn();
+
+          if (mounted) {
+            Navigator.pushNamed(context, '/verification',
+                arguments: {'email': _email.text});
+          }
+        } else if (response.statusCode == 409)
+        {
+          Map<String, dynamic> responseData = jsonDecode(response.body);
+          Fluttertoast.showToast(
+            msg: responseData["message"],
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
+        }
+        else {
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+      }
 
       // TODO: remove those lines when the server is ready
-      Navigator.pushNamed(context, '/verification',
-          arguments: {'phoneNumber': '1234567890'});
+      // Navigator.pushNamed(context, '/verification',
+      //     arguments: {'phoneNumber': '1234567890'});
       //  setUserService(0, "", "");
     }
   }
