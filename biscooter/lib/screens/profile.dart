@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
 import '../widget/drawer.dart';
 import '../widget/card.dart';
@@ -71,7 +72,7 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0,23.0,0,0),
+                      padding: const EdgeInsets.fromLTRB(0, 23.0, 0, 0),
                       child: Row(
                         children: [
                           IconButton(
@@ -100,7 +101,8 @@ class _ProfileState extends State<Profile> {
                                 value: SampleItem.changePassword,
                                 child: const Text('Change Password'),
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/change_password');
+                                  Navigator.pushNamed(
+                                      context, '/change_password');
                                 },
                               ),
                               const PopupMenuItem<SampleItem>(
@@ -140,6 +142,8 @@ class _ProfileState extends State<Profile> {
                               duration: const Duration(seconds: 1),
                               curve: Curves.easeInOut);
                           setState(() {
+                            debugPrint(
+                                "Profile page, invCode: ${User().getInvitationCode}");
                             index = (index + 1) % 6;
                           });
                         },
@@ -197,7 +201,7 @@ class CustomSearchDelegate extends SearchDelegate {
   ];
   CustomSearchDelegate()
       : super(
-        searchFieldStyle:const TextStyle(fontSize: 20) ,
+          searchFieldStyle: const TextStyle(fontSize: 20),
           searchFieldLabel: "station",
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.search,
