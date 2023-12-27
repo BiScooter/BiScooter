@@ -1,7 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
-import 'dart:io';
-
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
@@ -32,7 +31,7 @@ class _LogInState extends State<LogIn> {
       try {
         // send a login request to the server
         Response response = await post(
-          Uri.parse("http://192.168.1.12:8080/auth/login"),
+          Uri.parse("${const Connection().baseUrl}/auth/login"),
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
@@ -42,14 +41,11 @@ class _LogInState extends State<LogIn> {
           }),
         );
 
-        debugPrint(response.statusCode.toString());
-        debugPrint(response.body);
         // check if the login was successful
         if (response.statusCode == 200) {
           // Decode the response body
           final responseData = jsonDecode(response.body);
           Map<String, dynamic> userInfo = responseData['user_info'][0];
-          debugPrint(userInfo.toString());
           // set the user service
           User.setUserService(
             int.parse(userInfo['id']),
@@ -62,17 +58,15 @@ class _LogInState extends State<LogIn> {
             10,
           );
           // set the login status to true
-          // User.setLoggedIn();
+          User.setLoggedIn();
           // go to the profile page
           /// TODO: uncomment this when the check is correct
-          // if (mounted) {
-          //   Navigator.of(context).pushNamedAndRemoveUntil(
-          //       "/profile", (Route<dynamic> route) => false);
-          // }
-          debugPrint("invitationCode: ${User().getInvitationCode}");
-        } // if the login was not successful
-        else if (response.statusCode == 401)
-        {
+          if (mounted) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                "/profile", (Route<dynamic> route) => false);
+          }
+        } // invalid email or password
+        else if (response.statusCode == 401) {
           Fluttertoast.showToast(
             msg: "Invalid Email or password",
             toastLength: Toast.LENGTH_LONG,
@@ -81,10 +75,8 @@ class _LogInState extends State<LogIn> {
             textColor: Colors.white,
             fontSize: 16,
           );
-        }
+        } // if the login was not successful
         else {
-          debugPrint(response.body);
-          debugPrint("Error:");
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_LONG,
