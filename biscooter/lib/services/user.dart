@@ -20,13 +20,28 @@ class User {
     prefs = await SharedPreferences.getInstance();
     prefs.setBool('isUserLoggedInBiscooter', true);
   }
+
   static void clearLoggedIn() async {
     SharedPreferences prefs;
     prefs = await SharedPreferences.getInstance();
     prefs.setBool('isUserLoggedInBiscooter', false);
   }
 
-  static void setUserService(int id, String firstName, String middleName, String lastName, String invitationCode, String profileImage, double balance, double ridingTime) {
+  static Future<bool> isLoggedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isLoggedIn = prefs.getBool('isUserLoggedInBiscooter');
+    return isLoggedIn ?? false;
+  }
+
+  static void setUserService(
+      int id,
+      String firstName,
+      String middleName,
+      String lastName,
+      String invitationCode,
+      String profileImage,
+      double balance,
+      double ridingTime) {
     User user = User();
     user.setId = id;
     user.setFName = firstName;
@@ -91,5 +106,4 @@ class User {
   set setRidingTime(double value) {
     _ridingTime = value;
   }
-
 }
