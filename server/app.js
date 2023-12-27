@@ -4,6 +4,7 @@ const dotenv=require('dotenv');
 // import dotenv from "dotenv";
 const db = require('./Database/index');
 const authRouter = require ('./routes/auth.route.js');
+const userRouter = require ('./routes/user.route.js');
 const globalErrorHandler = require('./controllers/ErrorController');
 // import authMiddleware from './middlewares/auth.middleware.js';
 // import userRouter from './routes/user.route.js';
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', authRouter);
-// app.use('/users', authMiddleware, isAdminMiddleware, userRouter);
+app.use('/users',userRouter);
 // app.use('/posts', authMiddleware, postRouter);
 
 

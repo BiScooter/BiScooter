@@ -3,8 +3,18 @@ const User = require("../Models/FormatChecks.js");
 const ErrorHandling = require("./Error");
 const db = require("../Database/index");
 const catchAsync=require("./catchAsync.js");
+
+
+
+
  exports.signup=catchAsync ( async (req, res, next) => {
     // Validate the request body against the sign up schema
+    function generateRandomString(length) {
+      return Math.random().toString(36).substring(2, 2 + length);
+    }
+    
+    // Example: Generate a random string of length 8
+    const randomString = generateRandomString(10);
     const {
       FName,
       MName,
@@ -39,10 +49,10 @@ const catchAsync=require("./catchAsync.js");
     if (hashedPassword == -1)
       return next(new ErrorHandling("Something is Wrong!!", 500));
     const newUser =
-      await db.query(`INSERT INTO client Values(DEFAULT,1210,'${Email}', '${Username}',
-        '${Telephone}','500', '${FName}', '${MName}',' ${LName}', '${hashedPassword}','5',7,null)RETURNING ID,invitation_code;`);
+      await db.query(`INSERT INTO client Values(DEFAULT,'${Email}', '${Username}',
+        '${Telephone}','${randomString}', '${FName}', '${MName}',' ${LName}', '${hashedPassword}','5',7,null)RETURNING ID,invitation_code;`);
 
-         res.status(200).send({status:"success",SignUp_Retrivals:newUser.rows});
+         res.status(200).send({status:"success",SignUp_Retrivals:newUser.rows[0]});
 
   });
 
@@ -75,18 +85,9 @@ const catchAsync=require("./catchAsync.js");
       return next(new ErrorHandling("incorrect email or password", 401));
     }
     const result = await db.query(`SELECT * FROM client where Email='${email}';`);
-    res.status(200).send({status:"Successfully Logged in",user_info:result.rows});
+    res.status(200).send({status:"Successfully Logged in",user_info:result.rows[0]});
   });
 
-
-  // exports.me=catchAsync(async (req, res) => {
-  //   const email=req.body.email;
-  //   const result = await db.query(`SELECT * FROM client where Email='${email}';`);
-  //   res.json({
-  //     status: 200,
-  //     message: result.rows
-  //   });
-  // });
 
 
 
