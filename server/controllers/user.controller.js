@@ -120,38 +120,59 @@ const catchAsync=require("./catchAsync.js");
       res.status(200).send({Message:`Transaction Done!`})
   
     });
-    // exports.Reserving= catchAsync(async(req,res,next)=>{
-    //   const {
-    //     COST,
-    //     STATUS,
-    //     DATE_OF_RENTAL,
-    //     DURATION,
-    //     KICKOFF_STATION_ID,
-    //     DISTINATION_STATION_ID,
-    //     BISCOOT_ID
-    //   } = req.body;
+    exports.Reserving= catchAsync(async(req,res,next)=>{
+      const {
+        COST,
+        STATUS,
+        DATE_OF_RENTAL,
+        DURATION,
+        KICKOFF_STATION_ID,
+        DISTINATION_STATION_ID,
+        BISCOOT_ID
+      } = req.body;
   
-    //   if (
-    //     !COST ||
-    //     !STATUS ||
-    //     !DATE_OF_RENTAL ||
-    //     !DURATION ||
-    //     !KICKOFF_STATION_ID||
-    //     !DISTINATION_STATION_ID||
-    //     !BISCOOT_ID
-    //   ){
-    //     return next(new ErrorHandling("Fill All Fields to make transaction!", 409));
-    //   }
-    //   const {client_id}=req.params;
+      if (
+        !COST ||
+        !STATUS ||
+        !DATE_OF_RENTAL ||
+        !DURATION ||
+        !KICKOFF_STATION_ID||
+        !DISTINATION_STATION_ID||
+        !BISCOOT_ID
+      ){
+        return next(new ErrorHandling("Fill All Fields to RENT!", 409));
+      }
+      const {client_id}=req.params;
 
-    //   const rent_id=await db.query(`INSERT INTO RENTALS VALUES(DEFAULT,'${COST}','${STATUS}','${DATE_OF_RENTAL}',
-    //   '${DURATION}','${KICKOFF_STATION_ID}','${DISTINATION_STATION_ID}',null)RETURNING ID;`);
+      const rent_id=await db.query(`INSERT INTO RENTALS VALUES(DEFAULT,'${COST}','${STATUS}','${DATE_OF_RENTAL}',
+      '${DURATION}','${KICKOFF_STATION_ID}','${DISTINATION_STATION_ID}')RETURNING ID;`);
  
-    //   await db.query(`INSERT INTO RENT_BISCOOT VALUES ('${rent_id}',${client_id},${BISCOOT_ID});`);
+      await db.query(`INSERT INTO RENT_BISCOOT VALUES ('${rent_id.rows[0].id}',${client_id},${BISCOOT_ID});`);
 
 
-    //   res.status(200).send({Message:`sUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`})
+      res.status(200).send({Message:`SUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`})
   
-    // });
+    });
 
+exports.Canceling=catchAsync catchAsync(async(req,res,next)=>{
+  const {
+    ID
+  } = req.body;
+
+  if (
+    !ID 
+  ){
+    return next(new ErrorHandling("Fill All Fields to RENT!", 409));
+  }
+  const {client_id}=req.params;
+
+  const rent_id=await db.query(`INSERT INTO RENTALS VALUES(DEFAULT,'${COST}','${STATUS}','${DATE_OF_RENTAL}',
+  '${DURATION}','${KICKOFF_STATION_ID}','${DISTINATION_STATION_ID}')RETURNING ID;`);
+
+  await db.query(`INSERT INTO RENT_BISCOOT VALUES ('${rent_id.rows[0].id}',${client_id},${BISCOOT_ID});`);
+
+
+  res.status(200).send({Message:`SUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`})
+
+});
 
