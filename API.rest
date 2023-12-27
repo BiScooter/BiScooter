@@ -113,3 +113,50 @@ Content-Type: application/json
 {
  "BIKE_ID":"1"
 }
+
+
+###
+//Admin ViewAll
+GET http://localhost:8080/admin/ViewAll  HTTP/1.1
+
+
+
+###
+POST http://localhost:8080/admin/AddEmployee  HTTP/1.1
+Content-Type: application/json
+
+{
+        "NATIONAL_ID":"1265"	,														
+	"USERNAME":"Peter",		
+	"TELEPHONE":"0125664"	,
+	"EMAIL"	:"puyfl.com",		
+	"PASSWORD":"ppppppp"	,	
+	"SALARY":"9787"	,		
+	"BIRTHDATE":"2005-8-8"		,
+	"FNAME"	:"Peter",		
+	"MNAME":"kjhh",			
+	"LNAME"	:"uhuuh",		
+	"MGR_ID":"125",
+	"STATION_ID":"1"
+
+}
+###
+
+POST http://localhost:8080/admin/AddSupplier  HTTP/1.1
+Content-Type: application/json
+
+{
+        "NATIONAL_ID":"1265"	,														
+	"USERNAME":"Peter",		
+	"TELEPHONE":"0125664"	,
+	"EMAIL"	:"puyfl.com",		
+	"PASSWORD":"ppppppp"	,	
+	"SALARY":"9787"	,		
+	"BIRTHDATE":"2005-8-8"		,
+	"FNAME"	:"Peter",		
+	"MNAME":"kjhh",			
+	"LNAME"	:"uhuuh",		
+	"MGR_ID":"125",
+	"STATION_ID":"1"
+
+}
