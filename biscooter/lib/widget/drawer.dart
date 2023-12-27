@@ -1,3 +1,4 @@
+import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -102,7 +103,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   fontFamily: 'Montserrat'*/
                 )),
             onTap: () {
-              SystemNavigator.pop();
+              User.clearLoggedIn();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/splash", (Route<dynamic> route) => false);
               // Do something when the item is tapped
             },
           ),
