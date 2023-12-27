@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import 'package:biscooter/services/user.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../widget/drawer.dart';
@@ -19,8 +21,20 @@ enum SampleItem { changePassword, uploadPhoto }
 late Future<List<cart_station>?> stations;
 
 class _ProfileState extends State<Profile> {
+//some data of user i will need
+  User user = User();
+  String? firstName;
+  String? middleName;
+  String? lastName;
+  String? imageUrl;
+
   @override
   void initState() {
+    firstName = user.getFName;
+    middleName = user.getMName;
+    lastName = user.getLName;
+    imageUrl = user.getProfileImage;
+
     super.initState();
     stations = FetchStations();
   }
@@ -73,25 +87,25 @@ class _ProfileState extends State<Profile> {
                   children: [
                     Container(
                       margin: const EdgeInsets.only(left: 20, top: 20),
-                      child: const Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                            backgroundColor:
+                                const Color.fromARGB(255, 255, 255, 255),
                             radius: 64,
                             child: CircleAvatar(
                               radius: 60,
                               backgroundColor: Colors.white,
-                              backgroundImage:
-                                  AssetImage('assets/imgs/profile.jpg'),
+                              backgroundImage: NetworkImage(imageUrl!),
                             ),
                           ),
                           Text(
-                            'Mariam Amin',
-                            style: TextStyle(
+                            '$firstName $middleName $lastName',
+                            style: const TextStyle(
                                 fontSize: 18, fontFamily: 'PlayfairDisplay'),
                           ),
-                          Text('Wanna take a ride today?',
+                          const Text('Wanna take a ride today?',
                               style: TextStyle(
                                   fontSize: 18, fontFamily: 'PlayfairDisplay')),
                         ],
@@ -201,7 +215,7 @@ class _ProfileState extends State<Profile> {
                                 Text('Error occurred while fetching the data'),
                           );
                         }
-                          final data = snapshot.data;
+                        final data = snapshot.data;
                         if (data == null || data.isEmpty) {
                           return Center(
                             child: Text('No stations found.'),
@@ -213,10 +227,11 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               children: data.map((e) {
                                 return MYCard(
+                                  
                                     station_name: e.name,
                                     num_bike: e.amount_bike,
                                     num_scooter: e.amount_bike,
-                                    id: 1);
+                                    id: e.id);
                               }).toList(),
                             ),
                           );
