@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           return Verification(phoneNumber: args['phoneNumber']);
         },
       },
-      initialRoute: "/",
+      initialRoute: "/profile",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

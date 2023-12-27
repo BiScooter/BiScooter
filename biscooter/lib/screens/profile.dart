@@ -1,6 +1,9 @@
 // ignore_for_file: avoid_print
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import '../widget/drawer.dart';
 import '../widget/card.dart';
 
@@ -13,9 +16,33 @@ class Profile extends StatefulWidget {
 
 enum SampleItem { changePassword, uploadPhoto }
 
+late Future<List<cart_station>?> stations;
+
 class _ProfileState extends State<Profile> {
+  @override
+  void initState() {
+    super.initState();
+    stations = FetchStations();
+  }
+
   Object? selectedMenu;
   int index = 0;
+
+  final url = "";
+
+  Future<List<cart_station>?> FetchStations() async {
+    try {
+      final response = await get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        List<dynamic> responseData = jsonDecode(response.body);
+        return responseData.map<cart_station>(cart_station.fromJson).toList();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
 
   final controller = PageController(initialPage: 1);
   @override
@@ -71,14 +98,14 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0,23.0,0,0),
+                      padding: const EdgeInsets.fromLTRB(0, 23.0, 0, 0),
                       child: Row(
                         children: [
                           IconButton(
                             onPressed: () {
                               showSearch(
                                   context: context,
-                                  delegate: CustomSearchDelegate());
+                                  delegate: CustomSearchDelegate(stations));
                             },
                             icon: const Icon(
                               Icons.search_outlined,
@@ -100,12 +127,15 @@ class _ProfileState extends State<Profile> {
                                 value: SampleItem.changePassword,
                                 child: const Text('Change Password'),
                                 onTap: () {
-                                  Navigator.pushNamed(context, '/change_password');
+                                  Navigator.pushNamed(
+                                      context, '/change_password');
                                 },
                               ),
-                              const PopupMenuItem<SampleItem>(
-                                  value: SampleItem.uploadPhoto,
-                                  child: Text('Upload a new photo ')),
+                              PopupMenuItem<SampleItem>(
+                                value: SampleItem.uploadPhoto,
+                                child: const Text('Upload a new photo '),
+                                onTap: () {},
+                              ),
                             ],
                           ),
                         ],
@@ -157,22 +187,42 @@ class _ProfileState extends State<Profile> {
                 ),
                 SizedBox(
                   height: 324,
-                  child: SingleChildScrollView(
-                    controller: controller,
-                    scrollDirection: Axis.horizontal,
-                    child: const Row(
-                      children: [
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                        MYCard(),
-                      ],
-                    ),
+                  child: FutureBuilder<List<cart_station>?>(
+                    future: stations,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
+                      } else {
+                        if (snapshot.hasError) {
+                          return const Center(
+                            child:
+                                Text('Error occurred while fetching the data'),
+                          );
+                        }
+                          final data = snapshot.data;
+                        if (data == null || data.isEmpty) {
+                          return Center(
+                            child: Text('No stations found.'),
+                          );
+                        } else {
+                          return SingleChildScrollView(
+                            controller: controller,
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: data.map((e) {
+                                return MYCard(
+                                    station_name: e.name,
+                                    num_bike: e.amount_bike,
+                                    num_scooter: e.amount_bike,
+                                    id: 1);
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      }
+                    },
                   ),
                 )
               ],
@@ -185,19 +235,13 @@ class _ProfileState extends State<Profile> {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  List<String> searchTerms = [
-    'Apple',
-    'Banana',
-    'Pear',
-    'Watermelons',
-    'Oranges',
-    'Blueberries',
-    'Strawberries',
-    'Raspberries',
-  ];
-  CustomSearchDelegate()
+  final Future<List<cart_station>?> stationlist;
+
+  late Future<List<String>?> matchQuery;
+
+  CustomSearchDelegate(this.stationlist)
       : super(
-        searchFieldStyle:const TextStyle(fontSize: 20) ,
+          searchFieldStyle: const TextStyle(fontSize: 20),
           searchFieldLabel: "station",
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.search,
@@ -228,45 +272,119 @@ class CustomSearchDelegate extends SearchDelegate {
         ));
   }
 
+  Future<List<String>?> fetchSearchResults(String query) async {
+    List<String>? resultList = await stations.then((list) {
+      return list?.map((element) => element.name).toList();
+    });
+
+    return resultList;
+  }
+
   @override
   Widget buildResults(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
+    matchQuery = fetchSearchResults(query);
+    // Perform your search operation
 
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        String r = matchQuery[index];
-        return ListTile(
-          title: Text(r),
-          onTap: () {},
-        );
+    // Build and return the search results widget
+    return FutureBuilder<List<String>?>(
+      future: matchQuery,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else {
+          //final results = snapshot.data;
+          final results = snapshot.data?.where(
+              (item) => item.toLowerCase().contains(query.toLowerCase()));
+
+          if (results == null || results.isEmpty) {
+            return Center(
+              child: Text('No results found.'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: results.length,
+              itemBuilder: (context, index) {
+                final item = results.first;
+                // Build your search result item widget here
+                return ListTile(
+                  title: Text(item),
+                  // Other widget properties
+                );
+              },
+            );
+          }
+        }
       },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> matchQuery = [];
-    for (var fruit in searchTerms) {
-      if (fruit.toLowerCase().contains(query.toLowerCase())) {
-        matchQuery.add(fruit);
-      }
-    }
+    matchQuery = fetchSearchResults(query);
+    // Perform your search operation
 
-    return ListView.builder(
-      itemCount: matchQuery.length,
-      itemBuilder: (context, index) {
-        String r = matchQuery[index];
-        return ListTile(
-          title: Text(r),
-          onTap: () {},
-        );
+    // Build and return the search results widget
+    return FutureBuilder<List<String>?>(
+      future: matchQuery,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else {
+          //final results = snapshot.data;
+          final results = snapshot.data?.where(
+              (item) => item.toLowerCase().contains(query.toLowerCase()));
+
+          if (results == null || results.isEmpty) {
+            return Center(
+              child: Text('No results found.'),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: results.length,
+              itemBuilder: (context, index) {
+                final item = results.first;
+                // Build your search result item widget here
+                return ListTile(
+                  title: Text(item),
+                  // Other widget properties
+                );
+              },
+            );
+          }
+        }
       },
     );
   }
+}
+
+class cart_station {
+  final int id;
+  final String name;
+  final int amount_bike;
+  final int amount_scooter;
+
+  cart_station(
+      {required this.name,
+      required this.id,
+      required this.amount_bike,
+      required this.amount_scooter});
+
+  static cart_station fromJson(json) => cart_station(
+        id: json['station_id'],
+        name: json['station_name'],
+        amount_bike: json['bikes_numbers'],
+        amount_scooter: json['scooters_numbers'],
+      );
 }

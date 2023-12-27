@@ -255,28 +255,35 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
                     child: Text('Error occurred while fetching the data'),
                   );
                 }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(
-                          '\$${snapshot.data![index].amount.toStringAsFixed(2)}'),
-                      titleTextStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 20,
-                      ),
-                      subtitle: Text(
-                          'card otp ${snapshot.data![index].cardOtp}'),
-                      subtitleTextStyle:
-                          const TextStyle(fontSize: 12, color: Colors.grey),
-                      trailing: Text(
-                        snapshot.data![index].date,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    );
-                  },
-                );
+                final data = snapshot.data;
+                if (data == null || data.isEmpty) {
+                  return Center(
+                    child: Text('No transactions found.'),
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                            '\$${snapshot.data![index].amount.toStringAsFixed(2)}'),
+                        titleTextStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 20,
+                        ),
+                        subtitle:
+                            Text('card otp ${snapshot.data![index].cardOtp}'),
+                        subtitleTextStyle:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
+                        trailing: Text(
+                          snapshot.data![index].date,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      );
+                    },
+                  );
+                }
               }
             },
           ),
