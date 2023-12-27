@@ -18,8 +18,7 @@ class _OfferBikeState extends State<OfferBike> {
     if (stateData == 1) {
       _pageController.animateToPage(1,
           duration: const Duration(seconds: 0), curve: Curves.easeInOut);
-    }
-    if (stateData == 0) {
+    } else if (stateData == 0) {
       _pageController.animateToPage(0,
           duration: const Duration(seconds: 0), curve: Curves.easeInOut);
     }
@@ -325,4 +324,34 @@ class _OfferBikeState extends State<OfferBike> {
       ],
     );
   }
+}
+
+class My_Bisscooter {
+  final String type;
+  final int size;
+  final String image;
+  final int gearNumber;
+  final int rentalNumber;
+  final int distance;
+  final int totalTime;
+
+  My_Bisscooter({
+    required this.image,
+    required this.gearNumber,
+    required this.type,
+    required this.rentalNumber,
+    required this.distance,
+    required this.size,
+    required this.totalTime,
+  });
+
+  static My_Bisscooter fromJson(json) => My_Bisscooter(
+        type: json['Type'],
+        size: json['Size'],
+        gearNumber: json['Gear_number'],
+        rentalNumber: json['Rental_Number'],
+        distance: json['Distance'],
+        totalTime: json['total_time'],
+        image: json['image']
+      );
 }
