@@ -105,5 +105,5 @@ module.exports = (err, req, res, next) => {
     if (error.message == 'NId must only contain numerical digits"') error = handleNidInvalid(error);
     if (error.message == 'please provide email & password"') error = handleNoEmailOrPass(error);
     if (error.message == 'incorrect email or password"') error = handleWrongEmailOrPass(error);
-    sendErrorProd(error, res);
+    // sendErrorProd(error, res);
   }
