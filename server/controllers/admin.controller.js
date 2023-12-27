@@ -86,7 +86,7 @@ if (
         return next(new ErrorHandling("Email is invalid", 400));
       }
        await db.query(`INSERT INTO SUPPLIER 
-       VALUES('DEFAULT,'${EMAIL}','${PHONE_NUMBER}','${FNAME}','${MNAME},'${LNAME}');`);
+       VALUES(DEFAULT,'${EMAIL}','${PHONE_NUMBER}','${FNAME}','${MNAME}','${LNAME}');`);
        res.status(200).send({status:"Supplier inserted Successfully"});
     
       });

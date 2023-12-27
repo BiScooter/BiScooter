@@ -13,6 +13,6 @@ adminRouter.post('/AddEmployee',adminController.AddEmp)
 // adminRouter.get('/DropClient',adminController.DropClient)
 // adminRouter.get('/AddAdmin',adminController.AddAdmin)
 // adminRouter.get('/DropAdmin',adminController.DropAdmin)
-adminRouter.get('/AddSupplier',adminController.AddSup)
+adminRouter.post('/AddSupplier',adminController.AddSup)
 // adminRouter.get('/DropSupplier',adminController.DropSupplier)
 module.exports=adminRouter;
