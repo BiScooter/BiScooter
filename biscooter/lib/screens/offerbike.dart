@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class OfferBike extends StatefulWidget {
   const OfferBike({super.key});
@@ -11,16 +14,58 @@ class OfferBike extends StatefulWidget {
 }
 
 class _OfferBikeState extends State<OfferBike> {
+  @override
+  String url2 = "";
+
+  ///get if the user have scooter of biek for not
+
+  Future<int> havebike() async {
+    try {
+      final response = await get(Uri.parse(url2));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        dynamic responseData = jsonDecode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return 0;
+  }
+
+  void initState() {
+    super.initState();
+    mybike = Fetchbike();
+    stateData = havebike();
+  }
+
+  String url = "";
+  late Future<My_Biscooter?> mybike;
+
+  Future<My_Biscooter?> Fetchbike() async {
+    try {
+      final response = await get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        dynamic responseData = jsonDecode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
+
   final _pageController = PageController(initialPage: 0);
-  var stateData = 0; // if there data  =1  if no bike offered make it 0
+  Future<int>? stateData; // if there data  =1  if no bike offered make it 0
 
   void scrollFunction() {
     if (stateData == 1) {
       _pageController.animateToPage(1,
-          duration: const Duration(seconds: 0), curve: Curves.easeInOut);
+          duration: const Duration(seconds: 1), curve: Curves.easeInOut);
     } else if (stateData == 0) {
       _pageController.animateToPage(0,
-          duration: const Duration(seconds: 0), curve: Curves.easeInOut);
+          duration: const Duration(seconds: 1), curve: Curves.easeInOut);
     }
   }
 
@@ -66,237 +111,184 @@ class _OfferBikeState extends State<OfferBike> {
               ],
             ),
           ),
-          PageView(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
+          SizedBox(
+            height: 324,
+            child: FutureBuilder<My_Biscooter?>(
+              future: mybike,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                } else {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('Error occurred while fetching the data'),
+                    );
+                  }
+                  //final request = snapshot.data!;
+else{
+                    return PageView(
+                      controller: _pageController,
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 96,
+                            ),
+                            Card(
+                              margin: const EdgeInsets.all(10),
+                              elevation: 10,
+                              shadowColor: Colors.black,
+                              color: Colors.white,
+                              child: Container(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 300),
+                                height: 340,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                      child:
+                                          Image.asset('assets/imgs/bike.png'),
+                                    ),
+                                    data(context, 'Type', snapshot.data!.type),
+                                    data(context, 'Size',
+                                        snapshot.data!.size.toString()),
+                                    data(context, 'Gear number',
+                                        snapshot.data!.gearNumber.toString()),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.30,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Column(
+                                  children: [
+                                    statistic(
+                                        Icons.access_time,
+                                        "Duration",
+                                        Colors.blue,
+                                        snapshot.data!.totalTime.toString()),
+                                    statistic(
+                                        Icons.numbers_outlined,
+                                        'Rentals',
+                                        Colors.red,
+                                        snapshot.data!.rentalNumber.toString()),
+                                    statistic(
+                                        Icons.timeline_sharp,
+                                        'Distance',
+                                        Colors.orange,
+                                        snapshot.data!.distance.toString()),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.bottomCenter,
+                              child: Bottom(() {
+                                Navigator.pushNamed(context, '/add_biscooter');
+                                debugPrint("hellow");
+                              }, 'Drop BiScooter'),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 96,
+                            ),
+                            Card(
+                              margin: const EdgeInsets.all(10),
+                              elevation: 10,
+                              shadowColor: Colors.black,
+                              color: Colors.white,
+                              child: Container(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 300),
+                                height: 340,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.all(10),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 200,
+                                      child:
+                                          Image.asset('assets/imgs/bike.png'),
+                                    ),
+                                    data(context, 'No ', ' BiScooter'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                                alignment: Alignment.bottomCenter,
+                                child: Bottom(() {}, 'Add BiScooter')),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container statistic(IconData ic, String title, Color co, String data) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(20),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: const [
+          BoxShadow(
+              color: Color.fromARGB(255, 157, 157, 157), //New
+              blurRadius: 7.0,
+              offset: Offset(2, 3)),
+        ],
+      ),
+      width: 340,
+      height: 116,
+      child: Row(
+        children: [
+          Icon(
+            ic,
+            color: co,
+            size: 45,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
             children: [
-              Column(
-                children: [
-                  const SizedBox(
-                    height: 96,
-                  ),
-                  Card(
-                    margin: const EdgeInsets.all(10),
-                    elevation: 10,
-                    shadowColor: Colors.black,
-                    color: Colors.white,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 300),
-                      height: 340,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            height: 200,
-                            child: Image.asset('assets/imgs/bike.png'),
-                          ),
-                          data(context, 'Type', 'blablalba'),
-                          data(context, 'Size', 'blablalba'),
-                          data(context, 'Gear number', 'blablalba'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(20),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Color.fromARGB(
-                                        255, 157, 157, 157), //New
-                                    blurRadius: 7.0,
-                                    offset: Offset(2, 3))
-                              ],
-                            ),
-                            width: 340,
-                            height: 116,
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.access_time,
-                                  color: Colors.blue,
-                                  size: 40,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Duration',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '28 ',
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          ' mins',
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(20),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Color.fromARGB(
-                                        255, 157, 157, 157), //New
-                                    blurRadius: 7.0,
-                                    offset: Offset(2, 3)),
-                              ],
-                            ),
-                            width: 340,
-                            height: 116,
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.numbers_outlined,
-                                  color: Colors.red,
-                                  size: 45,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Rentals',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '34 ',
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          ' times',
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(20),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Color.fromARGB(
-                                        255, 157, 157, 157), //New
-                                    blurRadius: 7.0,
-                                    offset: Offset(2, 3)),
-                              ],
-                            ),
-                            width: 340,
-                            height: 116,
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.timeline_sharp,
-                                  color: Colors.orange,
-                                  size: 45,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Distance',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          '34 ',
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          ' m',
-                                          style: TextStyle(fontSize: 20),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: Bottom(() {
-                      Navigator.pushNamed(context, '/add_biscooter');
-                      debugPrint("hellow");
-                    }, 'Drop BiScooter'),
-                  ),
-                ],
+              const Text(
+                'Rentals',
+                style: TextStyle(color: Colors.grey),
               ),
-              Column(
+              Row(
                 children: [
-                  const SizedBox(
-                    height: 96,
+                  Text(
+                    data,
+                    style: const TextStyle(fontSize: 26),
                   ),
-                  Card(
-                    margin: const EdgeInsets.all(10),
-                    elevation: 10,
-                    shadowColor: Colors.black,
-                    color: Colors.white,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 300),
-                      height: 340,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.all(10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 200,
-                            child: Image.asset('assets/imgs/bike.png'),
-                          ),
-                          data(context, 'No ', ' BiScooter'),
-                        ],
-                      ),
-                    ),
+                  const Text(
+                    ' times',
+                    style: TextStyle(fontSize: 20),
                   ),
-                  Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Bottom(() {}, 'Add BiScooter')),
                 ],
               ),
             ],
@@ -326,7 +318,7 @@ class _OfferBikeState extends State<OfferBike> {
   }
 }
 
-class My_Bisscooter {
+class My_Biscooter {
   final String type;
   final int size;
   final String image;
@@ -335,7 +327,7 @@ class My_Bisscooter {
   final int distance;
   final int totalTime;
 
-  My_Bisscooter({
+  My_Biscooter({
     required this.image,
     required this.gearNumber,
     required this.type,
@@ -345,13 +337,12 @@ class My_Bisscooter {
     required this.totalTime,
   });
 
-  static My_Bisscooter fromJson(json) => My_Bisscooter(
-        type: json['Type'],
-        size: json['Size'],
-        gearNumber: json['Gear_number'],
-        rentalNumber: json['Rental_Number'],
-        distance: json['Distance'],
-        totalTime: json['total_time'],
-        image: json['image']
-      );
+  static My_Biscooter fromJson(json) => My_Biscooter(
+      type: json['Type'],
+      size: json['Size'],
+      gearNumber: json['Gear_number'],
+      rentalNumber: json['Rental_Number'],
+      distance: json['Distance'],
+      totalTime: json['total_time'],
+      image: json['image']);
 }

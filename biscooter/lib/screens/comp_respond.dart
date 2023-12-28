@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/comp_card.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class CompRespond extends StatefulWidget {
   const CompRespond({super.key});
@@ -12,6 +15,27 @@ class CompRespond extends StatefulWidget {
 }
 
 class _CompRespondState extends State<CompRespond> {
+  @override
+  void initState() {
+    super.initState();
+    Complaints = FetchComplaints();
+  }
+late Future<List<Complaint>?> Complaints;
+  String url="";
+  Future<List<Complaint>?> FetchComplaints() async {
+    try {
+      final response = await get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        List<dynamic> responseData = jsonDecode(response.body);
+        return responseData.map<Complaint>(Complaint.fromJson).toList();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
+
   void GoTosendComplaint() {}
   @override
   Widget build(BuildContext context) {
@@ -80,5 +104,20 @@ class _CompRespondState extends State<CompRespond> {
         ],
       ),
     );
-  } 
+  }
+}
+
+class Complaint {
+  final String describtion;
+  final DateTime date;
+
+  Complaint({
+    required this.describtion,
+    required this.date,
+  });
+
+  static Complaint fromJson(json) => Complaint(
+        describtion: json['describtion'],
+        date: json['date'],
+      );
 }

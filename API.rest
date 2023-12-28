@@ -12,8 +12,6 @@ Content-Type: application/json
         "BISCOOT_ID":"1"
 }
 
-
-
 #Complaint
 POST http://localhost:8080/users/ClientActions6/1 HTTP/1.1
 Content-Type: application/json
