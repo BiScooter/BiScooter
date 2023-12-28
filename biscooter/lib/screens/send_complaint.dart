@@ -1,7 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/services/user.dart';
 import "package:flutter/material.dart";
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 class SendComplaint extends StatefulWidget {
   const SendComplaint({super.key});
@@ -16,12 +22,10 @@ class _SendComplaintState extends State<SendComplaint> {
   String? _selectedType;
 
   final _complaintTypes = [
-    "Complaint Type 0",
-    "Complaint Type 1",
-    "Complaint Type 2",
-    "Complaint Type 3",
-    "Complaint Type 4",
-    "Complaint Type 5",
+    "On Bike",
+    "On Scooter",
+    "On Station",
+    "On Service",
   ];
 
   DropdownMenuItem<String> _buildDropdownMenuItem(String item) {
@@ -31,19 +35,55 @@ class _SendComplaintState extends State<SendComplaint> {
     );
   }
 
-  void send() {
-    _formController.currentState!.validate();
+  void send() async {
+    if (_formController.currentState!.validate()) {
+      try {
+        final date = DateTime.now().toString();
+        final details = _complaintDetails.text;
+        final type = _selectedType;
+        Response response = await post(
+          Uri.parse(
+              "${const Connection().baseUrl}/users/ClientActions6/${User().getId}"),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(<String, dynamic>{
+            "DATE": date,
+            "DESCRIPTION": details,
+            "TYPE": type
+          }),
+        );
+
+        debugPrint(response.body);
+        if (response.statusCode == 200) {
+          if (mounted) {
+            Navigator.pop(context);
+          }
+        } else {
+          Fluttertoast.showToast(
+            msg: "Something went wrong!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+    }
   }
 
   changeType(String? value) {
     setState(() {
       _selectedType = value;
     });
+    debugPrint(_selectedType);
   }
 
   @override
   Widget build(BuildContext context) {
-    _selectedType = null;
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
@@ -113,7 +153,8 @@ class _SendComplaintState extends State<SendComplaint> {
                                     .map(_buildDropdownMenuItem)
                                     .toList(),
                                 onChanged: changeType,
-                                iconEnabledColor: Theme.of(context).colorScheme.surface,
+                                iconEnabledColor:
+                                    Theme.of(context).colorScheme.surface,
                                 iconSize: 30,
                                 style: const TextStyle(
                                   fontSize: 16,

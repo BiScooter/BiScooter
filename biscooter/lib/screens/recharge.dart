@@ -1,10 +1,15 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/shadow_card.dart';
 import 'package:biscooter/widget/white_card.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 class Recharge extends StatefulWidget {
   const Recharge({super.key});
@@ -74,11 +79,67 @@ class WhiteCardContent extends StatefulWidget {
 class _WhiteCardContentState extends State<WhiteCardContent> {
   double chosenValue = 0;
 
-  void recharge() {}
+  final _digit0 = TextEditingController();
+  final _digit1 = TextEditingController();
+  final _digit2 = TextEditingController();
+
+  void recharge() async {
+    if (_digit0.text == "" || _digit1.text == "" || _digit2.text == "") {
+      Fluttertoast.showToast(
+        msg: "Insert a card OTP",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16,
+      );
+      return;
+    }
+
+    try {
+      Response response = await post(
+        Uri.parse("${const Connection().baseUrl}users/Transactions "),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "CARDOTP": int.parse(_digit0.text) * 100 +
+              int.parse(_digit1.text) * 10 +
+              int.parse(_digit2.text),
+          "STATUS": "Deposit",
+          "AMOUNT": chosenValue,
+          "DATE": DateTime.now(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      } else {
+        Fluttertoast.showToast(
+          msg: "Something went wrong!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   setChosenValue(double value) {
     setState(() {
       chosenValue = value;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -116,12 +177,12 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
           ],
         ),
         const SizedBox(height: 15),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            DigitInput(),
-            DigitInput(),
-            DigitInput(),
+            DigitInput(digit: _digit0),
+            DigitInput(digit: _digit1),
+            DigitInput(digit: _digit2),
           ],
         ),
         Text(
@@ -206,8 +267,10 @@ class _RechargeCardState extends State<RechargeCard> {
 }
 
 class DigitInput extends StatelessWidget {
+  final TextEditingController digit;
   const DigitInput({
     super.key,
+    required this.digit,
   });
 
   @override
@@ -216,6 +279,7 @@ class DigitInput extends StatelessWidget {
       height: 68,
       width: 68,
       child: TextField(
+        controller: digit,
         onChanged: (value) {
           FocusScope.of(context).nextFocus();
         },

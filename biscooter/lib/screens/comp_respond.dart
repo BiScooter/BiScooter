@@ -12,11 +12,14 @@ class CompRespond extends StatefulWidget {
 }
 
 class _CompRespondState extends State<CompRespond> {
-  void GoTosendComplaint() {}
+  void goToSendComplaint() {
+    Navigator.pushNamed(context, '/add_complaint');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -48,19 +51,19 @@ class _CompRespondState extends State<CompRespond> {
             ),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 180,
                 ),
-                WhiteCard(child: Container(), top: 10),
+                WhiteCard(top: 10, child: Container()),
               ],
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 100),
+            margin: const EdgeInsets.only(top: 100),
             width: double.infinity,
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height * 0.77,
-            child: SingleChildScrollView(
+            child: const SingleChildScrollView(
               child: Column(children: [
                 CompCard(),
                 CompCard(),
@@ -73,10 +76,10 @@ class _CompRespondState extends State<CompRespond> {
             ),
           ),
           Container(
-              margin: EdgeInsets.only(bottom: 20),
+              margin: const EdgeInsets.only(bottom: 20),
               width: double.infinity,
               alignment: Alignment.bottomCenter,
-              child: Bottom(GoTosendComplaint, "Add Complaints")),
+              child: Bottom(goToSendComplaint, "Add Complaints")),
         ],
       ),
     );

@@ -2,7 +2,9 @@
 
 import 'dart:convert';
 
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/shadow_card.dart';
 import "package:flutter/material.dart";
@@ -216,7 +218,8 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
   Future<List<Transaction>?> getTransactionHistory() async {
     try {
       final response =
-          await get(Uri.parse("http://localhost:3000/transaction"));
+          await get(Uri.parse("${const Connection().baseUrl}/transactionsHistory/${User().getId}"));
+      debugPrint(response.body);
       if (response.statusCode == 200) {
         // Decode the response body
         List<dynamic> responseData = jsonDecode(response.body);
