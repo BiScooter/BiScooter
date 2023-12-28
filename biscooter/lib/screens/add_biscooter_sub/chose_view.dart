@@ -67,7 +67,7 @@ class _ChoseViewState extends State<ChoseView> {
                     ),
                   ),
                   TextButton(onPressed: () {
-                    if(widget.type != "") widget.controller.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
+                    if(widget.type != "") widget.controller.animateToPage(1, duration: const Duration(milliseconds: 50), curve: Curves.easeIn);
                   }, child: const Text('Continue'))
                 ],
               ),

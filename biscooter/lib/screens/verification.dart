@@ -6,8 +6,8 @@ import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 
 class Verification extends StatefulWidget {
-  final String phoneNumber;
-  const Verification({super.key, required this.phoneNumber});
+  final String email;
+  const Verification({super.key, required this.email});
 
   @override
   State<Verification> createState() => _VerificationState();
@@ -87,11 +87,11 @@ class _VerificationState extends State<Verification> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text('Enter the code sent to +2${widget.phoneNumber}.'),
+                    Text('Enter the code sent to ${widget.email}.', style: const TextStyle(fontSize: 16)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Didn\'t receive the code?'),
+                        const Text('Didn\'t receive the code?', style: TextStyle(fontSize: 16)),
                         TextButton(
                           onPressed: resend,
                           child: const Text('Resend.', style: TextStyle(fontSize: 16),),

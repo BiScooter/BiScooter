@@ -70,7 +70,7 @@ class WhiteCardContent extends StatefulWidget {
 }
 
 class _WhiteCardContentState extends State<WhiteCardContent> {
-  final controller = PageController(initialPage: 1);
+  final controller = PageController(initialPage: 0);
   final double height = 230;
   final double width = 305;
   String type = "";
@@ -85,7 +85,7 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
   Widget build(BuildContext context) {
     return PageView(
       controller: controller,
-      // physics: const NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         ChoseView(
           height: height,

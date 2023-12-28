@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
+import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../widget/drawer.dart';
 import '../widget/card.dart';
 
@@ -12,10 +12,10 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
-enum SampleItem { change_Password, Upload_photo }
+enum SampleItem { changePassword, uploadPhoto }
 
 class _ProfileState extends State<Profile> {
-  var selectedMenu;
+  Object? selectedMenu;
   int index = 0;
 
   final controller = PageController(initialPage: 1);
@@ -31,143 +31,156 @@ class _ProfileState extends State<Profile> {
           Theme.of(context).colorScheme.primary,
         ],
       )),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        drawer: MyDrawer(),
-        extendBodyBehindAppBar: true,
-        resizeToAvoidBottomInset: true,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, top: 20),
-                    child: const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                          radius: 64,
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundColor: Colors.white,
-                            backgroundImage:
-                                AssetImage('assets/imgs/profile.jpg'),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          drawer: const MyDrawer(),
+          extendBodyBehindAppBar: true,
+          resizeToAvoidBottomInset: true,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, top: 20),
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                            radius: 64,
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: Colors.white,
+                              backgroundImage:
+                                  AssetImage('assets/imgs/profile.jpg'),
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Mariam Amin',
-                          style: TextStyle(
-                              fontSize: 18, fontFamily: 'PlayfairDisplay'),
-                        ),
-                        Text('Wanna take a ride today?',
+                          Text(
+                            'Mariam Amin',
                             style: TextStyle(
-                                fontSize: 18, fontFamily: 'PlayfairDisplay')),
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          showSearch(
-                              context: context,
-                              delegate: CustomSearchDelegate());
-                        },
-                        icon: Icon(
-                          Icons.search_outlined,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                      PopupMenuButton(
-                        color: Colors.white,
-                        initialValue: selectedMenu,
-                        // Callback that sets the selected popup menu item.
-                        onSelected: (item) {
-                          setState(() {});
-                        },
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<SampleItem>>[
-                          const PopupMenuItem(
-                            value: SampleItem.change_Password,
-                            child: Text('Change Password'),
+                                fontSize: 18, fontFamily: 'PlayfairDisplay'),
                           ),
-                          const PopupMenuItem<SampleItem>(
-                              value: SampleItem.Upload_photo,
-                              child: Text('Upload a new photo ')),
+                          Text('Wanna take a ride today?',
+                              style: TextStyle(
+                                  fontSize: 18, fontFamily: 'PlayfairDisplay')),
                         ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  alignment: Alignment.center,
-                  height: 150,
-                  width: double.infinity,
-                  child: Image.asset('assets/imgs/bike.png')),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 20, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Stations",
-                      style: TextStyle(
-                          fontFamily: 'PlayfairDisplay', fontSize: 24),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        controller.animateToPage(index + 1,
-                            duration: Duration(seconds: 1),
-                            curve: Curves.easeInOut);
-                        setState(() {
-                          index = (index + 1) % 6;
-                        });
-                      },
-                      icon: Icon(
-                        Icons.navigate_next_outlined,
-                        size: 35,
-                        color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 23.0, 0, 0),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              showSearch(
+                                  context: context,
+                                  delegate: CustomSearchDelegate());
+                            },
+                            icon: const Icon(
+                              Icons.search_outlined,
+                              size: 30,
+                              color: Colors.black,
+                            ),
+                          ),
+                          PopupMenuButton(
+                            icon: const Icon(Icons.settings),
+                            color: Colors.white,
+                            initialValue: selectedMenu,
+                            // Callback that sets the selected popup menu item.
+                            onSelected: (item) {
+                              setState(() {});
+                            },
+                            itemBuilder: (BuildContext context) =>
+                                <PopupMenuEntry<SampleItem>>[
+                              PopupMenuItem(
+                                value: SampleItem.changePassword,
+                                child: const Text('Change Password'),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, '/change_password');
+                                },
+                              ),
+                              const PopupMenuItem<SampleItem>(
+                                  value: SampleItem.uploadPhoto,
+                                  child: Text('Upload a new photo ')),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 324,
-                child: SingleChildScrollView(
-                  controller: controller,
-                  scrollDirection: Axis.horizontal,
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    alignment: Alignment.center,
+                    height: 150,
+                    width: double.infinity,
+                    child: Image.asset('assets/imgs/bike.png')),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 20, right: 10),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
-                      MYCard(),
+                      const Text(
+                        "Stations",
+                        style: TextStyle(
+                            fontFamily: 'PlayfairDisplay', fontSize: 24),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          controller.animateToPage(index + 1,
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.easeInOut);
+                          setState(() {
+                            debugPrint(
+                                "Profile page, invCode: ${User().getInvitationCode}");
+                            index = (index + 1) % 6;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.navigate_next_outlined,
+                          size: 35,
+                          color: Colors.black,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 324,
+                  child: SingleChildScrollView(
+                    controller: controller,
+                    scrollDirection: Axis.horizontal,
+                    child: const Row(
+                      children: [
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                        MYCard(),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -178,7 +191,7 @@ class _ProfileState extends State<Profile> {
 class CustomSearchDelegate extends SearchDelegate {
   List<String> searchTerms = [
     'Apple',
-    'Benana',
+    'Banana',
     'Pear',
     'Watermelons',
     'Oranges',
@@ -188,7 +201,7 @@ class CustomSearchDelegate extends SearchDelegate {
   ];
   CustomSearchDelegate()
       : super(
-        searchFieldStyle:TextStyle(fontSize: 20) ,
+          searchFieldStyle: const TextStyle(fontSize: 20),
           searchFieldLabel: "station",
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.search,
@@ -226,7 +239,6 @@ class CustomSearchDelegate extends SearchDelegate {
       if (fruit.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(fruit);
       }
-      ;
     }
 
     return ListView.builder(
@@ -248,7 +260,6 @@ class CustomSearchDelegate extends SearchDelegate {
       if (fruit.toLowerCase().contains(query.toLowerCase())) {
         matchQuery.add(fruit);
       }
-      ;
     }
 
     return ListView.builder(

@@ -43,6 +43,8 @@ dependencies:
   syncfusion_flutter_datepicker: ^23.2.7
   
   font_awesome_flutter: ^10.6.0
+  fluttertoast: ^8.2.4
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_lints: 3.0.1

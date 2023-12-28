@@ -1,6 +1,5 @@
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/drawer.dart';
-import 'package:biscooter/widget/rentbike.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
 
@@ -12,24 +11,24 @@ class OfferBike extends StatefulWidget {
 }
 
 class _OfferBikeState extends State<OfferBike> {
-  final _PageController = PageController(initialPage: 0);
-  var StateData = 0; // if there data  =1  if no bike offered make it 0
+  final _pageController = PageController(initialPage: 0);
+  var stateData = 0; // if there data  =1  if no bike offered make it 0
 
-  void ScroollFunction() {
-    if (StateData == 1) {
-      _PageController.animateToPage(1,
-          duration: Duration(seconds: 0), curve: Curves.easeInOut);
+  void scrollFunction() {
+    if (stateData == 1) {
+      _pageController.animateToPage(1,
+          duration: const Duration(seconds: 0), curve: Curves.easeInOut);
     }
-    if (StateData == 0) {
-      _PageController.animateToPage(0,
-          duration: Duration(seconds: 0), curve: Curves.easeInOut);
+    if (stateData == 0) {
+      _pageController.animateToPage(0,
+          duration: const Duration(seconds: 0), curve: Curves.easeInOut);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -61,35 +60,34 @@ class _OfferBikeState extends State<OfferBike> {
             ),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 180,
                 ),
-                WhiteCard(child: Container(), top: 10),
+                WhiteCard(top: 10, child: Container()),
               ],
             ),
           ),
           PageView(
-            controller: _PageController,
-            physics:  const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 96,
                   ),
                   Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     elevation: 10,
                     shadowColor: Colors.black,
                     color: Colors.white,
                     child: Container(
-                      constraints: BoxConstraints(maxWidth: 300),
+                      constraints: const BoxConstraints(maxWidth: 300),
                       height: 340,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                         children: [
                           SizedBox(
                             height: 200,
@@ -102,21 +100,21 @@ class _OfferBikeState extends State<OfferBike> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.30,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(20),
+                            padding: const EdgeInsets.all(20),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.white,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
-                                    color: const Color.fromARGB(
+                                    color: Color.fromARGB(
                                         255, 157, 157, 157), //New
                                     blurRadius: 7.0,
                                     offset: Offset(2, 3))
@@ -124,7 +122,7 @@ class _OfferBikeState extends State<OfferBike> {
                             ),
                             width: 340,
                             height: 116,
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(
                                   Icons.access_time,
@@ -158,15 +156,15 @@ class _OfferBikeState extends State<OfferBike> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(10),
-                            padding: EdgeInsets.all(20),
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(20),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.white,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
-                                    color: const Color.fromARGB(
+                                    color: Color.fromARGB(
                                         255, 157, 157, 157), //New
                                     blurRadius: 7.0,
                                     offset: Offset(2, 3)),
@@ -174,7 +172,7 @@ class _OfferBikeState extends State<OfferBike> {
                             ),
                             width: 340,
                             height: 116,
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(
                                   Icons.numbers_outlined,
@@ -208,15 +206,15 @@ class _OfferBikeState extends State<OfferBike> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(10),
-                            padding: EdgeInsets.all(20),
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(20),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.white,
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
-                                    color: const Color.fromARGB(
+                                    color: Color.fromARGB(
                                         255, 157, 157, 157), //New
                                     blurRadius: 7.0,
                                     offset: Offset(2, 3)),
@@ -224,7 +222,7 @@ class _OfferBikeState extends State<OfferBike> {
                             ),
                             width: 340,
                             height: 116,
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(
                                   Icons.timeline_sharp,
@@ -262,46 +260,46 @@ class _OfferBikeState extends State<OfferBike> {
                     ),
                   ),
                   Container(
-                      alignment: Alignment.bottomCenter,
-                      child: Bottom(() {}, 'Drop BiScooter')),
+                    alignment: Alignment.bottomCenter,
+                    child: Bottom(() {
+                      Navigator.pushNamed(context, '/add_biscooter');
+                      debugPrint("hellow");
+                    }, 'Drop BiScooter'),
+                  ),
                 ],
               ),
-               Column(
+              Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 96,
                   ),
                   Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     elevation: 10,
                     shadowColor: Colors.black,
                     color: Colors.white,
                     child: Container(
-                      constraints: BoxConstraints(maxWidth: 300),
+                      constraints: const BoxConstraints(maxWidth: 300),
                       height: 340,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-
                         children: [
                           SizedBox(
                             height: 200,
                             child: Image.asset('assets/imgs/bike.png'),
                           ),
                           data(context, 'No ', ' BiScooter'),
-
                         ],
                       ),
                     ),
                   ),
-
                   Container(
-
                       alignment: Alignment.bottomCenter,
                       child: Bottom(() {}, 'Add BiScooter')),
                 ],
-                             ),
+              ),
             ],
           ),
         ],
@@ -314,8 +312,8 @@ class _OfferBikeState extends State<OfferBike> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          '${title} :',
-          style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
+          '$title :',
+          style: const TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
         ),
         Text(
           value,

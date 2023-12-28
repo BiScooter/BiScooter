@@ -1,4 +1,3 @@
-import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ class _InviteFriendState extends State<InviteFriend> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -45,10 +44,10 @@ class _InviteFriendState extends State<InviteFriend> {
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 180,
               ),
-              WhiteCard(child: Container(), top: 10)
+              WhiteCard(top: 10, child: Container())
             ],
           ),
         ),
@@ -58,10 +57,10 @@ class _InviteFriendState extends State<InviteFriend> {
           child: Card(
             elevation: 30,
             shadowColor: Colors.black,
-            color: Color.fromARGB(255, 255, 238, 213) ,         shape: RoundedRectangleBorder(
+            color: const Color.fromARGB(255, 255, 238, 213) ,         shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
-            child: Container(
+            child: SizedBox(
               width: 300,
               height: 470,
               child: Stack(
@@ -69,7 +68,7 @@ class _InviteFriendState extends State<InviteFriend> {
                   Positioned(
                     top: 0,
                     left: 0,
-                    child: Container(
+                    child: SizedBox(
                         width: 300,
                         height: 300,
                         child: Image.asset('assets/imgs/i1.png')),
@@ -89,7 +88,7 @@ class _InviteFriendState extends State<InviteFriend> {
                               fontWeight: FontWeight.w100,
                               color: Colors.grey[800]),
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Container(
                           alignment: Alignment.center,
                           width: 230,
@@ -97,7 +96,7 @@ class _InviteFriendState extends State<InviteFriend> {
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),
                               borderRadius: BorderRadius.circular(8)),
-                          child: Text(
+                          child: const Text(
                             'KD08CS2006',
                             style: TextStyle(fontSize: 30),
                           ),

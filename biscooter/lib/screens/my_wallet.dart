@@ -1,9 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/shadow_card.dart';
 import "package:flutter/material.dart";
 import 'package:biscooter/widget/white_card.dart';
+import 'package:http/http.dart';
 
 class MyWallet extends StatefulWidget {
   const MyWallet({super.key});
@@ -19,6 +23,7 @@ class _MyWalletState extends State<MyWallet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MyDrawer(),
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -48,6 +53,7 @@ class _MyWalletState extends State<MyWallet> {
 
         child: Stack(
           children: [
+            // this column contains the white cared which contains the transaction history, and the bottom button
             Column(
               children: [
                 SizedBox(
@@ -62,6 +68,8 @@ class _MyWalletState extends State<MyWallet> {
                 ),
               ],
             ),
+
+            // this is the floating balance card
             BalanceCard(
               balanceCardWidth: _balanceCardWidth,
               balanceCardHeight: _balanceCardHeight,
@@ -70,7 +78,10 @@ class _MyWalletState extends State<MyWallet> {
                 children: [
                   Text(
                     '\$${_balance.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: Colors.white),
                   ),
                   Text(
                     'Balance',
@@ -141,9 +152,15 @@ class Transaction {
 
   Transaction(
       {required this.date, required this.amount, required this.cardOtp});
+
+  static Transaction fromJson(json) => Transaction(
+        date: json['date'],
+        amount: json['amount'],
+        cardOtp: json['cardOtp'],
+      );
 }
 
-class WhiteCardContent extends StatelessWidget {
+class WhiteCardContent extends StatefulWidget {
   final double spareHeight;
   const WhiteCardContent({
     super.key,
@@ -184,11 +201,39 @@ class WhiteCardContent extends StatelessWidget {
   ];
 
   @override
+  State<WhiteCardContent> createState() => _WhiteCardContentState();
+}
+
+class _WhiteCardContentState extends State<WhiteCardContent> {
+  late Future<List<Transaction>?> transactionHistory;
+
+  @override
+  void initState() {
+    super.initState();
+    transactionHistory = getTransactionHistory();
+  }
+
+  Future<List<Transaction>?> getTransactionHistory() async {
+    try {
+      final response =
+          await get(Uri.parse("http://localhost:3000/transaction"));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        List<dynamic> responseData = jsonDecode(response.body);
+        return responseData.map<Transaction>(Transaction.fromJson).toList();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
-          height: spareHeight / 1.5,
+          height: widget.spareHeight / 1.5,
         ),
         Text(
           'Transaction History',
@@ -197,21 +242,42 @@ class WhiteCardContent extends StatelessWidget {
         const SizedBox(height: 8),
         SizedBox(
           height: 320,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: transactionHistory.length,
-            itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-                '\$${transactionHistory[index].amount.toStringAsFixed(2)}'),
-            titleTextStyle: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
-              fontSize: 20,
-            ),
-            subtitle: Text('card otp ${transactionHistory[index].cardOtp}'),
-            subtitleTextStyle: const TextStyle(fontSize: 12, color: Colors.grey),
-            trailing: Text(transactionHistory[index].date, style: const TextStyle(fontSize: 16),),
-          );
+          child: FutureBuilder<List<Transaction>?>(
+            future: transactionHistory,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              } else {
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text('Error occurred while fetching the data'),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                          '\$${snapshot.data![index].amount.toStringAsFixed(2)}'),
+                      titleTextStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 20,
+                      ),
+                      subtitle: Text(
+                          'card otp ${snapshot.data![index].cardOtp}'),
+                      subtitleTextStyle:
+                          const TextStyle(fontSize: 12, color: Colors.grey),
+                      trailing: Text(
+                        snapshot.data![index].date,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    );
+                  },
+                );
+              }
             },
           ),
         ),
@@ -223,7 +289,9 @@ class WhiteCardContent extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/recharge');
+                },
                 style: ButtonStyle(
                   fixedSize: const MaterialStatePropertyAll(
                     Size(300, 60),

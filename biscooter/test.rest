@@ -1,0 +1,22 @@
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "FName": "ahmed",
+  "MName": "A",
+  "LName": "Aladdin",
+  "Email": "ahmed@gmail.com",
+  "Username":  "ahmed_aladdin",
+  "Telephone": "01100685312",
+  "Password":  "ahmedishere",
+  "ConfirmPassword": "ahmedishere"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "mariam@gmail.com",
+  "password":  "mariam123"
+}
