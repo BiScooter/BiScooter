@@ -1,13 +1,14 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
 // TODO: remove the commenting when the server is ready
-// import 'dart:convert';
-// import 'package:biscooter/services/user.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:biscooter/services/user.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -18,7 +19,7 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   final _formController = GlobalKey<FormState>();
-  final _username = TextEditingController();
+  final _email = TextEditingController();
   final _password = TextEditingController();
 
   void login() async {
@@ -27,62 +28,77 @@ class _LogInState extends State<LogIn> {
     // if the form is valid go and send the login request
     // TODO: activate this when the server is ready
     if (_formController.currentState!.validate()) {
-      // try {
-      //   // send a login request to the server
-      //   Response response = await post(
-      //     Uri.parse("http://localhost:3000/login"),
-      //     body: {
-      //       "username": _username.text,
-      //       "password": _password.text,
-      //     },
-      //   );
+      try {
+        // send a login request to the server
+        Response response = await post(
+          Uri.parse("${const Connection().baseUrl}/auth/login"),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(<String, String>{
+            "email": _email.text,
+            "password": _password.text,
+          }),
+        );
 
-      //   // check if the login was successful
-      //   if (response.statusCode == 200) {
-      //     // Decode the response body
-      //     Map<String, dynamic> responseData = jsonDecode(response.body);
-      //     // set the user service
-      //     User.setUserService(
-      //       responseData['id'],
-      //       responseData['firstName'],
-      //       responseData['middleName'],
-      //       responseData['lastName'],
-      //       responseData['invitationCode'],
-      //       responseData['profileImage'],
-      //       responseData['balance'],
-      //       responseData['ridingTime'],
-      //     );
-      //     // set the login status to true
-      //     User.setLoggedIn();
-      //     // go to the profile page
-      //     if (mounted) {
-      //       Navigator.of(context).pushNamedAndRemoveUntil(
-      //           "/profile", (Route<dynamic> route) => false);
-      //     }
-      //   } // if the login was not successful
-      //   else {
-      //     Fluttertoast.showToast(
-      //       msg: "Something went wrong",
-      //       toastLength: Toast.LENGTH_SHORT,
-      //       gravity: ToastGravity.BOTTOM,
-      //       backgroundColor: Colors.red,
-      //       textColor: Colors.white,
-      //       fontSize: 16,
-      //     );
-      //   }
-      // } catch (e) {
-      //   debugPrint(e.toString());
-      // }
+        // check if the login was successful
+        if (response.statusCode == 200) {
+          // Decode the response body
+          final responseData = jsonDecode(response.body);
+          Map<String, dynamic> userInfo = responseData['user_info'];
+          // set the user service
+          User.setUserService(
+            int.parse(userInfo['id']),
+            userInfo['fname'].toString(),
+            userInfo['mname'].toString(),
+            userInfo['lname'].toString(),
+            userInfo['invitation_code'].toString(),
+            userInfo['mname'].toString(),
+            double.parse(userInfo['wallet'].toString().substring(1)),
+            10,
+          );
+          // set the login status to true
+          User.setLoggedIn();
+          // go to the profile page
+          /// TODO: uncomment this when the check is correct
+          if (mounted) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                "/profile", (Route<dynamic> route) => false);
+          }
+        } // invalid email or password
+        else if (response.statusCode == 401) {
+          Fluttertoast.showToast(
+            msg: "Invalid Email or password",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
+        } // if the login was not successful
+        else {
+          Fluttertoast.showToast(
+            msg: "Something went wrong",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+      }
 
       // TODO: remove this line when the server is ready
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
+      // Navigator.of(context)
+      //     .pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
     }
   }
 
   @override
   void dispose() {
-    _username.dispose();
+    _email.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -150,9 +166,9 @@ class _LogInState extends State<LogIn> {
                             // the username and telephone next ot each other
                             Input(
                               width: MediaQuery.of(context).size.width - 30,
-                              label: 'Username',
-                              controller: _username,
-                              password: _username,
+                              label: 'Email',
+                              controller: _email,
+                              password: _email,
                             ),
 
                             Input(

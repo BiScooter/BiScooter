@@ -1,9 +1,7 @@
-// ignore_for_file: avoid_print
 
 import 'dart:convert';
 
 import 'package:biscooter/services/user.dart';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import '../widget/drawer.dart';
@@ -184,6 +182,8 @@ class _ProfileState extends State<Profile> {
                               duration: const Duration(seconds: 1),
                               curve: Curves.easeInOut);
                           setState(() {
+                            debugPrint(
+                                "Profile page, invCode: ${User().getInvitationCode}");
                             index = (index + 1) % 6;
                           });
                         },
