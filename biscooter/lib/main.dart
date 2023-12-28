@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         "/profile": (context) => const Profile(),
         "/station": (context) => const Station(),
         "/my_wallet": (context) => const MyWallet(),
-        "/recharge": (context) => const Recharge(),
+        // "/recharge": (context) => const Recharge(),
         "/invite_friend": (context) => const InviteFriend(),
         "/rental_history": (context) => const RentalHistory(),
         "/complaint_respond": (context) => const CompRespond(),
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           return Verification(email: args['email']);
         },
       },
-      initialRoute: "/my_biscooter",
+      initialRoute: "/my_wallet",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
