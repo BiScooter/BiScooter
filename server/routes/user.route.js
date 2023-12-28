@@ -6,7 +6,7 @@ const userRouter = express.Router();
 userRouter.get('/Home',userController.GetHomeScreenInfos);
 userRouter.get('/ViewOfferedBikes/:client_id',userController.ViewOfferedBikes);
 userRouter.get('/ClientViews1/:client_id',userController.ReviewOrderHistory);
-userRouter.get('/ClientViews2/:client_id',userController.ViewTransactionHistory);
+userRouter.get('/transactionHistory/:client_id',userController.ViewTransactionHistory);
 userRouter.get('/ClientViews3/:client_id',userController.TrackingStats);
 userRouter.post('/ClientActions1/:client_id',userController.Reserving);
 userRouter.post('/ClientActions2',userController.Canceling);
