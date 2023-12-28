@@ -4,7 +4,7 @@ import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/comp_card.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; 
 import 'package:http/http.dart';
 
 class CompRespond extends StatefulWidget {
