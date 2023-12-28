@@ -42,7 +42,6 @@ class _LogInState extends State<LogIn> {
         );
 
         // check if the login was successful
-        debugPrint(response.body);
         if (response.statusCode == 200) {
           // Decode the response body
           final responseData = jsonDecode(response.body);
