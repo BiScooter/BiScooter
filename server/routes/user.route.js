@@ -17,5 +17,6 @@ userRouter.post('/ClientActions3/OfferScooter/:client_id',userController.OfferHi
 userRouter.post('/ClientActions5/:client_id',userController.GiveFeedback);
 userRouter.post('/ClientActions6/:client_id',userController.GiveComplaint);
 userRouter.post('/Transactions',userController.MakeTransaction);
+userRouter.get('/ComplaintResponse/:client_id',userController.ComplaintResponse);
 
 module.exports=userRouter;
