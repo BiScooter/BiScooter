@@ -1,3 +1,4 @@
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,16 @@ class InviteFriend extends StatefulWidget {
 }
 
 class _InviteFriendState extends State<InviteFriend> {
+
+  String? invitecode;
+ User user = User();
+
   @override
+  void initState() {
+    invitecode = user.getInvitationCode;
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
@@ -57,7 +67,8 @@ class _InviteFriendState extends State<InviteFriend> {
           child: Card(
             elevation: 30,
             shadowColor: Colors.black,
-            color: const Color.fromARGB(255, 255, 238, 213) ,         shape: RoundedRectangleBorder(
+            color: const Color.fromARGB(255, 255, 238, 213),
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
             ),
             child: SizedBox(
@@ -88,17 +99,19 @@ class _InviteFriendState extends State<InviteFriend> {
                               fontWeight: FontWeight.w100,
                               color: Colors.grey[800]),
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Container(
                           alignment: Alignment.center,
                           width: 230,
                           height: 67,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
+                              border: Border.all(color: Colors.black),
                               borderRadius: BorderRadius.circular(8)),
-                          child: const Text(
-                            'KD08CS2006',
-                            style: TextStyle(fontSize: 30),
+                          child:  Text(
+                            invitecode!,
+                            style: const TextStyle(fontSize: 30),
                           ),
                         ),
                       ]),

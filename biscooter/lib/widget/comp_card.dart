@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CompCard extends StatefulWidget {
-  const CompCard({super.key});
+  final String description;
+  final String employeename;
+  final DateTime date;
+  const CompCard(
+      {super.key,
+      required this.description,
+      required this.employeename,
+      required this.date});
 
   @override
   State<CompCard> createState() => _CompCardState();
@@ -17,28 +24,33 @@ class _CompCardState extends State<CompCard> {
       color: Colors.white,
       child: Container(
         width: 310,
-
         padding: EdgeInsets.all(10),
         child: Column(
-
-         children: [
-                Row(
-         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         children: [
-           Icon(Icons.mail),
-           Text('20 Agu 2019',style: TextStyle(fontFamily: 'PlayfairDisplay',fontSize: 16,color: Colors.grey),)
-         ],
-                ),
-                Divider(),
-                Container(
-         width: double.maxFinite,
-                 child:
-                Text('Fusce vehicula dolor arcu, sit ame blandit dolor mollis nec. Done viverra Fusce vehicula dolor arcu, sit ame blandit dolor mollis nec. Done viverra',style: TextStyle(fontFamily: 'PlayfairDisplay',fontSize: 16,)),
-
-               ),
-
-         ],),
-
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+               const Icon(Icons.mail),
+                Text(
+                  widget.date.toString(),
+                  style: TextStyle(
+                      fontFamily: 'PlayfairDisplay',
+                      fontSize: 16,
+                      color: Colors.grey),
+                )
+              ],
+            ),
+            Divider(),
+            Container(
+              width: double.maxFinite,
+              child: Text('${widget.description} ..... by ${widget.employeename}',
+                  style: const TextStyle(
+                    fontFamily: 'PlayfairDisplay',
+                    fontSize: 16,
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }

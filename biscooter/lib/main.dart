@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           return Verification(email: args['email']);
         },
       },
-      initialRoute: "/",
+      initialRoute: "/my_biscooter",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

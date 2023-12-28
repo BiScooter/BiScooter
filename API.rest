@@ -1,0 +1,53 @@
+GET http://localhost:8080/users/ClientViews3/1
+#  Content-Type: "application/json"
+
+#Feedback
+POST http://localhost:8080/users/ClientActions5/1  HTTP/1.1
+Content-Type: application/json
+
+{
+        "RATING":"5",
+        "DATE":"2005-10-4",
+        "DESCRIPTION":"Poor quality",
+        "BISCOOT_ID":"1"
+}
+
+#Complaint
+POST http://localhost:8080/users/ClientActions6/1 HTTP/1.1
+Content-Type: application/json
+
+{
+        "DATE":"2005-10-4",
+        "DESCRIPTION":"Poor quality AND EVEN worse service",
+        "STATUS":"PENDING",
+        "TYPE":"ON SCOOTER"
+}
+
+
+
+
+#Transaction
+POST http://localhost:8080/users/Transactions  HTTP/1.1
+Content-Type: application/json
+
+{
+        "CARDOTP":"92223",
+        "STATUS":"Deposit",
+        "AMOUNT":"60",
+        "DATE":"2005-9-10"
+}
+
+POST http://localhost:8080/users/ClientActions1/1  HTTP/1.1
+Content-Type: application/json
+
+{
+        "COST":"20",
+        "STATUS":"Deposit",
+        "DATE_OF_RENTAL":"2023-5-12",
+        "DURATION":"50",
+        "KICKOFF_STATION_ID":"1",
+        "DISTINATION_STATION_ID":"2",
+        "BISCOOT_ID":"1"
+}
+
+
