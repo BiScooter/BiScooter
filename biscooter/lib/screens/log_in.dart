@@ -42,10 +42,11 @@ class _LogInState extends State<LogIn> {
         );
 
         // check if the login was successful
+        debugPrint(response.body);
         if (response.statusCode == 200) {
           // Decode the response body
           final responseData = jsonDecode(response.body);
-          Map<String, dynamic> userInfo = responseData['user_info'][0];
+          Map<String, dynamic> userInfo = responseData['user_info'];
           // set the user service
           User.setUserService(
             int.parse(userInfo['id']),

@@ -1,9 +1,7 @@
-import 'dart:convert';
 
 import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class PreProfile extends StatefulWidget {
   const PreProfile({super.key});
