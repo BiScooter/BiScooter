@@ -4,15 +4,15 @@ const adminController =require('../controllers/admin.controller.js');
 
 const adminRouter = express.Router();
 
-// adminRouter.post('/signup', authController.signup);
-// adminRouter.post('/login', authController.login);
-// adminRouter.get('/ViewAll',adminController.ViewAll)
+adminRouter.post('/signup', adminController.signup);
+adminRouter.post('/login', adminController.login);
+//adminRouter.get('/ViewAll',adminController.ViewAll)
 adminRouter.post('/AddEmployee',adminController.AddEmp)
-// adminRouter.get('/DropEmployee',adminController.DropEmp)
-// adminRouter.get('/AddClient',adminController.Addclient)
-// adminRouter.get('/DropClient',adminController.DropClient)
-// adminRouter.get('/AddAdmin',adminController.AddAdmin)
-// adminRouter.get('/DropAdmin',adminController.DropAdmin)
+adminRouter.post('/DropEmployee',adminController.DropEmp)
+adminRouter.post('/AddClient',adminController.AddClient)
+adminRouter.post('/DropClient',adminController.DropClient)
+adminRouter.post('/AddAdmin',adminController.AddAdmin)
+adminRouter.post('/DropAdmin',adminController.DropAdmin)
 adminRouter.post('/AddSupplier',adminController.AddSup)
-// adminRouter.get('/DropSupplier',adminController.DropSupplier)
+adminRouter.post('/DropSupplier',adminController.DropSupplier)
 module.exports=adminRouter;

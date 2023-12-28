@@ -35,13 +35,13 @@ Content-Type: application/json
 ###
 
 #Transaction
-POST http://localhost:8080/users/Transactions  HTTP/1.1
+POST http://localhost:8080/users/Transactions/8  HTTP/1.1
 Content-Type: application/json
 
 {
-        "CARDOTP":"928223",
+        "CARDOTP":"275225",
         "STATUS":"Deposit",
-        "AMOUNT":"60",
+        "AMOUNT":"20",
         "DATE":"2005-9-10"
 }
 ###
@@ -122,6 +122,7 @@ GET http://localhost:8080/admin/ViewAll  HTTP/1.1
 
 
 ###
+//ADD EMPLOYEE
 POST http://localhost:8080/admin/AddEmployee  HTTP/1.1
 Content-Type: application/json
 
@@ -129,10 +130,10 @@ Content-Type: application/json
         "NATIONAL_ID":"1265"	,														
 	"USERNAME":"Peter",		
 	"TELEPHONE":"0125664"	,
-	"EMAIL"	:"puyfl.com",		
+	"EMAIL"	:"puyfl@gmail.com",		
 	"PASSWORD":"ppppppp"	,	
 	"SALARY":"9787"	,		
-	"BIRTHDATE":"2005-8-8"		,
+	"BIRTHDATE":"2005-8-8",
 	"FNAME"	:"Peter",		
 	"MNAME":"kjhh",			
 	"LNAME"	:"uhuuh",		
@@ -141,7 +142,7 @@ Content-Type: application/json
 
 }
 ###
-
+//ADD SUPPLIER
 POST http://localhost:8080/admin/AddSupplier  HTTP/1.1
 Content-Type: application/json
 
@@ -151,5 +152,125 @@ Content-Type: application/json
 	"FNAME":"pyuyu",			
 	"MNAME"	:"kjhh",		
 	"LNAME"	:"jhuhu"		
+}
+###
+//ADD ADMIN
+
+POST http://localhost:8080/admin/AddAdmin  HTTP/1.1
+Content-Type: application/json
+
+{
+        "NATIONAL_ID":"125"	,														
+	"USERNAME":"Peter",		
+	"TELEPHONE":"0125664"	,
+	"EMAIL"	:"puyfl@hotmail.com",		
+	"PASSWORD":"ppppppp"	,	
+	"SALARY":"9787"	,		
+	"BIRTHDATE":"2005-8-8",
+	"FNAME"	:"Peter",		
+	"MNAME":"kjhh",			
+	"LNAME"	:"uhuuh",		
+	"STATION_ID":"1"
 
 }
+
+###
+//DROP ADMIN
+POST http://localhost:8080/admin/DropAdmin  HTTP/1.1
+Content-Type: application/json
+
+{
+     "ADMIN_ID":"125"
+}
+###
+//DROP ADMIN
+POST http://localhost:8080/admin/DropAdmin  HTTP/1.1
+Content-Type: application/json
+
+{
+     "ADMIN_ID":"125"
+}
+###
+//DROP EMPLOYEE
+POST http://localhost:8080/admin/DropEmployee  HTTP/1.1
+Content-Type: application/json
+
+{
+     "NATIONAL_ID":"125"
+}
+###
+//DROP ADMIN
+POST http://localhost:8080/admin/DropClient  HTTP/1.1
+Content-Type: application/json
+
+{
+     "ID":"1"
+}
+###
+//DROP SUPPLIER
+POST http://localhost:8080/admin/DropSupplier  HTTP/1.1
+Content-Type: application/json
+
+{
+     "ID":"33"
+}
+
+###
+//ADMIN SIGN UP
+POST http://localhost:8080/admin/signup  HTTP/1.1
+Content-Type: application/json
+
+{
+        "NATIONAL_ID":"125"	,														
+	"USERNAME":"Peter",		
+	"TELEPHONE":"0125664"	,
+	"EMAIL"	:"puyfl@hotmail.com",		
+	"PASSWORD":"ppppppp"	,	
+	"SALARY":"9787"	,		
+	"BIRTHDATE":"2005-8-8",
+	"FNAME"	:"Peter",		
+	"MNAME":"kjhh",			
+	"LNAME"	:"uhuuh",		
+	"STATION_ID":"1"
+
+}
+###
+//ADMIN LOG IN
+POST http://localhost:8080/admin/login  HTTP/1.1
+Content-Type: application/json
+
+{
+     
+	"email"	:"puyfl@hotmail.com",		
+	"password":"ppppppp"	
+}
+
+
+
+###
+//ADD CLIENT
+POST http://localhost:8080/admin/AddClient  HTTP/1.1
+Content-Type: application/json
+
+{
+   "FName":"Peter",
+   "MName":"Safwat",
+   "LName":"Sahyon",
+   "Email":"peterysKafwi9bk@gmail.com",
+   "Username":"PeteyK86199",
+   "Telephone":"0100677697129",
+   "Password":"pppppppp"
+}
+
+
+
+###
+//LOG IN CLIENT
+POST http://localhost:8080/auth/login  HTTP/1.1
+Content-Type: application/json
+
+{
+   "email":"peterLsafwathbk@gmail.com", 
+   "password":"pppppppp"
+}
+
