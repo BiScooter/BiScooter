@@ -6,7 +6,7 @@ const userRouter = express.Router();
 userRouter.get('/Home',userController.GetHomeScreenInfos);
 userRouter.get('/ViewOfferedBikes/:client_id',userController.ViewOfferedBikes);
 userRouter.get('/ClientViews1/:client_id',userController.ReviewOrderHistory);
-userRouter.get('/ClientViews2/:client_id',userController.ViewTransactionHistory);
+userRouter.get('/transactionsHistory/:client_id',userController.ViewTransactionHistory);
 userRouter.get('/ClientViews3/:client_id',userController.TrackingStats);
 userRouter.post('/ClientActions1/:client_id',userController.Reserving);
 userRouter.post('/ClientActions2',userController.Canceling);
@@ -16,7 +16,11 @@ userRouter.post('/ClientActions3/OfferScooter/:client_id',userController.OfferHi
  userRouter.post('/ClientActions4/RemoveScooter/:client_id',userController.RemoveHisScooter);
 userRouter.post('/ClientActions5/:client_id',userController.GiveFeedback);
 userRouter.post('/ClientActions6/:client_id',userController.GiveComplaint);
+<<<<<<< HEAD
 userRouter.post('/Transactions',userController.MakeTransaction);
 userRouter.get('/ComplaintResponse/:client_id',userController.ComplaintResponse);
+=======
+userRouter.post('/Transactions/:client_id',userController.MakeTransaction);
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
 
 module.exports=userRouter;

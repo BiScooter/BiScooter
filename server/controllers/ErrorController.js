@@ -5,15 +5,11 @@ const handleFieldsAreEmpty = err => {
   return new AppError(message, 400);
 };
 
-const handleDupicateEmail = err => {
+const handleDuplicateEmail = err => {
   const message = "This email is already exists";
   return new AppError(message, 409);
 };
-const handleDuplicateEmail = err => {
-    const message = "This email is already exists";
-    return new AppError(message, 409);
-  };
-  
+
   const handleDuplicateUsername = err => {
     const message = "Username already taken";
     return new AppError(message, 409);
@@ -51,7 +47,10 @@ const handleEmailInvalid = err => {
   const message = "Email is invalid";
   return new AppError(message, 400);
 };
-
+const handleDuplicateAdmin= err => {
+  const message = "Already admin";
+  return new AppError(message, 400);
+};
 const handleNid = err => {
   const message = "NId is required for sellers";
   return new AppError(message, 400);
@@ -68,10 +67,6 @@ const handleNidInvalid = err => {
 
 const handleNoEmailOrPass = err => {
   const message = "please provide email & password";
-  return new AppError(message, 400);
-};
-const noDelete = err => {
-  const message = "Rental does not exist";
   return new AppError(message, 400);
 };
 const handleWrongEmailOrPass = err => {
@@ -96,6 +91,7 @@ const sendErrorProd = (err, res) => {
     });
   }
   else {
+
     console.error('error is :::>', err);
     res.status(500).json({
       status: 'error',
@@ -109,25 +105,25 @@ module.exports = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
     let error = err;
-    console.log(error);
     if (error.message == 'Some required Fields are empty') error = handleFieldsAreEmpty(error);
-    if (error.message == 'duplicate key value violates unique constraint "client_email_key"') error = handleDupicateEmail(error);
+    if (error.message == 'duplicate key value violates unique constraint "client_email_key"') error = handleDuplicateEmail(error);
     if (error.message == 'duplicate key value violates unique constraint "client_card_id_key"') error = handleDuplicateCardID(error);
     if (error.message == 'duplicate key value violates unique constraint "client_card_id_key"') error = handleDuplicateCardID(error); 
     if (error.message == 'duplicate key value violates unique constraint "client_username_key"') error = handleDuplicateUsername(error);
     if (error.message == 'duplicate key value violates unique constraint "client_invitation_code_key"') error = handleDuplicateInvCode(error);
     if (error.message == 'insert or update on table "rent_biscoot" violates foreign key constraint "rent_biscoot_biscoot_id_fkey"') error = handlebiscootInRental(error);
     if (error.message == 'duplicate key value violates unique constraint "biscoot_image_key"') error = handleDupImg(error);
-    if (error.message.slice(38) ==  `invalid input syntax for type integer:"`) error = CheckInt(error);
     if (error.message == 'insert or update on table "feedback_biscoot" violates foreign key constraint "feedback_biscoot_biscoot_id_fkey"') error = handleBiscootKey(error);
     if (error.message == 'duplicate key value violates unique constraint "client_telephone_key"') error = handleDuplicateTelephone(error);    
-    if (error.message == 'DELETE 0"') error = noDelete(error);  
+    if (error.message == 'duplicate key value violates unique constraint "supplier_email_key"') error = handleDuplicateEmail(error); 
     if (error.message == 'Phone number must only contain numerical digits"') error = handlePhoneInvalid(error);
+    if (error.message == 'duplicate key value violates unique constraint "employee_username_key"') error = handleDuplicateUsername(error);
+    if (error.message == 'duplicate key value violates unique constraint "admin_pkey"')error = handleDuplicateAdmin(error);
     if (error.message == 'Email is invalid"') error = handleEmailInvalid(error);
     if (error.message == 'role is invalid"') error = handleRoleInvalid(error);
     if (error.message == 'NId is required for sellers"') error = handleNid(error);
     if (error.message == 'NId must only contain numerical digits"') error = handleNidInvalid(error);
     if (error.message == 'please provide email & password"') error = handleNoEmailOrPass(error);
     if (error.message == 'incorrect email or password"') error = handleWrongEmailOrPass(error);
-    sendErrorProd(error, res);
+    sendErrorProd(error,res);
   }

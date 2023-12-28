@@ -18,6 +18,7 @@ exports.GetHomeScreenInfos = catchAsync(async (req, res, next) => {
   // console.log(ScooterCountResult);
   BikeCountResult.rows[0].scooters_numbers =
     ScooterCountResult.rows[0]["scooters_numbers"];
+<<<<<<< HEAD
 
   res.status(200).send({
     Message: "Stations'info is retrieved",
@@ -28,12 +29,27 @@ exports.GetHomeScreenInfos = catchAsync(async (req, res, next) => {
 exports.ReviewOrderHistory = catchAsync(async (req, res, next) => {
   const { client_id } = req.params;
 
+=======
+
+  res
+    .status(200)
+    .send({
+      Message: "Stations'info is retrieved",
+      Stations_Bikesinfo: BikeCountResult.rows[0],
+    });
+});
+
+exports.ReviewOrderHistory = catchAsync(async (req, res, next) => {
+  const { client_id } = req.params;
+
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
   // const RentalHistory = await db.query(`SELECT * FROM RENTALS,RENT_BISCOOT
   //  WHERE CLIENT_ID='${client_id}' AND RENTAL_ID=RENTALS.ID;`);
   const RentalHistory =
     await db.query(`SELECT * FROM RENT_BISCOOT NATURAL JOIN RENTALS AS RENTALS(RENTAL_ID,COST,STATUS,DATE_OF_RENTAL,DURATION,KICKOFF_STATION_ID,DISTINATION_STATION_ID)
      WHERE CLIENT_ID='${client_id}';`);
 
+<<<<<<< HEAD
   res.status(200).send({
     Message: `Rental for user with id ='${client_id}'`,
     Rentalsinfo: RentalHistory.rows[0],
@@ -114,6 +130,120 @@ exports.MakeTransaction = catchAsync(async (req, res, next) => {
   res.status(200).send({ Message: `Transaction Done!` });
 });
 
+=======
+  res
+    .status(200)
+    .send({
+      Message: `Rental for user with id ='${client_id}'`,
+      Rentalsinfo: RentalHistory.rows[0],
+    });
+});
+
+exports.ViewTransactionHistory = catchAsync(async (req, res, next) => {
+  const { client_id } = req.params;
+  const ViewTransaction = await db.query(
+    `SELECT * FROM TRANS_ACTION WHERE CLIENT_ID  = '${client_id}'`
+  );
+  res
+    .status(200)
+    .send({
+      Message: `All Transactions for user with id ='${client_id}'`,
+      Transactioninfo: ViewTransaction.rows,
+    });
+});
+
+exports.TrackingStats = catchAsync(async (req, res, next) => {
+  const { client_id } = req.params;
+  const OverAll = await db.query(
+    `SELECT Overall_Time FROM CLIENT WHERE ID= '${client_id}'`
+  );
+  res
+    .status(200)
+    .send({
+      Message: `All overall time for user with id ='${client_id}'`,
+      Statsinfo: OverAll.rows[0],
+    });
+});
+
+exports.GiveFeedback = catchAsync(async (req, res, next) => {
+  const { RATING, DATE, DESCRIPTION, BISCOOT_ID } = req.body;
+
+  if (!RATING || !DATE || !DESCRIPTION || !BISCOOT_ID) {
+    return next(new ErrorHandling("Fill All Fields to give feedback!", 409));
+  }
+  const { client_id } = req.params;
+  const feedback_id = await db.query(
+    `INSERT INTO FEEDBACK VALUES(DEFAULT,'${RATING}','${DATE}','${DESCRIPTION}')RETURNING ID;`
+  );
+  await db.query(
+    `INSERT INTO FEEDBACK_BISCOOT VALUES('${feedback_id.rows[0].id}','${client_id}','${BISCOOT_ID}')`
+  );
+
+  res
+    .status(200)
+    .send({
+      Message: `Feedback has been given on bike with id '${BISCOOT_ID}'`,
+    });
+});
+
+exports.GiveComplaint = catchAsync(async (req, res, next) => {
+  const { DATE, DESCRIPTION, TYPE } = req.body;
+
+  if (!DATE || !DESCRIPTION || !TYPE) {
+    return next(new ErrorHandling("Fill All Fields to give complaint!", 409));
+  }
+  const { client_id } = req.params;
+  await db.query(
+    `INSERT INTO COMPLAINT VALUES(DEFAULT,'${DATE}','${DESCRIPTION}','PENDING','${TYPE}','${client_id}');`
+  );
+
+  res.status(200).send({ Message: `Complaint filed successfully!!` });
+});
+
+exports.MakeTransaction = catchAsync(async (req, res, next) => {
+  const { CARDOTP, STATUS, AMOUNT, DATE } = req.body;
+
+  if (!CARDOTP || !STATUS || !AMOUNT || !DATE) {
+    return next(new ErrorHandling("Fill All Fields to make transaction!", 409));
+  }
+  if (!User.phoneCheck(CARDOTP) || !User.phoneCheck(AMOUNT)) {
+    return next(new ErrorHandling("Enter numbers only!!!!", 400));
+  }
+  const { client_id } = req.params;
+
+  const ret_wallet = await db.query(
+    `SELECT WALLET FROM CLIENT WHERE ID='${client_id}';`
+  );
+  let moneyString = ret_wallet.rows[0].wallet;
+  let numericValue = parseInt(moneyString.replace("$", ""), 10);
+  let numericAmount = parseInt(AMOUNT, 10);
+  if (STATUS == "Withdraw") {
+    if (numericValue < numericAmount) {
+      res.status(400).send({ Message: `Not enough money!` });
+    } else {
+      let diff = numericValue - numericAmount;
+      await db.query(
+        `UPDATE CLIENT SET WALLET = '${diff}' WHERE ID='${client_id}'; `
+      );
+      await db.query(
+        `INSERT INTO TRANS_ACTION VALUES(DEFAULT,'${CARDOTP}','${STATUS}','${AMOUNT}','${DATE}','${client_id}');`
+      );
+    }
+  }
+  else if(STATUS == "Deposit")
+  {
+    let sum = numericValue + numericAmount;
+      await db.query(
+        `UPDATE CLIENT SET WALLET = '${sum}' WHERE ID='${client_id}'; `
+      );
+      await db.query(
+        `INSERT INTO TRANS_ACTION VALUES(DEFAULT,'${CARDOTP}','${STATUS}','${AMOUNT}','${DATE}','${client_id}');`);
+  }
+
+  res.status(200).send({ Message: `Transaction Done!` });
+});
+
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
 exports.Reserving = catchAsync(async (req, res, next) => {
   const {
     COST,
@@ -154,9 +284,17 @@ exports.Reserving = catchAsync(async (req, res, next) => {
     `INSERT INTO RENT_BISCOOT VALUES ('${rent_id.rows[0].id}',${client_id},${BISCOOT_ID});`
   );
 
+<<<<<<< HEAD
   res.status(200).send({
     Message: `SUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`,
   });
+=======
+  res
+    .status(200)
+    .send({
+      Message: `SUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`,
+    });
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
 });
 
 exports.Canceling = catchAsync(async (req, res, next) => {
@@ -214,9 +352,17 @@ exports.OfferHisBike = catchAsync(async (req, res, next) => {
   await db.query(
     `INSERT INTO BIKE VALUES ('${TYPE_OF_BIKE}','${GEARS_NUM}','${BRAND}','${WEIGHT}','${offered_biscoot_id.rows[0].id}')RETURNING BIKE_ID;`
   );
+<<<<<<< HEAD
   res.status(200).send({
     Message: `Your bike has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
   });
+=======
+  res
+    .status(200)
+    .send({
+      Message: `Your bike has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
+    });
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
 });
 
 exports.OfferHisScooter = catchAsync(async (req, res, next) => {
@@ -253,9 +399,17 @@ exports.OfferHisScooter = catchAsync(async (req, res, next) => {
   await db.query(
     `INSERT INTO Scooter VALUES ('${BATTERY_CAPACITY}','${RANGE}','${MAX_SPEED}','${offered_biscoot_id.rows[0].id}')RETURNING SCOOTER_ID;`
   );
+<<<<<<< HEAD
   res.status(200).send({
     Message: `Your scooter has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
   });
+=======
+  res
+    .status(200)
+    .send({
+      Message: `Your scooter has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
+    });
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
 });
 
 exports.RemoveHisScooter = catchAsync(async (req, res, next) => {
@@ -301,6 +455,7 @@ exports.ViewOfferedBikes = catchAsync(async (req, res, next) => {
   const offeredScooters = await db.query(`SELECT * FROM SCOOTER,BISCOOT
    WHERE BISCOOT.OWNER_ID='${client_id}' AND SCOOTER.SCOOTER_ID=BISCOOT.ID;`);
   console.log(offeredBikes);
+<<<<<<< HEAD
   res.status(200).send({
     Message: `Offered bikes and Scooters`,
     Bikes: offeredBikes.rows[0],
@@ -321,4 +476,13 @@ exports.ComplaintResponse = catchAsync(async (req, res, next) => {
     Message: `Complaint with id '${ID}' has been responded!`,
     Retrieved_Response: Response.rows[0],
   });
+=======
+  res
+    .status(200)
+    .send({
+      Message: `Offered bikes and Scooters`,
+      Bikes: offeredBikes.rows[0],
+      Scooters: offeredScooters.rows[0],
+    });
+>>>>>>> 8f8a6d96ebd3869d2beda6def0c8c6396199dd69
 });
