@@ -260,7 +260,7 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
                 final data = snapshot.data;
                 if (data == null || data.isEmpty) {
                   return const Center(
-                    child: Text('bla'),
+                    child: Text(''),
                   );
                 } else {
                   final length = snapshot.data!.length;
