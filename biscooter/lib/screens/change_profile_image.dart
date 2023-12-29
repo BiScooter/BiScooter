@@ -43,49 +43,48 @@ class _ChangeProfileImageState extends State<ChangeProfileImage> {
         textColor: Colors.white,
         fontSize: 16,
       );
-      return;
-    }
-
-    // if the form is valid go and send the change request
-    if (_formController.currentState!.validate()) {
-      try {
-        // send a change request to the server
-        Response response = await post(
-          Uri.parse(
-              "${const Connection().baseUrl}/users/changeProfileImage/${User().getId}"),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode(<String, String>{
-            "img_url": _url.text,
-          }),
-        );
-
-        // check if the change was successful
-        if (response.statusCode == 200) {
-          // Decode the response body
-          User().setProfileImage = _url.text;
-          widget.refresh();
-          Fluttertoast.showToast(
-            msg: "Changed Successfully",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16,
+    } else {
+      // if the form is valid go and send the change request
+      if (_formController.currentState!.validate()) {
+        try {
+          // send a change request to the server
+          Response response = await post(
+            Uri.parse(
+                "${const Connection().baseUrl}/users/changeProfileImage/${User().getId}"),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(<String, String>{
+              "img_url": _url.text,
+            }),
           );
-        } else {
-          Fluttertoast.showToast(
-            msg: "Something went wrong",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16,
-          );
+
+          // check if the change was successful
+          if (response.statusCode == 200) {
+            // Decode the response body
+            User().setProfileImage = _url.text;
+            widget.refresh();
+            Fluttertoast.showToast(
+              msg: "Changed Successfully",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+          } else {
+            Fluttertoast.showToast(
+              msg: "Something went wrong",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+          }
+        } catch (e) {
+          debugPrint(e.toString());
         }
-      } catch (e) {
-        debugPrint(e.toString());
       }
     }
   }
