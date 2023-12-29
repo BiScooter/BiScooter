@@ -115,11 +115,6 @@ Content-Type: application/json
 }
 
 
-###
-//Admin ViewAll
-GET http://localhost:8080/admin/ViewAll  HTTP/1.1
-
-
 
 ###
 //ADD EMPLOYEE

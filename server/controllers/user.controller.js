@@ -21,7 +21,7 @@ exports.GetHomeScreenInfos = catchAsync(async (req, res, next) => {
 
   res.status(200).send({
     Message: "Stations'info is retrieved",
-    Stations_Bikesinfo: BikeCountResult.rows[0],
+    Stations_Bikesinfo: BikeCountResult.rows,
   });
 });
 
@@ -44,7 +44,7 @@ exports.ViewTransactionHistory = catchAsync(async (req, res, next) => {
   );
   res.status(200).send({
     Message: `All Transactions for user with id ='${client_id}'`,
-    Transactioninfo: ViewTransaction.rows[0],
+    Transactioninfo: ViewTransaction.rows,
   });
 });
 
@@ -329,17 +329,11 @@ exports.ViewOfferedBikes = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.ComplaintResponse = catchAsync(async (req, res, next) => {
-  const { client_id } = req.params;
-  if (!User.phoneCheck(client_id)) {
-    return next(new ErrorHandling("Enter numbers only!!!!", 400));
-  }
-  const Response = await db.query(
-    `SELECT RESPONSE FROM COMPLAINT WHERE CLIENT_ID='${client_id}'RETURNING RESPONSE;`
-  );
-
-  res.status(200).send({
-    Message: `Complaint FROM CLIENT '${client_id}' has been responded!`,
-    Retrieved_Response: Response.rows[0],
-  });
+exports.ChangeProfileImage = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { img_url } = req.body;
+  const changedImg = await db.query(`update client 
+  set profile_img = '${img_url}'
+  where id = ${id};`);
+  res.status(200).send();
 });
