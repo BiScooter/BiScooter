@@ -99,7 +99,7 @@ class _OfferBikeState extends State<OfferBike> {
 
   late Future<MyBiscooter?> myBike;
 
-  Future<My_Biscooter?> Fetchbike() async {
+  Future<MyBiscooter?> fetchBike() async {
     try {
       final response = await get(Uri.parse(
           "${const Connection().baseUrl}/users/my-biscooter/${User().getId}"));
@@ -363,7 +363,7 @@ Row data(BuildContext context, String title, String value) {
   );
 }
 
-class My_Biscooter {
+class MyBiscooter {
   final String type;
   final int size;
   final String image;

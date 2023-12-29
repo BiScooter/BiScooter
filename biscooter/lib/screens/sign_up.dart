@@ -49,24 +49,27 @@ class _SignUpState extends State<SignUp> {
           }),
         );
 
+          print(response.body);
         if (response.statusCode == 200) {
+          print('success');
           // Decode the response body
           Map<String, dynamic> responseData = jsonDecode(response.body);
 
           // Get the data from the response
-          int id = int.parse(responseData["SignUp_Retrivals"][0]['id']);
-          String invitationCode = responseData["SignUp_Retrivals"][0]['invitation_code'];
+          int id = int.parse(responseData["SignUp_Retrivals"]['id']);
+          String invitationCode = responseData["SignUp_Retrivals"]['invitation_code'];
+          String pro_img = responseData["SignUp_Retrivals"]['profile_img'];
 
           // fill the user service with the data
           User.setUserService(id, _firstName.text, _middleName.text,
-              _lastName.text, invitationCode, "", 0, 0);
+              _lastName.text, invitationCode, pro_img, 0, 0);
 
           User.setLoggedIn();
           User.setID(id);
 
           if (mounted) {
-            Navigator.pushNamed(context, '/verification',
-                arguments: {'email': _email.text});
+            print("entered navigation");
+            Navigator.pushNamed(context, '/');
           }
         } else if (response.statusCode == 409)
         {
