@@ -16,7 +16,7 @@ class Profile extends StatefulWidget {
 
 enum SampleItem { changePassword, uploadPhoto }
 
-late Future<List<cart_station>?> stations;
+late Future<List<card_station>?> stations;
 
 class _ProfileState extends State<Profile> {
 //some data of user i will need
@@ -42,13 +42,13 @@ class _ProfileState extends State<Profile> {
 
   final url = "";
 
-  Future<List<cart_station>?> FetchStations() async {
+  Future<List<card_station>?> FetchStations() async {
     try {
       final response = await get(Uri.parse(url));
       if (response.statusCode == 200) {
         // Decode the response body
         List<dynamic> responseData = jsonDecode(response.body);
-        return responseData.map<cart_station>(cart_station.fromJson).toList();
+        return responseData.map<card_station>(card_station.fromJson).toList();
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -201,7 +201,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 SizedBox(
                   height: 324,
-                  child: FutureBuilder<List<cart_station>?>(
+                  child: FutureBuilder<List<card_station>?>(
                     future: stations,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -227,7 +227,7 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               children: data.map((e) {
                                 return MYCard(
-                                  
+
                                     station_name: e.name,
                                     num_bike: e.amount_bike,
                                     num_scooter: e.amount_bike,
@@ -250,7 +250,7 @@ class _ProfileState extends State<Profile> {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  final Future<List<cart_station>?> stationlist;
+  final Future<List<card_station>?> stationlist;
 
   late Future<List<String>?> matchQuery;
 
@@ -384,19 +384,19 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 }
 
-class cart_station {
+class card_station {
   final int id;
   final String name;
   final int amount_bike;
   final int amount_scooter;
 
-  cart_station(
+  card_station(
       {required this.name,
       required this.id,
       required this.amount_bike,
       required this.amount_scooter});
 
-  static cart_station fromJson(json) => cart_station(
+  static card_station fromJson(json) => card_station(
         id: json['station_id'],
         name: json['station_name'],
         amount_bike: json['bikes_numbers'],
