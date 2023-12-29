@@ -20,7 +20,12 @@ class _MYCardState extends State<MYCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+Navigator.pushNamed(context, '/station',arguments: {
+    'stationName': widget.station_name,
+    'id': widget.id,
+  },);
+      },
       child: Card(
         margin: EdgeInsets.all(10),
         color: Colors.white,

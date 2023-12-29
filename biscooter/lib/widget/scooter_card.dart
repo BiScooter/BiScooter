@@ -1,7 +1,13 @@
+import 'package:biscooter/screens/rentbike.dart';
 import 'package:flutter/material.dart';
 
 class ScooterCard extends StatefulWidget {
-  const ScooterCard({super.key});
+   final int id;
+  final String max_speed;
+  final int range;
+  final int battery_capacity;
+  final String img;
+  const ScooterCard({super.key, required this.id, required this.max_speed, required this.range, required this.battery_capacity, required this.img});
 
   @override
   State<ScooterCard> createState() => _ScooterCardState();
@@ -27,53 +33,13 @@ class _ScooterCardState extends State<ScooterCard> {
           children: [
             SizedBox(
               height: 200,
-              child: Image.asset('assets/imgs/i3.png'),
+              child:Image.network(widget.img),
             ),
-            Row(
-              children: [
-                Text(
-                  'Max Speed : ',
-                  style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
-                ),
-                Text(
-                  '30 m/h  ',
-                  style: TextStyle(
-                      fontFamily: 'PlayfairDisplay',
-                      fontSize: 20,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Range : ',
-                  style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
-                ),
-                Text(
-                  '30 m ',
-                  style: TextStyle(
-                      fontFamily: 'PlayfairDisplay',
-                      fontSize: 20,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Battery Capacity : ',
-                  style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
-                ),
-                Text(
-                  '30 m ',
-                  style: TextStyle(
-                      fontFamily: 'PlayfairDisplay',
-                      fontSize: 20,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ],
-            ),
+            rowdata(context,'Max Speed : ',widget.max_speed),
+            rowdata(context,'Range : ',widget.range.toString()),
+            rowdata(context,'Battery Capacity : ',widget.battery_capacity.toString()),
+
+
             Container(
                   width: 180,
                   height: 40,
@@ -90,7 +56,12 @@ class _ScooterCardState extends State<ScooterCard> {
                           shadowColor: Colors.transparent
 
                           ),
-                      onPressed: () {},
+                      onPressed: () {
+                       Navigator.pushNamed(context, '/rent',arguments: {
+    'state': 1,
+    'id': widget.id,
+  },);
+                      },
                       child: Text(
                         'RENT NOW',
                         style: const TextStyle(
@@ -102,5 +73,23 @@ class _ScooterCardState extends State<ScooterCard> {
                       ),),
                 ),],),
       ),);
+  }
+
+  Row rowdata(BuildContext context,String title,String data) {
+    return Row(
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
+              ),
+              Text(
+                data,
+                style: TextStyle(
+                    fontFamily: 'PlayfairDisplay',
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.secondary),
+              ),
+            ],
+          );
   }
 }
