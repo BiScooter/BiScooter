@@ -382,4 +382,4 @@ exports.StationListingScooters = catchAsync(async (req, res, next) => {
     Message: `Scooters in station with id '${station_id}'`,
     Scootersinfo: Scooters.rows[0],
   });
-
+});

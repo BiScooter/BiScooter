@@ -18,6 +18,7 @@ userRouter.post('/ClientActions6/:client_id',userController.GiveComplaint);
 userRouter.get('/complaints/:id',userController.ComplaintResponse);
 userRouter.post('/Transactions/:client_id',userController.MakeTransaction);
 userRouter.post('/changeProfileImage/:id',userController.ChangeProfileImage);
+userRouter.post('/ChangePassword/:client_id',userController.ChangePassword);
 
 
 module.exports=userRouter;
