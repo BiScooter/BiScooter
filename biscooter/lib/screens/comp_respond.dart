@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:biscooter/services/connection.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/comp_card.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 class CompRespond extends StatefulWidget {
   const CompRespond({super.key});
@@ -15,17 +18,19 @@ class CompRespond extends StatefulWidget {
 }
 
 class _CompRespondState extends State<CompRespond> {
+  late Future<List<Complaint>?> complaints;
+
   @override
   void initState() {
     super.initState();
-    Complaints = FetchComplaints();
+    complaints = fetchComplaints();
   }
 
-  late Future<List<Complaint>?> Complaints;
-  String url = "";
-  Future<List<Complaint>?> FetchComplaints() async {
+  String url = "${const Connection().baseUrl}/users/complaints/${User().getId}";
+  Future<List<Complaint>?> fetchComplaints() async {
     try {
       final response = await get(Uri.parse(url));
+      debugPrint(response.body);
       if (response.statusCode == 200) {
         // Decode the response body
         List<dynamic> responseData = jsonDecode(response.body);
@@ -49,7 +54,7 @@ class _CompRespondState extends State<CompRespond> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text(
-          "Complaints Respond",
+          "My Complaints",
           style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 30),
         ),
         backgroundColor: Colors.transparent,
@@ -89,7 +94,7 @@ class _CompRespondState extends State<CompRespond> {
               alignment: Alignment.center,
               height: MediaQuery.of(context).size.height * 0.77,
               child: FutureBuilder<List<Complaint>?>(
-                  future: Complaints,
+                  future: complaints,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -103,7 +108,7 @@ class _CompRespondState extends State<CompRespond> {
                       }
                       final request = snapshot.data;
                       if (request == null || request.isEmpty) {
-                        return Center(
+                        return const Center(
                           child: Text('No Complaints found.'),
                         );
                       } else {
@@ -112,8 +117,7 @@ class _CompRespondState extends State<CompRespond> {
                             children: request.map((e) {
                               return CompCard(
                                 date: e.date,
-                                description: e.describtion,
-                                employeename: e.employeename,
+                                description: e.description,
                               );
                             }).toList(),
                           ),
@@ -133,18 +137,21 @@ class _CompRespondState extends State<CompRespond> {
 }
 
 class Complaint {
-  final String describtion;
-  final DateTime date;
-  final String employeename;
+  final String description;
+  final String date;
 
   Complaint({
-    required this.employeename,
-    required this.describtion,
+    required this.description,
     required this.date,
   });
 
-  static Complaint fromJson(json) => Complaint(
-      describtion: json['describtion'],
-      date: json['date'],
-      employeename: json['employee_name']);
+  static Complaint fromJson(json) {
+    DateTime parsedDate = DateTime.parse(json['date']);
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    String date = formatter.format(parsedDate).toString();
+    return Complaint(
+        description: json['description'],
+        date: date,
+      );
+  }
 }
