@@ -1,8 +1,15 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/input.dart';
+
 import "package:flutter/material.dart";
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
@@ -17,10 +24,6 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPassword = TextEditingController();
   final _confirmPassword = TextEditingController();
 
-  void change() {
-    _formController.currentState!.validate();
-  }
-
   @override
   void dispose() {
     _oldPassword.dispose();
@@ -28,6 +31,71 @@ class _ChangePasswordState extends State<ChangePassword> {
     _confirmPassword.dispose();
     super.dispose();
   }
+
+  void change() async {
+    FocusScope.of(context).unfocus();
+
+      // if the form is valid go and send the login request
+      // TODO: activate this when the server is ready
+      if (_formController.currentState!.validate()) {
+        try {
+
+          // send a login request to the server
+          Response response = await post(
+            Uri.parse(
+                "${const Connection().baseUrl}/ChangePassword/${User().getId}"),
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(<String, String>{
+              "oldpassward": _oldPassword.text,
+              "password": _newPassword.text,
+            }),
+          );
+
+
+
+          // check if the login was successful
+          if (response.statusCode == 200) {
+            // Decode the response body
+            Fluttertoast.showToast(
+              msg: "Password Changed Sucssefully",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+          }
+          else if (response.statusCode == 401) {
+            Fluttertoast.showToast(
+              msg: "Invalid password",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+          } // if the login was not successful
+          else {
+            Fluttertoast.showToast(
+              msg: "Something went wrong",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16,
+            );
+          }
+        }
+         catch (e) {
+          debugPrint(e.toString());
+
+          }
+        }
+      }
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class RentalHistoryCard extends StatefulWidget {
-  const RentalHistoryCard({super.key});
+   final KICK_OFF_STATION;
+  final DESTINATION_STATION;
+  final int Total_price;
+  final String date;
+  const RentalHistoryCard({super.key, this.KICK_OFF_STATION, this.DESTINATION_STATION, required this.Total_price, required this.date});
 
   @override
   State<RentalHistoryCard> createState() => _RentalHistoryCardState();
@@ -21,72 +25,35 @@ class _RentalHistoryCardState extends State<RentalHistoryCard> {
         width: 300,
         height: 340,
         child: Column(children: [
-          SizedBox(
-              height: 90,
-              width: 160,
-              child: Image.asset('assets/imgs/bike.png')),
+          // SizedBox(
+          //     height: 90,
+          //     width: 160,
+          //     child: Image.asset('assets/imgs/bike.png')),
           const SizedBox(
             height: 20,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Text('KICK OFF STATION :',
-                      style: TextStyle(
-                          fontSize: 16, fontFamily: 'PlayfairDisplay')),
-                  Text(
-                    'October ',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'PlayfairDisplay',
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ],
-              ),
+              rowData(context,'KICK OFF STATION :',widget.KICK_OFF_STATION),
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  const Text('DESTINATION STATION :',
-                      style: TextStyle(
-                          fontSize: 16, fontFamily: 'PlayfairDisplay')),
-                  Text(
-                    'October ',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'PlayfairDisplay',
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ],
-              ),
+              rowData(context,'DESTINATION STATION :',widget.DESTINATION_STATION),
+
               const SizedBox(
                 height: 10,
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Text(
-                    'Day : ',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'PlayfairDisplay',
-                    ),
-                  ),
-                  Text(
-                    'sunday ',
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'PlayfairDisplay',
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
+
                   const Text('Date : ',
                       style: TextStyle(
                           fontSize: 18, fontFamily: 'PlayfairDisplay')),
                   Text(
-                    '1/2/2023  ',
+                    widget.date.toString(),
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: 'PlayfairDisplay',
@@ -97,20 +64,7 @@ class _RentalHistoryCardState extends State<RentalHistoryCard> {
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  const Text('Total Price :',
-                      style: TextStyle(
-                          fontSize: 16, fontFamily: 'PlayfairDisplay')),
-                  Text(
-                    '20 \$ ',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'PlayfairDisplay',
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ],
-              ),
+              rowData(context,'Total Price : ',widget.Total_price.toString()),
               const SizedBox(
                 height: 10,
               ),
@@ -152,5 +106,22 @@ class _RentalHistoryCardState extends State<RentalHistoryCard> {
         ]),
       ),
     );
+  }
+
+  Row rowData(BuildContext context,String title,String data) {
+    return Row(
+              children: [
+                 Text(title,
+                    style: const TextStyle(
+                        fontSize: 16, fontFamily: 'PlayfairDisplay')),
+                Text(
+                  data,
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontFamily: 'PlayfairDisplay',
+                      color: Theme.of(context).colorScheme.secondary),
+                ),
+              ],
+            );
   }
 }
