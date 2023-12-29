@@ -22,7 +22,7 @@ Content-Type: application/json
 ###
 
 #Complaint
-POST http://localhost:8080/users/ClientActions6/1 HTTP/1.1
+POST http://localhost:8080/users/ClientActions6/6 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -128,8 +128,8 @@ Content-Type: application/json
 
 {
         "NATIONAL_ID":"1265"	,														
-	"USERNAME":"Peter",		
-	"TELEPHONE":"0125664"	,
+	"USERNAME":"PetKMer",		
+	"TELEPHONE":"01256664"	,
 	"EMAIL"	:"puyfl@gmail.com",		
 	"PASSWORD":"ppppppp"	,	
 	"SALARY":"9787"	,		
@@ -273,4 +273,72 @@ Content-Type: application/json
    "email":"peterLsafwathbk@gmail.com", 
    "password":"pppppppp"
 }
+###
 
+GET http://localhost:8080/users/ComplaintResponse/1000
+
+
+###
+//Conduct maint
+POST http://localhost:8080/emp/ConductMaintain/1265      HTTP/1.1
+Content-Type: application/json
+
+{
+        "TYPE_OF_MNT":"Onbike",
+        "DATE_OF_MNT":"2005-6-10",
+        "DESCRIPTION":"poookijijiijj",
+        "COST":"3",
+        "STATUS":"8",
+        "BISCOOT_ID":"3"
+}
+###
+GET http://localhost:8080/emp/ViewUserAccount
+
+###
+GET http://localhost:8080/emp/viewBiscootHistory
+###
+GET http://localhost:8080/emp/ReviewFeedBacks
+
+
+###
+
+POST http://localhost:8080/emp/DealingWithSuppliers/1265      HTTP/1.1
+Content-Type: application/json
+
+{
+            "DELIVERY_DATE":"3-5-2020",
+            "DEADLINE_DATE":"4-5-2020",
+            "COST":"300",
+            "BIKES_AMOUNT":"20",
+            "SCOOTERS_AMOUNT":"30",
+            "SUPPLIER_ID":"0"
+}
+###
+POST http://localhost:8080/emp//DealingWithComplaints/1265     HTTP/1.1
+Content-Type: application/json
+
+{
+    "COMPLAINT_ID":"7",
+    "RESPONSE":"WE WILL SEE TO IT"
+}
+
+###
+POST http://localhost:8080/emp/DistributeBiscootOnStation   HTTP/1.1
+Content-Type: application/json
+
+{
+"STATION_ID":"4",
+"BISCOOT_ID":"3",
+"TYPE":"bike"
+}
+
+###
+POST http://localhost:8080/emp/AddStation   HTTP/1.1
+Content-Type: application/json
+
+{
+"CITY":"GIZA", 
+"STREET":"FA",
+ "ZIP":"111", 
+ "NAME":"HHHUJU"
+}
