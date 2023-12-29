@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:biscooter/screens/add_biscooter.dart';
+import 'package:biscooter/services/connection.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/bottom.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/white_card.dart';
@@ -15,7 +18,10 @@ class OfferBike extends StatefulWidget {
 
 class _OfferBikeState extends State<OfferBike> {
   final snackBar = const SnackBar(
-    content: Text('Operation Done ! ',style: TextStyle(fontSize: 18),),
+    content: Text(
+      'Operation Done ! ',
+      style: TextStyle(fontSize: 18),
+    ),
   );
 
   showAlertDialog(BuildContext context) {
@@ -35,8 +41,7 @@ class _OfferBikeState extends State<OfferBike> {
       ),
       child: const Text("Continue"),
       onPressed: () {
-
-        dropbike();
+        dropBike();
 
         Navigator.of(context).pop();
       },
@@ -44,7 +49,7 @@ class _OfferBikeState extends State<OfferBike> {
     AlertDialog alert = AlertDialog(
       title: const Text("Alert"),
       content: const Text(
-        "Are you sure you want to restore your bike back !",
+        "Are you sure you want to drop your biscooter!",
         style: TextStyle(fontSize: 18),
       ),
       actions: [
@@ -60,40 +65,52 @@ class _OfferBikeState extends State<OfferBike> {
     );
   }
 
-  String dropURl = "";
-  void dropbike() async {
+  String dropURl = "${const Connection().baseUrl}/users/my-biscooter/drop/${User().getId}";
+  void dropBike() async {
     try {
-      final response = await get(Uri.parse(dropURl));
+
+      debugPrint('called drop');
+      final response = await delete(Uri.parse(dropURl));
+      debugPrint(response.body);
       if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        initState();
+        refresh();
       }
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  @override
 
   ///get if the user have scooter of bike for not
 
+  @override
   void initState() {
     super.initState();
-    mybike = Fetchbike();
+    refresh();
   }
 
-  String url = "";
-  late Future<My_Biscooter?> mybike;
+  void refresh() {
+    setState(() {
+      myBike = fetchBike();
+    });
+  }
+
+  late Future<MyBiscooter?> myBike;
 
   Future<My_Biscooter?> Fetchbike() async {
     try {
-      final response = await get(Uri.parse(url));
+      final response = await get(Uri.parse(
+          "${const Connection().baseUrl}/users/my-biscooter/${User().getId}"));
+      debugPrint(response.body);
       if (response.statusCode == 200) {
         // Decode the response body
         dynamic responseData = jsonDecode(response.body);
-        return responseData;
+        return MyBiscooter.fromJson(responseData['Biscooter']);
       }
     } catch (e) {
+      print('this error');
       debugPrint(e.toString());
     }
     return null;
@@ -143,8 +160,8 @@ class _OfferBikeState extends State<OfferBike> {
             ),
             SizedBox(
               height: double.infinity,
-              child: FutureBuilder<My_Biscooter?>(
-                future: mybike,
+              child: FutureBuilder<MyBiscooter?>(
+                future: myBike,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -181,14 +198,12 @@ class _OfferBikeState extends State<OfferBike> {
                                       SizedBox(
                                         height: 200,
                                         child:
-                                            Image.asset('assets/imgs/bike.png'),
+                                            Image.asset(snapshot.data!.image),
                                       ),
                                       data(
                                           context, 'Type', snapshot.data!.type),
                                       data(context, 'Size',
                                           snapshot.data!.size.toString()),
-                                      data(context, 'Gear number',
-                                          snapshot.data!.gearNumber.toString()),
                                     ],
                                   ),
                                 ),
@@ -224,8 +239,6 @@ class _OfferBikeState extends State<OfferBike> {
                                 alignment: Alignment.bottomCenter,
                                 child: Bottom(() {
                                   showAlertDialog(context);
-
-                                  debugPrint("hellow");
                                 }, 'Drop BiScooter'),
                               ),
                             ],
@@ -263,10 +276,8 @@ class _OfferBikeState extends State<OfferBike> {
                                     )),
                               ),
                               Container(
-                                  child: Bottom(() {
-Navigator.pushNamed(
-                                      context, '/add_biscooter');
-                              }, 'Add BiScooter')),
+                                child: Bottom((){ Navigator.push(context, MaterialPageRoute(builder: ((context) => AddBiscooter(refresh: refresh,))));}, 'Add Biscooter'),
+                              )
                             ],
                           ),
                         );
@@ -360,8 +371,18 @@ class My_Biscooter {
   final int rentalNumber;
   final int distance;
   final int totalTime;
+  final double batteryCapacity;
+  final double range;
+  final double maxSpeed;
+  final String brand;
+  final double weight;
 
-  My_Biscooter({
+  MyBiscooter({
+    required this.range,
+    required this.maxSpeed,
+    required this.brand,
+    required this.weight,
+    required this.batteryCapacity,
     required this.image,
     required this.gearNumber,
     required this.type,
@@ -371,12 +392,19 @@ class My_Biscooter {
     required this.totalTime,
   });
 
-  static My_Biscooter fromJson(json) => My_Biscooter(
-      type: json['Type'],
-      size: json['Size'],
-      gearNumber: json['Gear_number'],
-      rentalNumber: json['Rental_Number'],
-      distance: json['Distance'],
-      totalTime: json['total_time'],
-      image: json['image']);
+  static MyBiscooter fromJson(json) => MyBiscooter(
+        batteryCapacity:
+            double.parse(json['battery_capacity']?.toString() ?? '0'),
+        type: json['type'],
+        size: json['size'],
+        gearNumber: json['gears_num'] ?? 0,
+        rentalNumber: json['Rental_Number'] ?? 0,
+        distance: json['distance'] ?? 0,
+        totalTime: json['total_time'] ?? 0,
+        image: json['image'],
+        range: double.parse(json['range']?.toString() ?? '0'),
+        maxSpeed: double.parse(json['max_speed']?.toString() ?? '0'),
+        brand: json['brand'] ?? '',
+        weight: double.parse(json['weight']?.toString() ?? '0'),
+      );
 }

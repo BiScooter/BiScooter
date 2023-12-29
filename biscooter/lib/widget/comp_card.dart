@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 class CompCard extends StatefulWidget {
   final String description;
-  final String employeename;
-  final DateTime date;
+  final String date;
   const CompCard(
       {super.key,
       required this.description,
-      required this.employeename,
       required this.date});
 
   @override
@@ -18,13 +16,13 @@ class _CompCardState extends State<CompCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       elevation: 10,
       shadowColor: Colors.black,
       color: Colors.white,
       child: Container(
         width: 310,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             Row(
@@ -33,17 +31,17 @@ class _CompCardState extends State<CompCard> {
                const Icon(Icons.mail),
                 Text(
                   widget.date.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontFamily: 'PlayfairDisplay',
                       fontSize: 16,
                       color: Colors.grey),
                 )
               ],
             ),
-            Divider(),
-            Container(
+            const Divider(),
+            SizedBox(
               width: double.maxFinite,
-              child: Text('${widget.description} ..... by ${widget.employeename}',
+              child: Text(widget.description,
                   style: const TextStyle(
                     fontFamily: 'PlayfairDisplay',
                     fontSize: 16,

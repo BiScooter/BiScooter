@@ -1,13 +1,20 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
 
+import 'dart:convert';
+
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/white_card.dart';
 import "package:flutter/material.dart";
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart';
 
 import 'add_biscooter_sub/chose_view.dart';
 
 class AddBiscooter extends StatefulWidget {
-  const AddBiscooter({super.key});
+  final Function refresh;
+  const AddBiscooter({super.key, required this.refresh});
 
   @override
   State<AddBiscooter> createState() => _AddBiscooterState();
@@ -49,9 +56,9 @@ class _AddBiscooterState extends State<AddBiscooter> {
             ),
 
             // the white container
-            const WhiteCard(
+            WhiteCard(
               top: 22,
-              child: WhiteCardContent(),
+              child: WhiteCardContent(refresh: widget.refresh,),
             ),
           ],
         ),
@@ -61,8 +68,9 @@ class _AddBiscooterState extends State<AddBiscooter> {
 }
 
 class WhiteCardContent extends StatefulWidget {
+  final Function refresh;
   const WhiteCardContent({
-    super.key,
+    super.key, required this.refresh,
   });
 
   @override
@@ -94,15 +102,16 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
           choose: setType,
           controller: controller,
         ),
-        DataView(type: type)
+        DataView(type: type, refresh: widget.refresh,)
       ],
     );
   }
 }
 
 class DataView extends StatefulWidget {
-  const DataView({super.key, required this.type});
+  const DataView({super.key, required this.type, required this.refresh});
   final String type;
+  final Function refresh;
 
   @override
   State<DataView> createState() => DataViewState();
@@ -115,7 +124,7 @@ class DataViewState extends State<DataView> {
   final _weight = TextEditingController();
   final _range = TextEditingController();
   final _maxSpeed = TextEditingController();
-  final _batteryCapacity= TextEditingController();
+  final _batteryCapacity = TextEditingController();
 
   String? _bikeType;
   int? _selectedGearsNum;
@@ -136,6 +145,7 @@ class DataViewState extends State<DataView> {
       child: Text(item),
     );
   }
+
   DropdownMenuItem<int> _buildDropdownMenuItem2(int item) {
     return DropdownMenuItem(
       value: item,
@@ -148,10 +158,131 @@ class DataViewState extends State<DataView> {
       _bikeType = value;
     });
   }
+
   selectGears(int? value) {
     setState(() {
       _selectedGearsNum = value;
     });
+  }
+
+  addBike() async {
+    try {
+      Response response = await post(
+        Uri.parse(
+            "${const Connection().baseUrl}/users/offer/bike/${User().getId}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          "TYPE_OF_BIKE": _bikeType!,
+          "GEARS_NUM": _selectedGearsNum.toString(),
+          "BRAND": _brand.text,
+          "WEIGHT": _weight.text,
+          "SIZE": _size.text,
+        }),
+      );
+
+      debugPrint(response.body);
+      if (response.statusCode == 200) {
+        widget.refresh();
+        Fluttertoast.showToast(
+          msg: 'Bike added successfully',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      } else if (response.statusCode == 409) {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: responseData["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  addScooter() async {
+    try {
+      Response response = await post(
+        Uri.parse(
+            "${const Connection().baseUrl}/users/offer/scooter/${User().getId}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          "BATTERY_CAPACITY": _batteryCapacity.text,
+          "RANGE": _range.text,
+          "MAX_SPEED": _maxSpeed.text,
+          "SIZE": _size.text
+        }),
+      );
+
+      debugPrint(response.body);
+      if (response.statusCode == 200) {
+        widget.refresh();
+        Fluttertoast.showToast(
+          msg: 'Scooter added successfully',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      } else if (response.statusCode == 409) {
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        Fluttertoast.showToast(
+          msg: responseData["message"],
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void add() {
+    if (_formController.currentState!.validate()) {
+      if (widget.type == 'bike') addBike();
+      if (widget.type == 'scooter') addScooter();
+    }
   }
 
   @override
@@ -161,12 +292,14 @@ class DataViewState extends State<DataView> {
         key: _formController,
         child: Column(
           children: [
-            Input(
-              width: MediaQuery.of(context).size.width - 30,
-              label: 'Brand',
-              controller: _brand,
-              password: _brand,
-            ),
+            (widget.type == 'bike')
+                ? Input(
+                    width: MediaQuery.of(context).size.width - 30,
+                    label: 'Brand',
+                    controller: _brand,
+                    password: _brand,
+                  )
+                : const SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -194,101 +327,103 @@ class DataViewState extends State<DataView> {
             ),
 
             // the rest of the input fields
-            (widget.type == 'bike') ?  Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(right: 4),
-                  width: MediaQuery.of(context).size.width / 2 - 16,
-                  child: DropdownButtonFormField(
-                    value: _bikeType,
-                    items: _bikeTypes.map(_buildDropdownMenuItem).toList(),
-                    onChanged: changeType,
-                    iconEnabledColor: Theme.of(context).colorScheme.surface,
-                    iconSize: 30,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 94, 94, 94),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    validator: (value) {
-                      if (value == null) return "Select bike type";
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      // border: InputBorder.none,
-                      hintText: "Bike Type",
-                      errorStyle: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 10,
+            (widget.type == 'bike')
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(right: 4),
+                        width: MediaQuery.of(context).size.width / 2 - 16,
+                        child: DropdownButtonFormField(
+                          value: _bikeType,
+                          items:
+                              _bikeTypes.map(_buildDropdownMenuItem).toList(),
+                          onChanged: changeType,
+                          iconEnabledColor:
+                              Theme.of(context).colorScheme.surface,
+                          iconSize: 30,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 94, 94, 94),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          validator: (value) {
+                            if (value == null) return "Select bike type";
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            // border: InputBorder.none,
+                            hintText: "Bike Type",
+                            errorStyle: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 10,
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ), // Style for the error message
+                          ),
+                        ),
                       ),
-                      hintStyle: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ), // Style for the error message
-                    ),
-                  ),
-                ),
-                
-                Container(
-                  padding: const EdgeInsets.only(left: 4),
-                  width: MediaQuery.of(context).size.width / 2 - 16,
-                  child: DropdownButtonFormField(
-                    value: _selectedGearsNum,
-                    items: _gearsNum.map(_buildDropdownMenuItem2).toList(),
-                    onChanged: selectGears,
-                    iconEnabledColor: Theme.of(context).colorScheme.surface,
-                    iconSize: 30,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 94, 94, 94),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    validator: (value) {
-                      if (value == null) return "Select number of gears";
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      // border: InputBorder.none,
-                      hintText: "Gears Number",
-                      errorStyle: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 10,
+                      Container(
+                        padding: const EdgeInsets.only(left: 4),
+                        width: MediaQuery.of(context).size.width / 2 - 16,
+                        child: DropdownButtonFormField(
+                          value: _selectedGearsNum,
+                          items:
+                              _gearsNum.map(_buildDropdownMenuItem2).toList(),
+                          onChanged: selectGears,
+                          iconEnabledColor:
+                              Theme.of(context).colorScheme.surface,
+                          iconSize: 30,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 94, 94, 94),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          validator: (value) {
+                            if (value == null) return "Select number of gears";
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            // border: InputBorder.none,
+                            hintText: "Gears Number",
+                            errorStyle: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 10,
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ), // Style for the error message
+                          ),
+                        ),
                       ),
-                      hintStyle: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ), // Style for the error message
-                    ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Input(
+                        width: MediaQuery.of(context).size.width / 2 - 20,
+                        label: 'Max Speed',
+                        controller: _maxSpeed,
+                        password: _maxSpeed,
+                      ),
+                      Input(
+                        width: MediaQuery.of(context).size.width / 2 - 20,
+                        label: 'Battery Capacity',
+                        controller: _batteryCapacity,
+                        password: _batteryCapacity,
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            )
-            : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Input(
-                  width: MediaQuery.of(context).size.width / 2 - 20,
-                  label:'Max Speed',
-                  controller: _maxSpeed,
-                  password: _maxSpeed,
-                ),
-                Input(
-                  width: MediaQuery.of(context).size.width / 2 - 20,
-                  label: 'Battery Capacity',
-                  controller: _batteryCapacity,
-                  password: _batteryCapacity,
-                ),
-              ],
-            ),
 
             // the sing up button
             Padding(
               padding: const EdgeInsets.only(top: 60.0, bottom: 25),
               child: ElevatedButton(
-                onPressed: () {
-                  _formController.currentState!.validate();
-                },
+                onPressed: add,
                 style: ButtonStyle(
                   fixedSize: const MaterialStatePropertyAll(
                     Size(300, 60),
@@ -306,7 +441,6 @@ class DataViewState extends State<DataView> {
     );
   }
 }
-
 
 class Input extends StatelessWidget {
   final double? height;
@@ -331,7 +465,8 @@ class Input extends StatelessWidget {
         width: width, // Set the width
         height: height ?? 50, // Set the height
         child: TextFormField(
-          keyboardType: (label == "Brand" ) ? TextInputType.text : TextInputType.number,
+          keyboardType:
+              (label == "Brand") ? TextInputType.text : TextInputType.number,
           maxLines: null,
           //styling of the input field
           decoration: InputDecoration(

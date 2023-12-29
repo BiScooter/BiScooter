@@ -10,7 +10,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
 class SendComplaint extends StatefulWidget {
-  const SendComplaint({super.key});
+  final Function refresh;
+  const SendComplaint({super.key, required this.refresh});
 
   @override
   State<SendComplaint> createState() => _SendComplaintState();
@@ -56,6 +57,15 @@ class _SendComplaintState extends State<SendComplaint> {
 
         debugPrint(response.body);
         if (response.statusCode == 200) {
+          widget.refresh();
+          Fluttertoast.showToast(
+            msg: "Complaint Send!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16,
+          );
           if (mounted) {
             Navigator.pop(context);
           }
