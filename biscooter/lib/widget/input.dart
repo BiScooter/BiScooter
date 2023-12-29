@@ -7,13 +7,12 @@ class Input extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final TextEditingController password;
-  const Input({
-    super.key,
-    required this.width,
-    required this.label,
-    required this.controller,
-    required this.password
-  });
+  const Input(
+      {super.key,
+      required this.width,
+      required this.label,
+      required this.controller,
+      required this.password});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,9 @@ class Input extends StatelessWidget {
                   ? TextInputType.emailAddress
                   : (label.contains("Password"))
                       ? TextInputType.visiblePassword
-                      : TextInputType.text,
+                      : (label == "Image url")
+                          ? TextInputType.url
+                          : TextInputType.text,
           obscureText: label == "Password" || label == "Confirm Password",
 
           //styling of the input field

@@ -1,6 +1,7 @@
-
 import 'dart:convert';
 
+import 'package:biscooter/screens/change_profile_image.dart';
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -16,7 +17,7 @@ class Profile extends StatefulWidget {
 
 enum SampleItem { changePassword, uploadPhoto }
 
-late Future<List<card_station>?> stations;
+late Future<List<CardStation>?> stations;
 
 class _ProfileState extends State<Profile> {
 //some data of user i will need
@@ -34,21 +35,29 @@ class _ProfileState extends State<Profile> {
     imageUrl = user.getProfileImage;
 
     super.initState();
-    stations = FetchStations();
+    stations = fetchStations();
+  }
+
+  void updateProfileImg() {
+    setState(() {
+      imageUrl = user.getProfileImage;
+    });
   }
 
   Object? selectedMenu;
   int index = 0;
 
-  final url = "";
+  final url = "${const Connection().baseUrl}/users/Home";
 
-  Future<List<card_station>?> FetchStations() async {
+  Future<List<CardStation>?> fetchStations() async {
     try {
       final response = await get(Uri.parse(url));
       if (response.statusCode == 200) {
         // Decode the response body
-        List<dynamic> responseData = jsonDecode(response.body);
-        return responseData.map<card_station>(card_station.fromJson).toList();
+        debugPrint(response.body);
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        final stations = responseData["Stations_Bikesinfo"];
+        return stations.map<CardStation>(CardStation.fromJson).toList();
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -146,7 +155,14 @@ class _ProfileState extends State<Profile> {
                               PopupMenuItem<SampleItem>(
                                 value: SampleItem.uploadPhoto,
                                 child: const Text('Upload a new photo '),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ((context) => ChangeProfileImage(
+                                          refresh: updateProfileImg)),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -201,7 +217,7 @@ class _ProfileState extends State<Profile> {
                 ),
                 SizedBox(
                   height: 324,
-                  child: FutureBuilder<List<card_station>?>(
+                  child: FutureBuilder<List<CardStation>?>(
                     future: stations,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -217,7 +233,7 @@ class _ProfileState extends State<Profile> {
                         }
                         final data = snapshot.data;
                         if (data == null || data.isEmpty) {
-                          return Center(
+                          return const Center(
                             child: Text('No stations found.'),
                           );
                         } else {
@@ -227,10 +243,9 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               children: data.map((e) {
                                 return MYCard(
-
                                     station_name: e.name,
-                                    num_bike: e.amount_bike,
-                                    num_scooter: e.amount_bike,
+                                    num_bike: e.amountBike,
+                                    num_scooter: e.amountBike,
                                     id: e.id);
                               }).toList(),
                             ),
@@ -250,11 +265,11 @@ class _ProfileState extends State<Profile> {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  final Future<List<card_station>?> stationlist;
+  final Future<List<CardStation>?> stationList;
 
   late Future<List<String>?> matchQuery;
 
-  CustomSearchDelegate(this.stationlist)
+  CustomSearchDelegate(this.stationList)
       : super(
           searchFieldStyle: const TextStyle(fontSize: 20),
           searchFieldLabel: "station",
@@ -305,7 +320,7 @@ class CustomSearchDelegate extends SearchDelegate {
       future: matchQuery,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -318,7 +333,7 @@ class CustomSearchDelegate extends SearchDelegate {
               (item) => item.toLowerCase().contains(query.toLowerCase()));
 
           if (results == null || results.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No results found.'),
             );
           } else {
@@ -349,7 +364,7 @@ class CustomSearchDelegate extends SearchDelegate {
       future: matchQuery,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -362,7 +377,7 @@ class CustomSearchDelegate extends SearchDelegate {
               (item) => item.toLowerCase().contains(query.toLowerCase()));
 
           if (results == null || results.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('No results found.'),
             );
           } else {
@@ -384,22 +399,22 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 }
 
-class card_station {
+class CardStation {
   final int id;
   final String name;
-  final int amount_bike;
-  final int amount_scooter;
+  final int amountBike;
+  final int amountScooter;
 
-  card_station(
+  CardStation(
       {required this.name,
       required this.id,
-      required this.amount_bike,
-      required this.amount_scooter});
+      required this.amountBike,
+      required this.amountScooter});
 
-  static card_station fromJson(json) => card_station(
-        id: json['station_id'],
+  static CardStation fromJson(json) => CardStation(
+        id: int.parse(json['station_id']),
         name: json['station_name'],
-        amount_bike: json['bikes_numbers'],
-        amount_scooter: json['scooters_numbers'],
+        amountBike: int.parse(json['bikes_numbers']),
+        amountScooter: int.parse(json['scooters_numbers']),
       );
 }

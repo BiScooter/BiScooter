@@ -4,83 +4,77 @@ import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
-// TODO: remove the commenting when the server is ready
 import 'dart:convert';
 import 'package:biscooter/services/user.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
-class LogIn extends StatefulWidget {
-  const LogIn({super.key});
+class ChangeProfileImage extends StatefulWidget {
+  final Function refresh;
+  const ChangeProfileImage({super.key, required this.refresh});
 
   @override
-  State<LogIn> createState() => _LogInState();
+  State<ChangeProfileImage> createState() => _ChangeProfileImageState();
 }
 
-class _LogInState extends State<LogIn> {
+class _ChangeProfileImageState extends State<ChangeProfileImage> {
   final _formController = GlobalKey<FormState>();
-  final _email = TextEditingController();
-  final _password = TextEditingController();
+  final _url = TextEditingController();
+  final _testedUrl = TextEditingController();
 
-  void login() async {
+  bool _imgFlag = false;
+  double radius = 120;
+
+  @override
+  void initState() {
+    super.initState();
+    _testedUrl.text = User().getProfileImage;
+    _url.text = '';
+  }
+
+  void change() async {
     FocusScope.of(context).unfocus();
+    if (!_imgFlag) {
+      Fluttertoast.showToast(
+        msg: "Invalid URL",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16,
+      );
+      return;
+    }
 
-    // if the form is valid go and send the login request
-    // TODO: activate this when the server is ready
+    // if the form is valid go and send the change request
     if (_formController.currentState!.validate()) {
       try {
-        // send a login request to the server
+        // send a change request to the server
         Response response = await post(
-          Uri.parse("${const Connection().baseUrl}/auth/login"),
+          Uri.parse(
+              "${const Connection().baseUrl}/users/changeProfileImage/${User().getId}"),
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
           body: jsonEncode(<String, String>{
-            "email": _email.text,
-            "password": _password.text,
+            "img_url": _url.text,
           }),
         );
 
-        debugPrint(response.body);
-        // check if the login was successful
+        // check if the change was successful
         if (response.statusCode == 200) {
           // Decode the response body
-          final responseData = jsonDecode(response.body);
-          Map<String, dynamic> userInfo = responseData['user_info'];
-          print(userInfo['invitation_code'].toString());
-          // set the user service
-          User.setUserService(
-            int.parse(userInfo['id']),
-            userInfo['fname'].toString(),
-            userInfo['mname'].toString(),
-            userInfo['lname'].toString(),
-            userInfo['invitation_code'].toString(),
-            userInfo['profile_img'].toString(),
-            double.parse(userInfo['wallet'].toString().substring(1)),
-            10,
-          );
-          print('done');
-          // set the login status to true
-          User.setLoggedIn();
-          User.setID(int.parse(userInfo['id']));
-          // go to the profile page
-          /// TODO: uncomment this when the check is correct
-          if (mounted) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                "/profile", (Route<dynamic> route) => false);
-          }
-        } // invalid email or password
-        else if (response.statusCode == 401) {
+          User().setProfileImage = _url.text;
+          widget.refresh();
           Fluttertoast.showToast(
-            msg: "Invalid Email or password",
+            msg: "Changed Successfully",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16,
           );
-        } // if the login was not successful
-        else {
+        } else {
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_LONG,
@@ -93,17 +87,12 @@ class _LogInState extends State<LogIn> {
       } catch (e) {
         debugPrint(e.toString());
       }
-
-      // TODO: remove this line when the server is ready
-      // Navigator.of(context)
-      //     .pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
     }
   }
 
   @override
   void dispose() {
-    _email.dispose();
-    _password.dispose();
+    _url.dispose();
     super.dispose();
   }
 
@@ -113,7 +102,7 @@ class _LogInState extends State<LogIn> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text("Log in"),
+        title: const Text("Change Profile Image"),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -137,8 +126,27 @@ class _LogInState extends State<LogIn> {
 
         child: Column(
           children: [
-            SizedBox(
-              height: const MyDimensions().spaceHeight,
+            Container(
+              height: const MyDimensions().spaceHeight * 2.2,
+              padding: const EdgeInsets.only(top: 62),
+              child: CircleAvatar(
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                radius: radius,
+                child: Padding(
+                  padding: EdgeInsets.all(0.05 * radius),
+                  child: ClipOval(
+                    child: Image.network(
+                      _testedUrl.text,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        //TODO: add a tracker
+                        _imgFlag = false;
+                        return Image.asset('assets/imgs/no_img.png');
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
 
             // the white container
@@ -170,16 +178,9 @@ class _LogInState extends State<LogIn> {
                             // the username and telephone next ot each other
                             Input(
                               width: MediaQuery.of(context).size.width - 30,
-                              label: 'Email',
-                              controller: _email,
-                              password: _email,
-                            ),
-
-                            Input(
-                              width: MediaQuery.of(context).size.width - 30,
-                              label: 'Password',
-                              controller: _password,
-                              password: _password,
+                              label: 'Image url',
+                              controller: _url,
+                              password: _url,
                             ),
                           ],
                         ),
@@ -193,19 +194,24 @@ class _LogInState extends State<LogIn> {
                             bottom: const MyDimensions().bottomButtonHeight),
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: ElevatedButton(
-                            onPressed: login,
-                            style: ButtonStyle(
-                              fixedSize: const MaterialStatePropertyAll(
-                                Size(300, 60),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _imgFlag = true;
+                                    _testedUrl.text = _url.text;
+                                  });
+                                },
+                                child: const Text("Test URL",
+                                    style: TextStyle(color: Colors.black)),
                               ),
-                              backgroundColor: MaterialStatePropertyAll(
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer),
-                            ),
-                            child: Text("Log in",
-                                style: Theme.of(context).textTheme.labelLarge),
+                              TextButton(
+                                onPressed: change,
+                                child: const Text("Set as Profile Image"),
+                              )
+                            ],
                           ),
                         ),
                       ),

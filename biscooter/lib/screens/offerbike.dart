@@ -83,9 +83,9 @@ class _OfferBikeState extends State<OfferBike> {
   }
 
   String url = "";
-  late Future<My_Biscooter?> mybike;
+  late Future<MyBiscooter?> myBike;
 
-  Future<My_Biscooter?> Fetchbike() async {
+  Future<MyBiscooter?> fetchBike() async {
     try {
       final response = await get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -352,7 +352,7 @@ Row data(BuildContext context, String title, String value) {
   );
 }
 
-class My_Biscooter {
+class MyBiscooter {
   final String type;
   final int size;
   final String image;
@@ -361,7 +361,7 @@ class My_Biscooter {
   final int distance;
   final int totalTime;
 
-  My_Biscooter({
+  MyBiscooter({
     required this.image,
     required this.gearNumber,
     required this.type,
@@ -371,7 +371,7 @@ class My_Biscooter {
     required this.totalTime,
   });
 
-  static My_Biscooter fromJson(json) => My_Biscooter(
+  static MyBiscooter fromJson(json) => MyBiscooter(
       type: json['Type'],
       size: json['Size'],
       gearNumber: json['Gear_number'],

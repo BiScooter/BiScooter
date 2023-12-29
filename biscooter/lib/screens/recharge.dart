@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
+import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/shadow_card.dart';
 import 'package:biscooter/widget/white_card.dart';
 import "package:flutter/material.dart";
@@ -12,7 +13,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 
 class Recharge extends StatefulWidget {
-  const Recharge({super.key});
+  final Function refresh;
+  const Recharge({super.key, required this.refresh});
 
   @override
   State<Recharge> createState() => _RechargeState();
@@ -56,9 +58,9 @@ class _RechargeState extends State<Recharge> {
             ),
 
             // the white container
-            const WhiteCard(
+            WhiteCard(
               top: 20,
-              child: WhiteCardContent(),
+              child: WhiteCardContent(refresh: widget.refresh,),
             ),
           ],
         ),
@@ -68,8 +70,9 @@ class _RechargeState extends State<Recharge> {
 }
 
 class WhiteCardContent extends StatefulWidget {
+  final Function refresh;
   const WhiteCardContent({
-    super.key,
+    super.key, required this.refresh,
   });
 
   @override
@@ -98,7 +101,7 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
 
     try {
       Response response = await post(
-        Uri.parse("${const Connection().baseUrl}users/Transactions "),
+        Uri.parse("${const Connection().baseUrl}/users/Transactions/${User().getId}"),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -108,12 +111,22 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
               int.parse(_digit2.text),
           "STATUS": "Deposit",
           "AMOUNT": chosenValue,
-          "DATE": DateTime.now(),
+          "DATE": DateTime.now().toString(),
         }),
       );
 
       if (response.statusCode == 200) {
+        User().setBalance = User().getBalance + chosenValue;
         if (mounted) {
+          Fluttertoast.showToast(
+          msg: "Transaction done",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16,
+        );
+          widget.refresh();
           Navigator.pop(context);
         }
       } else {

@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:biscooter/screens/recharge.dart';
 import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/services/user.dart';
@@ -10,6 +11,7 @@ import 'package:biscooter/widget/shadow_card.dart';
 import "package:flutter/material.dart";
 import 'package:biscooter/widget/white_card.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 
 class MyWallet extends StatefulWidget {
   const MyWallet({super.key});
@@ -21,7 +23,18 @@ class _MyWalletState extends State<MyWallet> {
   final double _balanceCardWidth = 320;
   final double _balanceCardHeight = 200;
 
-  final double _balance = 10.50;
+  double _balance = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    setBalance();
+  }
+
+  void setBalance () => setState(() {
+    _balance = User().getBalance;
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,6 +79,7 @@ class _MyWalletState extends State<MyWallet> {
                   top: 0,
                   child: WhiteCardContent(
                     spareHeight: _balanceCardHeight,
+                    setBalance: setBalance,
                   ),
                 ),
               ],
@@ -149,58 +163,31 @@ class BalanceCard extends StatelessWidget {
 
 class Transaction {
   final String date;
-  final double amount;
+  final String amount;
   final String cardOtp;
 
   Transaction(
       {required this.date, required this.amount, required this.cardOtp});
 
-  static Transaction fromJson(json) => Transaction(
-        date: json['date'],
-        amount: json['amount'],
-        cardOtp: json['cardOtp'],
-      );
+  static Transaction fromJson(json) {
+    DateTime parsedDate = DateTime.parse(json['date']);
+    DateFormat formatter = DateFormat('dd/MM/yyyy');
+    String date = formatter.format(parsedDate).toString();
+    return Transaction(
+      date: date,
+      amount: json['amount'].toString(),
+      cardOtp: json['cardotp'].toString(),
+    );
+  }
 }
 
 class WhiteCardContent extends StatefulWidget {
+  final Function setBalance;
   final double spareHeight;
   const WhiteCardContent({
     super.key,
-    required this.spareHeight,
+    required this.spareHeight, required this.setBalance,
   });
-
-  static List<Transaction> transactionHistory = [
-    Transaction(
-      date: '12/12/2021',
-      amount: 10.50,
-      cardOtp: '1234',
-    ),
-    Transaction(
-      date: '13/12/2021',
-      amount: 15.50,
-      cardOtp: '1244',
-    ),
-    Transaction(
-      date: '14/12/2021',
-      amount: 20.50,
-      cardOtp: '1234',
-    ),
-    Transaction(
-      date: '12/12/2021',
-      amount: 10.50,
-      cardOtp: '1234',
-    ),
-    Transaction(
-      date: '13/12/2021',
-      amount: 15.50,
-      cardOtp: '1244',
-    ),
-    Transaction(
-      date: '14/12/2021',
-      amount: 20.50,
-      cardOtp: '1234',
-    ),
-  ];
 
   @override
   State<WhiteCardContent> createState() => _WhiteCardContentState();
@@ -212,23 +199,35 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
   @override
   void initState() {
     super.initState();
-    transactionHistory = getTransactionHistory();
+    // transactionHistory = getTransactionHistory();
+    _refreshData();
   }
 
   Future<List<Transaction>?> getTransactionHistory() async {
     try {
-      final response =
-          await get(Uri.parse("${const Connection().baseUrl}/transactionsHistory/${User().getId}"));
-      debugPrint(response.body);
+      final response = await get(Uri.parse(
+          "${const Connection().baseUrl}/users/transactionsHistory/${User().getId}"));
       if (response.statusCode == 200) {
         // Decode the response body
-        List<dynamic> responseData = jsonDecode(response.body);
-        return responseData.map<Transaction>(Transaction.fromJson).toList();
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        final trans = responseData["Transactioninfo"];
+        return trans.map<Transaction>(Transaction.fromJson).toList();
       }
     } catch (e) {
       debugPrint(e.toString());
     }
     return null;
+  }
+  void _refreshData() 
+  {
+    transactionHistory = getTransactionHistory();
+  }
+  refresh()
+  {
+    setState(() {
+      _refreshData();
+      widget.setBalance();
+    });
   }
 
   @override
@@ -260,27 +259,28 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
                 }
                 final data = snapshot.data;
                 if (data == null || data.isEmpty) {
-                  return Center(
-                    child: Text('No transactions found.'),
+                  return const Center(
+                    child: Text(''),
                   );
                 } else {
+                  final length = snapshot.data!.length;
                   return ListView.builder(
                     shrinkWrap: true,
-                    itemCount: snapshot.data!.length,
+                    itemCount: length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         title: Text(
-                            '\$${snapshot.data![index].amount.toStringAsFixed(2)}'),
+                            '\$${snapshot.data![length - index - 1].amount}'),
                         titleTextStyle: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 20,
                         ),
                         subtitle:
-                            Text('card otp ${snapshot.data![index].cardOtp}'),
+                            Text('card otp ${snapshot.data![length - index - 1].cardOtp}'),
                         subtitleTextStyle:
                             const TextStyle(fontSize: 12, color: Colors.grey),
                         trailing: Text(
-                          snapshot.data![index].date,
+                          snapshot.data![length - index - 1].date,
                           style: const TextStyle(fontSize: 16),
                         ),
                       );
@@ -300,7 +300,8 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
               alignment: Alignment.bottomCenter,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('/recharge');
+                  // Navigator.of(context).pushNamed('/recharge', arguments: refresh);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Recharge(refresh: refresh)));
                 },
                 style: ButtonStyle(
                   fixedSize: const MaterialStatePropertyAll(

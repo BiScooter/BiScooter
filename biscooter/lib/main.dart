@@ -1,5 +1,6 @@
 import 'package:biscooter/screens/add_biscooter.dart';
 import 'package:biscooter/screens/change_password.dart';
+import 'package:biscooter/screens/change_profile_image.dart';
 import 'package:biscooter/screens/comp_respond.dart';
 import 'package:biscooter/screens/invite_friend.dart';
 import 'package:biscooter/screens/log_in.dart';
@@ -7,7 +8,7 @@ import 'package:biscooter/screens/my_statistics.dart';
 import 'package:biscooter/screens/my_wallet.dart';
 import 'package:biscooter/screens/offerbike.dart';
 import 'package:biscooter/screens/profile.dart';
-import 'package:biscooter/screens/recharge.dart';
+// import 'package:biscooter/screens/recharge.dart';
 import 'package:biscooter/screens/rentalhistory.dart';
 import 'package:biscooter/screens/rentbike.dart';
 import 'package:biscooter/screens/send_complaint.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
     id: id,
   );},
         "/my_wallet": (context) => const MyWallet(),
-        "/recharge": (context) => const Recharge(),
+        // "/recharge": (context) => const Recharge(),
         "/invite_friend": (context) => const InviteFriend(),
         "/rental_history": (context) => const RentalHistory(),
         "/complaint_respond": (context) => const CompRespond(),
@@ -76,7 +77,7 @@ class MyApp extends StatelessWidget {
           return Verification(email: args['email']);
         },
       },
-      initialRoute: "/station",
+      initialRoute: "/",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
