@@ -1,17 +1,12 @@
-// import express from "express";
 const express = require('express');
 const dotenv=require('dotenv');
-// import dotenv from "dotenv";
 const db = require('./Database/index');
 const authRouter = require ('./routes/auth.route.js');
 const userRouter = require ('./routes/user.route.js');
 const adminRouter=require('./routes/admin.route.js');
 const empRouter=require('./routes/Emp.route.js');
 const globalErrorHandler = require('./controllers/ErrorController');
-// import authMiddleware from './middlewares/auth.middleware.js';
-// import userRouter from './routes/user.route.js';
-// import postRouter from "./routes/post.route.js";
-// import { isAdminMiddleware } from "./middlewares/permissions.middleware.js";
+
 
 dotenv.config();
 const app = express();
