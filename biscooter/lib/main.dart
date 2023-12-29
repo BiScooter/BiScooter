@@ -9,7 +9,7 @@ import 'package:biscooter/screens/profile.dart';
 // import 'package:biscooter/screens/recharge.dart';
 import 'package:biscooter/screens/rentalhistory.dart';
 import 'package:biscooter/screens/rentbike.dart';
-import 'package:biscooter/screens/send_complaint.dart';
+// import 'package:biscooter/screens/send_complaint.dart';
 import 'package:biscooter/screens/sign_up.dart';
 import 'package:biscooter/screens/splash.dart';
 import 'package:biscooter/screens/station.dart';
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         "/my_statistics": (context) => const MyStatistics(),
         "/my_biscooter": (context) => const OfferBike(),
         // "/add_biscooter": (context) => const AddBiscooter(),
-        "/add_complaint": (context) => const SendComplaint(),
+        // "/add_complaint": (context) => const SendComplaint(),
          "/rent": (context) {
            final Map<String, dynamic> arguments =
       ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;

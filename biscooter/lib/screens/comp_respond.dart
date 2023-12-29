@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:biscooter/screens/send_complaint.dart';
 import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/user.dart';
 import 'package:biscooter/widget/bottom.dart';
@@ -20,10 +21,16 @@ class CompRespond extends StatefulWidget {
 class _CompRespondState extends State<CompRespond> {
   late Future<List<Complaint>?> complaints;
 
+  refresh() {
+    setState(() {
+      complaints = fetchComplaints();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    complaints = fetchComplaints();
+    refresh();
   }
 
   String url = "${const Connection().baseUrl}/users/complaints/${User().getId}";
@@ -43,7 +50,7 @@ class _CompRespondState extends State<CompRespond> {
   }
 
   void goToSendComplaint() {
-    Navigator.pushNamed(context, '/add_complaint');
+    Navigator.push(context, MaterialPageRoute(builder: ((context) => SendComplaint(refresh: refresh))));
   }
 
   @override
