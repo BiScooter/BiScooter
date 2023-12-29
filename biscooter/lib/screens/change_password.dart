@@ -43,18 +43,18 @@ class _ChangePasswordState extends State<ChangePassword> {
           // send a login request to the server
           Response response = await post(
             Uri.parse(
-                "${const Connection().baseUrl}/ChangePassword/${User().getId}"),
+                "${const Connection().baseUrl}/users/ChangePassword/${User().getId}"),
             headers: <String, String>{
               'Content-Type': 'application/json',
             },
             body: jsonEncode(<String, String>{
-              "oldpassward": _oldPassword.text,
-              "password": _newPassword.text,
+              // "oldpassward": _oldPassword.text,
+              "NeededPassword": _newPassword.text,
             }),
           );
 
 
-
+          print(response.body);
           // check if the login was successful
           if (response.statusCode == 200) {
             // Decode the response body
@@ -66,6 +66,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               textColor: Colors.white,
               fontSize: 16,
             );
+            Navigator.pop(context);
           }
           else if (response.statusCode == 401) {
             Fluttertoast.showToast(

@@ -31,7 +31,7 @@ class Input extends StatelessWidget {
                       : (label == "Image url")
                           ? TextInputType.url
                           : TextInputType.text,
-          obscureText: label == "Password" || label == "Confirm Password",
+          obscureText: label == "Password" || label == "Confirm Password" || label == "Old Password" || label =="New Password",
 
           //styling of the input field
           decoration: InputDecoration(
