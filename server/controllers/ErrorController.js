@@ -53,7 +53,10 @@ const handleDuplicateAdmin= err => {
   const message = "Already admin";
   return new AppError(message, 400);
 };
-
+const handleAdress= err => {
+  const message = "Duplicate Address";
+  return new AppError(message, 400);
+};
 const handlebiscootInRental = err => {
   const message = "inserted Biscoot id does not exist!!!";
   return new AppError(message, 400);
@@ -115,6 +118,7 @@ module.exports = (err, req, res, next) => {
     if (error.message == 'duplicate key value violates unique constraint "employee_username_key"') error = handleDuplicateUsername(error);
     if (error.message == 'insert or update on table "shipment_order" violates foreign key constraint "shipment_order_supplier_id_fkey"')error = handleSupplier(error);
     if (error.message == 'Email is invalid"') error = handleEmailInvalid(error);
+    if (error.message =='duplicate key value violates unique constraint "address"')error = handleAdress(error);
     if (error.message == 'please provide email & password"') error = handleNoEmailOrPass(error);
     if (error.message == 'incorrect email or password"') error = handleWrongEmailOrPass(error);
     sendErrorProd(error,res);
