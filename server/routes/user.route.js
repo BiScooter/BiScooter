@@ -19,5 +19,7 @@ userRouter.post('/ClientActions6/:client_id',userController.GiveComplaint);
 // userRouter.get('/ComplaintResponse/:client_id',userController.ComplaintResponse);
 userRouter.post('/Transactions/:client_id',userController.MakeTransaction);
 userRouter.post('/changeProfileImage/:id',userController.ChangeProfileImage);
-
+userRouter.post('/ChangePassword/:client_id', userController.ChangePassword);
+userRouter.get('StationListing/Bikes/:station_id',userController.StationListingBikes);
+userRouter.get('StationListing/Scooters',userController.StationListingScooters);
 module.exports=userRouter;
