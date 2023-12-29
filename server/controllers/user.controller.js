@@ -132,7 +132,6 @@ exports.MakeTransaction = catchAsync(async (req, res, next) => {
   }
 
   res.status(200).send({ Message: `Transaction Done!` });
-
 });
 
 exports.Reserving = catchAsync(async (req, res, next) => {
@@ -163,7 +162,7 @@ exports.Reserving = catchAsync(async (req, res, next) => {
     !User.phoneCheck(DURATION) ||
     !User.phoneCheck(KICKOFF_STATION_ID) ||
     !User.phoneCheck(DISTINATION_STATION_ID) ||
-   ! User.phoneCheck(BISCOOT_ID)
+    !User.phoneCheck(BISCOOT_ID)
   ) {
     return next(new ErrorHandling("Enter numbers only!!!!", 400));
   }
@@ -336,4 +335,84 @@ exports.ChangeProfileImage = catchAsync(async (req, res, next) => {
   set profile_img = '${img_url}'
   where id = ${id};`);
   res.status(200).send();
+});
+
+exports.ChangePassword = catchAsync(async (req, res, next) => {
+  const { NeededPassword } = req.body;
+  const { client_id } = req.params;
+
+  if (!User.phoneCheck(client_id)) {
+    return next(new ErrorHandling("Enter numbers only!!!!", 400));
+  }
+  console.log(client_id);
+  const Check_id_existance = await db.query(
+    "SELECT ID FROM CLIENT WHERE ID = $1;",
+    [client_id]
+  );
+  if (Check_id_existance["rowCount"] == 0) {
+    return next(new ErrorHandling("Client does not exist!", 401));
+  }
+  if (!NeededPassword) {
+    return next(new ErrorHandling("Fill All Fields to change password!", 409));
+  }
+  const hashNeededPassword = await User.hashPassword(NeededPassword);
+  if (hashNeededPassword == -1) {
+    return next(
+      new ErrorHandling("Password is not hashed and something went wrong", 500)
+    );
+  }
+
+  const newPassword = await db.query(
+    ` UPDATE CLIENT SET PASSWORD= '${hashNeededPassword}' WHERE ID='${client_id}';`
+  );
+  res.status(200).send({
+    Message: `Password has been changed successfully!`,
+    New_Password: newPassword.rows[0],
+  });
+});
+
+exports.StationListingBikes = catchAsync(async (req, res, next) => {
+  const { station_id } = req.params;
+
+  if (!User.phoneCheck(station_id)) {
+    return next(new ErrorHandling("Enter numbers only!!!!", 400));
+  }
+
+  const Check_id_existance = await db.query(
+    `SELECT ID FROM STATION WHERE ID = '${station_id}';`
+  );
+  if (Check_id_existance["rowCount"] == 0) {
+    return next(new ErrorHandling("Station does not exist!", 401));
+  }
+
+  const Bikes = await db.query(
+    ` SELECT * FROM BIKE,BISCOOT WHERE BISCOOT.STATION_ID='${station_id}' AND BIKE.BIKE_ID=BISCOOT.ID;`
+  );
+  res.status(200).send({
+    Message: `Bikes in station with id '${station_id}'`,
+    Bikesinfo: Bikes.rows[0],
+  });
+});
+
+exports.StationListingScooters = catchAsync(async (req, res, next) => {
+  const { station_id } = req.params;
+
+  if (!User.phoneCheck(station_id)) {
+    return next(new ErrorHandling("Enter numbers only!!!!", 400));
+  }
+
+  const Check_id_existance = await db.query(
+    `SELECT ID FROM STATION WHERE ID = '${station_id}';`
+  );
+  if (Check_id_existance["rowCount"] == 0) {
+    return next(new ErrorHandling("Station does not exist!", 401));
+  }
+
+  const Scooters = await db.query(
+    `SELECT * FROM SCOOTER,BISCOOT WHERE BISCOOT.STATION_ID='${station_id}' AND SCOOTER.SCOOTER_ID=BISCOOT.ID;`
+  );
+  res.status(200).send({
+    Message: `Scooters in station with id '${station_id}'`,
+    Scootersinfo: Scooters.rows[0],
+  });
 });
