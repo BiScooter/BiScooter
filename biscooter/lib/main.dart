@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         "/change_password": (context) => const ChangePassword(),
         "/my_statistics": (context) => const MyStatistics(),
         "/my_biscooter": (context) => const OfferBike(),
-        "/add_biscooter": (context) => const AddBiscooter(),
+        // "/add_biscooter": (context) => const AddBiscooter(),
         "/add_complaint": (context) => const SendComplaint(),
          "/rent": (context) {
            final Map<String, dynamic> arguments =
