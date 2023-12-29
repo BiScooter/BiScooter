@@ -5,7 +5,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
    database: 'BiscooterDB',
-  password: 'pppppppp8',
+  password: 'bedo',
   port: 5432
 });
 

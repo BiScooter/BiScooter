@@ -225,6 +225,105 @@ exports.AddStation = catchAsync(async (req, res, next) => {
   if (!CITY || !STREET || !ZIP || !NAME) {
     return next(new ErrorHandling("Fill All Fields!", 409));
   }
-  await db.query(`INSERT INTO STATION VALUES(DEFAULT,'${CITY}','${STREET}','${ZIP}','${NAME}','0','0');`);
+  await db.query(
+    `INSERT INTO STATION VALUES(DEFAULT,'${CITY}','${STREET}','${ZIP}','${NAME}','0','0');`
+  );
+  res.status(200).send({ status: "DONE" });
+});
+
+exports.AllBikesID = catchAsync(async (req, res, next) => {
+  const allBikes = await db.query(
+    `SELECT BISCOOT.ID FROM BISCOOT,BIKE WHERE BISCOOT.ID = BIKE.BIKE_ID;`
+  );
+  res.status(200).send({ status: "DONE", bikes: allBikes.rows });
+});
+
+exports.AllScootersID = catchAsync(async (req, res, next) => {
+  const allScooters = await db.query(
+    `SELECT BISCOOT.ID FROM BISCOOT,SCOOTER WHERE BISCOOT.ID = SCOOTER.SCOOTER_ID;`
+  );
+  res.status(200).send({ status: "DONE", scooters: allScooters.rows });
+});
+
+exports.AllClientsUsername = catchAsync(async (req, res, next) => {
+  const allClients = await db.query(`SELECT USERNAME FROM CLIENT;`);
+  res.status(200).send({ status: "DONE", clients: allClients.rows });
+});
+
+exports.AllEmployeesUsername = catchAsync(async (req, res, next) => {
+  const allEmployees = await db.query(`SELECT USERNAME FROM EMPLOYEE;`);
+  res.status(200).send({ status: "DONE", employees: allEmployees.rows });
+});
+
+exports.AllAdminsUsername = catchAsync(async (req, res, next) => {
+  const allAdmins = await db.query(
+    `SELECT USERNAME FROM ADMIN,EMPLOYEE WHERE ADMIN.ADMIN_ID = EMPLOYEE.NATIONAL_ID;`
+  );
+  res.status(200).send({ status: "DONE", admins: allAdmins.rows });
+});
+
+exports.ModularDeletion = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const type = req.params.type;
+
+  console.log(id, type);
+  if (id < 0) return next(new ErrorHandling("ID must be positive!", 409));
+  if (id == null || type == null)
+    return next(new ErrorHandling("Fill All Fields!", 409));
+
+  if (!User.phoneCheck(id))
+    return next(new ErrorHandling("The ID must be numeric!", 400));
+  if (type < 1 || type > 6)
+    return next(new ErrorHandling("Type must be between 1 and 6!", 409));
+  if (type == 1) {
+    // ADMIN IS DROPPED
+    const ExistedAdmin = await db.query(
+      `SELECT ADMIN_ID FROM ADMIN WHERE ADMIN_ID='${id}';`
+    );
+    if (ExistedAdmin.rows.length == 0)
+      return next(new ErrorHandling("Admin doesn't exist!", 409));
+    await db.query(`DELETE FROM EMPLOYEE WHERE EMPLOYEE='${id}';`);
+    await db.query(`DELETE FROM ADMIN WHERE ADMIN_ID='${id}';`);
+  } else if (type == 2) {
+    // EMPLOYEE IS DROPPED
+    const ExistedEmployee = await db.query(
+      `SELECT ID FROM EMPLOYEE WHERE ID='${id}';`
+    );
+    if (ExistedEmployee.rows.length == 0)
+      return next(new ErrorHandling("Employee doesn't exist!", 409));
+    await db.query(`DELETE FROM EMPLOYEE WHERE ID='${id}';`);
+  } else if (type == 3) {
+    // CLIENT IS DROPPED
+    const ExistedClient = await db.query(
+      `SELECT ID FROM CLIENT WHERE ID='${id}';`
+    );
+    if (ExistedClient.rows.length == 0)
+      return next(new ErrorHandling("Client doesn't exist!", 409));
+    await db.query(`DELETE FROM CLIENT WHERE ID='${id}';`);
+  } else if (type == 4) {
+    // BIKE IS DROPPED
+    const ExistedBike = await db.query(
+      `SELECT ID FROM BISCOOT WHERE ID='${id}';`
+    );
+    if (ExistedBike.rows.length == 0)
+      return next(new ErrorHandling("Bike doesn't exist!", 409));
+    await db.query(`DELETE FROM BISCOOT WHERE ID='${id}';`);
+  } else if (type == 5) {
+    // SCOOTER IS DROPPED
+    const ExistedScooter = await db.query(
+      `SELECT ID FROM BISCOOT WHERE ID='${id}';`
+    );
+    if (ExistedScooter.rows.length == 0)
+      return next(new ErrorHandling("Scooter doesn't exist!", 409));
+    await db.query(`DELETE FROM BISCOOT WHERE ID='${id}';`);
+  } else {
+    // SUPPLIER IS DROPPED
+    const ExistedSupplier = await db.query(
+      `SELECT ID FROM SUPPLIER WHERE ID='${id}';`
+    );
+    if (ExistedSupplier.rows.length == 0)
+      return next(new ErrorHandling("Supplier doesn't exist!", 409));
+    await db.query(`DELETE FROM SUPPLIER WHERE ID='${id}';`);
+  }
   res.status(200).send({ status: "DONE" });
 });
