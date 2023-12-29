@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/widget/bike_card.dart';
 import 'package:biscooter/widget/drawer.dart';
 import 'package:biscooter/widget/scooter_card.dart';
@@ -27,10 +28,10 @@ class _StationState extends State<Station> {
     scooter_list = Fetchscooter();
   }
 
-  String Url = "";
+
   Future<List<bikes>?> Fetchbike() async {
     try {
-      final response = await get(Uri.parse(Url));
+      final response = await get(Uri.parse("${const Connection().baseUrl}StationListing/Bikes/${widget.id}"));
       if (response.statusCode == 200) {
         // Decode the response body
         dynamic responseData = jsonDecode(response.body);
@@ -45,7 +46,7 @@ class _StationState extends State<Station> {
   String scooterUrl = "";
   Future<List<scooter>?> Fetchscooter() async {
     try {
-      final response = await get(Uri.parse(scooterUrl));
+      final response = await get(Uri.parse("${const Connection().baseUrl}StationListing/Scooters/${widget.id}"));
       if (response.statusCode == 200) {
         // Decode the response body
         dynamic responseData = jsonDecode(response.body);

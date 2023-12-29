@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
           return Verification(email: args['email']);
         },
       },
-      initialRoute: "/",
+      initialRoute: "/change_password",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
