@@ -6,7 +6,6 @@ const adminRouter = express.Router();
 
 adminRouter.post('/signup', adminController.signup);
 adminRouter.post('/login', adminController.login);
-//adminRouter.get('/ViewAll',adminController.ViewAll)
 adminRouter.post('/AddEmployee',adminController.AddEmp)
 adminRouter.post('/DropEmployee',adminController.DropEmp)
 adminRouter.post('/AddClient',adminController.AddClient)
