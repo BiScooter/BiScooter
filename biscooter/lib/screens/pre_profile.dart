@@ -1,7 +1,11 @@
 
+import 'dart:convert';
+
 import 'package:biscooter/screens/profile.dart';
+import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class PreProfile extends StatefulWidget {
   const PreProfile({super.key});
@@ -12,6 +16,7 @@ class PreProfile extends StatefulWidget {
 
 class _PreProfileState extends State<PreProfile> {
   late Future<Map<String, dynamic>?> mileStone;
+  int userID = 0;
 
   @override
   void initState() {
@@ -20,36 +25,17 @@ class _PreProfileState extends State<PreProfile> {
   }
 
   Future<Map<String, dynamic>?> getUserData() async {
-    // try {
-    //   final response = await get(Uri.parse("http://localhost:3000/user"));
-    //   if (response.statusCode == 200) {
-    //     // Decode the response body
-    //     Map<String, dynamic> responseData = jsonDecode(response.body);
-    //     return responseData;
-    //   }
-    // } catch (e) {
-    //   debugPrint(e.toString());
-    // }
-    return {
-      "status": "Successfully Logged in",
-      "user_info": [
-        {
-          "id": "2",
-          "email": "mariam@gmail.com",
-          "username": "mariam_amin",
-          "telephone": "01100685310",
-          "invitation_code": "22577",
-          "fname": "Mariam",
-          "mname": "A",
-          "lname": " Amin",
-          "password":
-              "\$2b\$12\$BqB2ZA295g3AomFsZ3dpO.zM1r.N1PVijmGMaDiUn7Hut/l.u7SL6",
-          "status": "5",
-          "wallet": "\$7.00",
-          "invited_client": null
-        }
-      ]
-    };
+    try {
+      final response = await get(Uri.parse("${const Connection().baseUrl}/auth/me/${User().getId}"));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
   }
 
   @override
@@ -68,7 +54,7 @@ class _PreProfileState extends State<PreProfile> {
             );
           }
           // set the user service/
-          final userInfo = snapshot.data!['user_info'][0];
+          final userInfo = snapshot.data!;
           // TODO: activate this and reomve the dummy
           User.setUserService(
             int.parse(userInfo['id']),
@@ -76,7 +62,7 @@ class _PreProfileState extends State<PreProfile> {
             userInfo['mname'].toString(),
             userInfo['lname'].toString(),
             userInfo['invitation_code'].toString(),
-            userInfo['mname'].toString(),
+            'https://i.pinimg.com/736x/70/aa/28/70aa28f678193194b4a023e542ce4775.jpg',
             double.parse(userInfo['wallet'].toString().substring(1)),
             10,
           );

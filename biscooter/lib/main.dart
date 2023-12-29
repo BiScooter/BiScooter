@@ -7,7 +7,7 @@ import 'package:biscooter/screens/my_statistics.dart';
 import 'package:biscooter/screens/my_wallet.dart';
 import 'package:biscooter/screens/offerbike.dart';
 import 'package:biscooter/screens/profile.dart';
-import 'package:biscooter/screens/recharge.dart';
+// import 'package:biscooter/screens/recharge.dart';
 import 'package:biscooter/screens/rentalhistory.dart';
 import 'package:biscooter/screens/send_complaint.dart';
 import 'package:biscooter/screens/sign_up.dart';
@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           return Verification(email: args['email']);
         },
       },
-      initialRoute: "/my_wallet",
+      initialRoute: "/",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

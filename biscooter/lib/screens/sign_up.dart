@@ -62,6 +62,7 @@ class _SignUpState extends State<SignUp> {
               _lastName.text, invitationCode, "", 0, 0);
 
           User.setLoggedIn();
+          User.setID(id);
 
           if (mounted) {
             Navigator.pushNamed(context, '/verification',

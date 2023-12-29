@@ -59,6 +59,7 @@ class _LogInState extends State<LogIn> {
           );
           // set the login status to true
           User.setLoggedIn();
+          User.setID(int.parse(userInfo['id']));
           // go to the profile page
           /// TODO: uncomment this when the check is correct
           if (mounted) {

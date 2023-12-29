@@ -33,6 +33,18 @@ class User {
     return isLoggedIn ?? false;
   }
 
+  static void setID(int userID) async {
+    SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    prefs.setInt('UserIDBiscooter', userID);
+  }
+
+  static Future<void> getID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userID = prefs.getInt('UserIDBiscooter');
+    User().setId = userID ?? 0;
+  }
+
   static void setUserService(
       int id,
       String firstName,

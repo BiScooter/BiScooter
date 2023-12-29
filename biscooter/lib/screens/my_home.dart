@@ -28,7 +28,10 @@ class _MyHomeState extends State<MyHome> {
   void initState() {
     super.initState();
     isLoggedInCheck();
+    User.getID();
+    // User.setID(1);
   }
+
 
   @override
   Widget build(BuildContext context) {
