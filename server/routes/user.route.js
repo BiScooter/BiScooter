@@ -16,7 +16,7 @@ userRouter.post('/ClientActions4/RemoveBike/:client_id',userController.RemoveHis
 userRouter.post('/ClientActions4/RemoveScooter/:client_id',userController.RemoveHisScooter);
 userRouter.post('/ClientActions5/:client_id',userController.GiveFeedback);
 userRouter.post('/ClientActions6/:client_id',userController.GiveComplaint);
-userRouter.get('/ComplaintResponse/:client_id',userController.ComplaintResponse);
+// userRouter.get('/ComplaintResponse/:client_id',userController.ComplaintResponse);
 userRouter.post('/Transactions/:client_id',userController.MakeTransaction);
 userRouter.post('/changeProfileImage/:id',userController.ChangeProfileImage);
 
