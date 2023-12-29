@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class RentBike extends StatefulWidget {
-  const RentBike({super.key});
+  final int state;
+  final int id;
+  const RentBike({super.key, required this.state, required this.id});
 
   @override
   State<RentBike> createState() => _RentBikeState();

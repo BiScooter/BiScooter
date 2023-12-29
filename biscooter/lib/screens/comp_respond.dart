@@ -20,8 +20,9 @@ class _CompRespondState extends State<CompRespond> {
     super.initState();
     Complaints = FetchComplaints();
   }
-late Future<List<Complaint>?> Complaints;
-  String url="";
+
+  late Future<List<Complaint>?> Complaints;
+  String url = "";
   Future<List<Complaint>?> FetchComplaints() async {
     try {
       final response = await get(Uri.parse(url));
@@ -33,8 +34,9 @@ late Future<List<Complaint>?> Complaints;
     } catch (e) {
       debugPrint(e.toString());
     }
-    return null;
+    return [];
   }
+
   void goToSendComplaint() {
     Navigator.pushNamed(context, '/add_complaint');
   }
@@ -82,22 +84,43 @@ late Future<List<Complaint>?> Complaints;
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 100),
-            width: double.infinity,
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height * 0.77,
-            child: const SingleChildScrollView(
-              child: Column(children: [
-                // CompCard(),
-                // CompCard(),
-                // CompCard(),
-                // CompCard(),
-                // CompCard(),
-                // CompCard(),
-                // CompCard(),
-              ]),
-            ),
-          ),
+              margin: const EdgeInsets.only(top: 100),
+              width: double.infinity,
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height * 0.77,
+              child: FutureBuilder<List<Complaint>?>(
+                  future: Complaints,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    } else {
+                      if (snapshot.hasError) {
+                        return const Center(
+                          child: Text('Error occurred while fetching the data'),
+                        );
+                      }
+                      final request = snapshot.data;
+                      if (request == null || request.isEmpty) {
+                        return Center(
+                          child: Text('No Complaints found.'),
+                        );
+                      } else {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: request.map((e) {
+                              return CompCard(
+                                date: e.date,
+                                description: e.describtion,
+                                employeename: e.employeename,
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+                    }
+                  })),
           Container(
               margin: const EdgeInsets.only(bottom: 20),
               width: double.infinity,
@@ -112,14 +135,16 @@ late Future<List<Complaint>?> Complaints;
 class Complaint {
   final String describtion;
   final DateTime date;
+  final String employeename;
 
   Complaint({
+    required this.employeename,
     required this.describtion,
     required this.date,
   });
 
   static Complaint fromJson(json) => Complaint(
-        describtion: json['describtion'],
-        date: json['date'],
-      );
+      describtion: json['describtion'],
+      date: json['date'],
+      employeename: json['employee_name']);
 }

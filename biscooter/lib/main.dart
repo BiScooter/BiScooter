@@ -9,6 +9,7 @@ import 'package:biscooter/screens/offerbike.dart';
 import 'package:biscooter/screens/profile.dart';
 import 'package:biscooter/screens/recharge.dart';
 import 'package:biscooter/screens/rentalhistory.dart';
+import 'package:biscooter/screens/rentbike.dart';
 import 'package:biscooter/screens/send_complaint.dart';
 import 'package:biscooter/screens/sign_up.dart';
 import 'package:biscooter/screens/splash.dart';
@@ -35,7 +36,15 @@ class MyApp extends StatelessWidget {
         "/": (context) => const MyHome(),
         "/splash": (context) => const Splash(),
         "/profile": (context) => const Profile(),
-        "/station": (context) => const Station(),
+        "/station": (context) {
+           final Map<String, dynamic> arguments =
+      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+  final String stationName = arguments['stationName'];
+  final int id = arguments['id'];
+  return Station(
+    station_name: stationName,
+    id: id,
+  );},
         "/my_wallet": (context) => const MyWallet(),
         "/recharge": (context) => const Recharge(),
         "/invite_friend": (context) => const InviteFriend(),
@@ -46,6 +55,19 @@ class MyApp extends StatelessWidget {
         "/my_biscooter": (context) => const OfferBike(),
         "/add_biscooter": (context) => const AddBiscooter(),
         "/add_complaint": (context) => const SendComplaint(),
+         "/rent": (context) {
+           final Map<String, dynamic> arguments =
+      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+  final int state = arguments['state'];
+  final int id = arguments['id'];
+
+  return RentBike(
+    state: state,
+    id: id,
+  );
+         },
+
         "/log_in": (context) => const LogIn(),
         "/sign_up": (context) => const SignUp(),
         "/verification": (context) {
@@ -54,7 +76,7 @@ class MyApp extends StatelessWidget {
           return Verification(email: args['email']);
         },
       },
-      initialRoute: "/my_biscooter",
+      initialRoute: "/station",
       title: 'Biscooter',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
