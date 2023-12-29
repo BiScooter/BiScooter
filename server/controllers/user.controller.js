@@ -163,7 +163,7 @@ exports.Reserving = catchAsync(async (req, res, next) => {
     !User.phoneCheck(DURATION) ||
     !User.phoneCheck(KICKOFF_STATION_ID) ||
     !User.phoneCheck(DISTINATION_STATION_ID) ||
-    User.phoneCheck(BISCOOT_ID)
+   ! User.phoneCheck(BISCOOT_ID)
   ) {
     return next(new ErrorHandling("Enter numbers only!!!!", 400));
   }
@@ -222,7 +222,7 @@ exports.OfferHisBike = catchAsync(async (req, res, next) => {
     !User.phoneCheck(WEIGHT) ||
     !User.phoneCheck(RNT_COST) ||
     !User.phoneCheck(SIZE) ||
-    User.phoneCheck(PRICE)
+    !User.phoneCheck(PRICE)
   ) {
     return next(new ErrorHandling("Enter numbers only!!!!", 400));
   }
@@ -263,8 +263,8 @@ exports.OfferHisScooter = catchAsync(async (req, res, next) => {
     !User.phoneCheck(RANGE) ||
     !User.phoneCheck(MAX_SPEED) ||
     !User.phoneCheck(RNT_COST) ||
-    User.phoneCheck(SIZE) ||
-    User.phoneCheck(PRICE)
+    !User.phoneCheck(SIZE) ||
+    !User.phoneCheck(PRICE)
   ) {
     return next(new ErrorHandling("Enter numbers only!!!!", 400));
   }

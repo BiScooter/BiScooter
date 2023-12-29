@@ -219,7 +219,7 @@ Content-Type: application/json
         "NATIONAL_ID":"125"	,														
 	"USERNAME":"Peter",		
 	"TELEPHONE":"0125664"	,
-	"EMAIL"	:"puyfl@hotmail.com",		
+	"EMAIL"	:"peter@gmail.com",		
 	"PASSWORD":"ppppppp"	,	
 	"SALARY":"9787"	,		
 	"BIRTHDATE":"2005-8-8",
@@ -269,8 +269,6 @@ Content-Type: application/json
    "password":"pppppppp"
 }
 ###
-
-GET http://localhost:8080/users/ComplaintResponse/1000
 
 
 ###
