@@ -4,7 +4,6 @@ import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/my_dimensions.dart';
 import 'package:biscooter/widget/input.dart';
 import "package:flutter/material.dart";
-// TODO: remove the commenting when the server is ready
 import 'dart:convert';
 import 'package:biscooter/services/user.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,25 +20,39 @@ class ChangeProfileImage extends StatefulWidget {
 class _ChangeProfileImageState extends State<ChangeProfileImage> {
   final _formController = GlobalKey<FormState>();
   final _url = TextEditingController();
+  final _testedUrl = TextEditingController();
+
+  bool _imgFlag = false;
   double radius = 120;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _url.text = User().getProfileImage;
+    _testedUrl.text = User().getProfileImage;
+    _url.text = '';
   }
 
   void change() async {
     FocusScope.of(context).unfocus();
+    if (!_imgFlag) {
+      Fluttertoast.showToast(
+        msg: "Invalid URL",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16,
+      );
+      return;
+    }
 
     // if the form is valid go and send the change request
-    // TODO: activate this when the server is ready
     if (_formController.currentState!.validate()) {
       try {
         // send a change request to the server
         Response response = await post(
-          Uri.parse("${const Connection().baseUrl}/users/changeProfileImage/${User().getId}"),
+          Uri.parse(
+              "${const Connection().baseUrl}/users/changeProfileImage/${User().getId}"),
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
@@ -61,18 +74,7 @@ class _ChangeProfileImageState extends State<ChangeProfileImage> {
             textColor: Colors.white,
             fontSize: 16,
           );
-        } // invalid email or password
-        else if (response.statusCode == 401) {
-          Fluttertoast.showToast(
-            msg: "Something went wrong",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16,
-          );
-        } // if the change was not successful
-        else {
+        } else {
           Fluttertoast.showToast(
             msg: "Something went wrong",
             toastLength: Toast.LENGTH_LONG,
@@ -85,10 +87,6 @@ class _ChangeProfileImageState extends State<ChangeProfileImage> {
       } catch (e) {
         debugPrint(e.toString());
       }
-
-      // TODO: remove this line when the server is ready
-      // Navigator.of(context)
-      //     .pushNamedAndRemoveUntil("/profile", (Route<dynamic> route) => false);
     }
   }
 
@@ -129,18 +127,26 @@ class _ChangeProfileImageState extends State<ChangeProfileImage> {
         child: Column(
           children: [
             Container(
-              height: const MyDimensions().spaceHeight *2.2,
+              height: const MyDimensions().spaceHeight * 2.2,
               padding: const EdgeInsets.only(top: 62),
               child: CircleAvatar(
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 255, 255),
-                            radius: radius,
-                            child: CircleAvatar(
-                              radius: radius*0.92,
-                              backgroundColor: Colors.white,
-                              backgroundImage: NetworkImage(_url.text),
-                            ),
-                          ),
+                backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                radius: radius,
+                child: Padding(
+                  padding: EdgeInsets.all(0.05 * radius),
+                  child: ClipOval(
+                    child: Image.network(
+                      _testedUrl.text,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        //TODO: add a tracker
+                        _imgFlag = false;
+                        return Image.asset('assets/imgs/no_img.png');
+                      },
+                    ),
+                  ),
+                ),
+              ),
             ),
 
             // the white container
@@ -188,19 +194,24 @@ class _ChangeProfileImageState extends State<ChangeProfileImage> {
                             bottom: const MyDimensions().bottomButtonHeight),
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: ElevatedButton(
-                            onPressed: change,
-                            style: ButtonStyle(
-                              fixedSize: const MaterialStatePropertyAll(
-                                Size(300, 60),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _imgFlag = true;
+                                    _testedUrl.text = _url.text;
+                                  });
+                                },
+                                child: const Text("Test URL",
+                                    style: TextStyle(color: Colors.black)),
                               ),
-                              backgroundColor: MaterialStatePropertyAll(
-                                  Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer),
-                            ),
-                            child: Text("Change",
-                                style: Theme.of(context).textTheme.labelLarge),
+                              TextButton(
+                                onPressed: change,
+                                child: const Text("Set as Profile Image"),
+                              )
+                            ],
                           ),
                         ),
                       ),
