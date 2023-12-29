@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:employee/connection.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   //List = [1, 2, 3, 4, 5];
+  var getClints = 0;
 
   late Future<List<Bike>?> bike_list;
   late Future<List<scooter>?> scooter_list;
@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   late Future<List<Username_Admin>?> name_admin;
   late Future<List<suppliers>?> name_supplier;
   late Future<List<client>?> clients;
+  late Future<List<Employee>?> employee;
 
   var selectednameofclint;
   var selectedValuebike;
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    getClints = 0;
     bike_list = Fetchbike();
     scooter_list = Fetchscooter();
     name_clint = FetchusernameofClint();
@@ -47,12 +48,28 @@ class _MyAppState extends State<MyApp> {
     name_admin = FetchusernameofAdmin();
     name_supplier = Fetchusernameofsupplier();
     clients = FetchClints();
+    employee = FetchEmployee();
+  }
+
+  Future<List<Employee>?> FetchEmployee() async {
+    try {
+      final response = await get(
+          Uri.parse("${const Connection().baseUrl}/RetrieveEmployeesData"));
+      if (response.statusCode == 200) {
+        // Decode the response body
+        dynamic responseData = jsonDecode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return [];
   }
 
   Future<List<client>?> FetchClints() async {
     try {
-      final response =
-          await get(Uri.parse("${const Connection().baseUrl}/RetrieveClientsData"));
+      final response = await get(
+          Uri.parse("${const Connection().baseUrl}/RetrieveClientsData"));
       if (response.statusCode == 200) {
         // Decode the response body
         dynamic responseData = jsonDecode(response.body);
@@ -832,85 +849,71 @@ class _MyAppState extends State<MyApp> {
                           width: 100,
                         ),
                         ElevatedButton(
-                            onPressed: dropSupplier,
+                            onPressed: () {
+                              setState(() {
+                                getClints = 1;
+                              });
+                            },
                             child: Text('Get Clients')),
                       ],
                     ),
-                    FutureBuilder<List<client>?>(
-                        future: clients,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator.adaptive(),
-                            );
-                          } else {
-                            if (snapshot.hasError) {
-                              return const Center(
-                                child: Text(
-                                    'Error occurred while fetching the data'),
-                              );
-                            }
-                            final data = snapshot.data;
-                            if (data == null || data.isEmpty) {
-                              return const Center(
-                                child: null,
-                              );
-                            } else {
-                              return DataTable(
-                                  columns: [
-                                    DataColumn(label: Text('FNAME')),
-                                    DataColumn(label: Text('MNAME')),
-                                    DataColumn(label: Text('LNAME')),
-                                    DataColumn(label: Text('EMAIL')),
-                                    DataColumn(label: Text('USERNAME')),
-                                    DataColumn(label: Text('TELEPHONE')),
-                                    DataColumn(label: Text('NVITATION_CODE')),
-                                    DataColumn(label: Text('WALLET')),
-                                  ],
-                                  rows: data.map(
-                                    (client item)  {
-                                      return DataRow(cells: [
-                                        DataCell(
-                                          Text('${item.FNAME}')
-                                      ),
-                                      DataCell(
-                                          Text('${item.MNAME}')
-                                      ),
-                                      DataCell(
-                                          Text('${item.LNAME}')
-                                      ),
-                                      DataCell(
-                                          Text('${item.EMAIL}')
-                                      ),
-                                      DataCell(
-                                          Text('${item.USERNAME}')
-                                      ),
-                                      DataCell(
-                                          Text('${item.TELEPHONE}')
-                                      ),
-                                      DataCell(
-                                          Text('${item.NVITATION_CODE}')
-                                      ),
-                                       DataCell(
-                                          Text('${item.WALLET}')
-                                      ),
-
-                                      ])
-                                      ;
-                                    },
-                                  )
-                                  .toList()
+                    getClints == 1
+                        ? FutureBuilder<List<client>?>(
+                            future: clients,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              } else {
+                                if (snapshot.hasError) {
+                                  return const Center(
+                                    child: Text(
+                                        'Error occurred while fetching the data'),
                                   );
-                            }
-                          }
-                        })
+                                }
+                                final data = snapshot.data;
+                                if (data == null || data.isEmpty) {
+                                  return const Center(
+                                    child: null,
+                                  );
+                                } else {
+                                  return DataTable(
+                                      columns: [
+                                        DataColumn(label: Text('FNAME')),
+                                        DataColumn(label: Text('MNAME')),
+                                        DataColumn(label: Text('LNAME')),
+                                        DataColumn(label: Text('EMAIL')),
+                                        DataColumn(label: Text('USERNAME')),
+                                        DataColumn(label: Text('TELEPHONE')),
+                                        DataColumn(
+                                            label: Text('NVITATION_CODE')),
+                                        DataColumn(label: Text('WALLET')),
+                                      ],
+                                      rows: data.map(
+                                        (client item) {
+                                          return DataRow(cells: [
+                                            DataCell(Text('${item.FNAME}')),
+                                            DataCell(Text('${item.MNAME}')),
+                                            DataCell(Text('${item.LNAME}')),
+                                            DataCell(Text('${item.EMAIL}')),
+                                            DataCell(Text('${item.USERNAME}')),
+                                            DataCell(Text('${item.TELEPHONE}')),
+                                            DataCell(
+                                                Text('${item.NVITATION_CODE}')),
+                                            DataCell(Text('${item.WALLET}')),
+                                          ]);
+                                        },
+                                      ).toList());
+                                }
+                              }
+                            })
+                        : Center(
+                            child: null,
+                          )
                   ],
                 ),
-
-
-
-
               ],
             ),
           ),
@@ -1022,5 +1025,29 @@ class client {
         TELEPHONE: json['TELEPHONE'],
         NVITATION_CODE: json['NVITATION_CODE'],
         WALLET: json['WALLET'],
+      );
+}
+
+class Employee {
+  final String FNAME;
+  final String MNAME;
+  final String LNAME;
+  final String NATIONAL_ID;
+  final String USERNAME;
+
+  Employee({
+    required this.FNAME,
+    required this.MNAME,
+    required this.LNAME,
+    required this.NATIONAL_ID,
+    required this.USERNAME,
+  });
+
+  static Employee fromJson(json) => Employee(
+        FNAME: json['FNAME'],
+        LNAME: json['LNAME'],
+        MNAME: json['MNAME'],
+        USERNAME: json['USERNAME'],
+        NATIONAL_ID: json['NATIONAL_ID'],
       );
 }
