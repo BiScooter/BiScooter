@@ -1,6 +1,4 @@
-import 'package:biscooter/screens/add_biscooter.dart';
 import 'package:biscooter/screens/change_password.dart';
-import 'package:biscooter/screens/change_profile_image.dart';
 import 'package:biscooter/screens/comp_respond.dart';
 import 'package:biscooter/screens/invite_friend.dart';
 import 'package:biscooter/screens/log_in.dart';
