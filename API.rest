@@ -274,3 +274,15 @@ Content-Type: application/json
    "password":"pppppppp"
 }
 
+
+###
+GET http://localhost:8080/auth/me/1
+
+###
+//LOG IN CLIENT
+POST http://localhost:8080/users/changeProfileImage/1
+Content-Type: application/json
+
+{
+   "img_url": "there"
+}

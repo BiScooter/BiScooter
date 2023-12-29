@@ -48,7 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     return next(new ErrorHandling("Something is Wrong!!", 500));
   const newUser =
     await db.query(`INSERT INTO client Values(DEFAULT,'${Email}', '${Username}',
-        '${Telephone}','${randomString}', '${FName}', '${MName}',' ${LName}', '${hashedPassword}','5',7,null)RETURNING ID,invitation_code;`);
+        '${Telephone}','${randomString}', '${FName}', '${MName}',' ${LName}', '${hashedPassword}','5',7,null,'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')RETURNING ID,invitation_code;`);
 
   res
     .status(200)
@@ -83,7 +83,9 @@ exports.login = catchAsync(async (req, res, next) => {
   if (user["rowCount"] == 0 || !correct) {
     return next(new ErrorHandling("incorrect email or password", 401));
   }
-  const result = await db.query(`SELECT	EMAIL,			
+  const result = await db.query(`SELECT	
+    ID,
+    EMAIL,			
     USERNAME,	
     TELEPHONE	,	
     INVITATION_CODE,									
@@ -92,8 +94,22 @@ exports.login = catchAsync(async (req, res, next) => {
     LNAME	,				
     STATUS,													 	
     WALLET	,		
-    INVITED_CLIENT FROM client where Email='${email}';`);
+    INVITED_CLIENT,
+    PROFILE_IMG
+    FROM client where Email='${email}';`);
   res
     .status(200)
     .send({ status: "Successfully Logged in", user_info: result.rows[0] });
+});
+
+exports.me = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const user = await db.query(
+    `SELECT * FROM client WHERE id = ${id};`
+  );
+  const userData = user.rows[0];
+  // console.log(userData);
+  res
+    .status(200)
+    .send(userData);
 });

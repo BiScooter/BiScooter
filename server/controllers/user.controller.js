@@ -19,12 +19,10 @@ exports.GetHomeScreenInfos = catchAsync(async (req, res, next) => {
   BikeCountResult.rows[0].scooters_numbers =
     ScooterCountResult.rows[0]["scooters_numbers"];
 
-  res
-    .status(200)
-    .send({
-      Message: "Stations'info is retrieved",
-      Stations_Bikesinfo: BikeCountResult.rows[0],
-    });
+  res.status(200).send({
+    Message: "Stations'info is retrieved",
+    Stations_Bikesinfo: BikeCountResult.rows,
+  });
 });
 
 exports.ReviewOrderHistory = catchAsync(async (req, res, next) => {
@@ -36,12 +34,10 @@ exports.ReviewOrderHistory = catchAsync(async (req, res, next) => {
     await db.query(`SELECT * FROM RENT_BISCOOT NATURAL JOIN RENTALS AS RENTALS(RENTAL_ID,COST,STATUS,DATE_OF_RENTAL,DURATION,KICKOFF_STATION_ID,DISTINATION_STATION_ID)
      WHERE CLIENT_ID='${client_id}';`);
 
-  res
-    .status(200)
-    .send({
-      Message: `Rental for user with id ='${client_id}'`,
-      Rentalsinfo: RentalHistory.rows[0],
-    });
+  res.status(200).send({
+    Message: `Rental for user with id ='${client_id}'`,
+    Rentalsinfo: RentalHistory.rows[0],
+  });
 });
 
 exports.ViewTransactionHistory = catchAsync(async (req, res, next) => {
@@ -49,12 +45,10 @@ exports.ViewTransactionHistory = catchAsync(async (req, res, next) => {
   const ViewTransaction = await db.query(
     `SELECT * FROM TRANS_ACTION WHERE CLIENT_ID  = '${client_id}'`
   );
-  res
-    .status(200)
-    .send({
-      Message: `All Transactions for user with id ='${client_id}'`,
-      Transactioninfo: ViewTransaction.rows,
-    });
+  res.status(200).send({
+    Message: `All Transactions for user with id ='${client_id}'`,
+    Transactioninfo: ViewTransaction.rows,
+  });
 });
 
 exports.TrackingStats = catchAsync(async (req, res, next) => {
@@ -62,12 +56,10 @@ exports.TrackingStats = catchAsync(async (req, res, next) => {
   const OverAll = await db.query(
     `SELECT Overall_Time FROM CLIENT WHERE ID= '${client_id}'`
   );
-  res
-    .status(200)
-    .send({
-      Message: `All overall time for user with id ='${client_id}'`,
-      Statsinfo: OverAll.rows[0],
-    });
+  res.status(200).send({
+    Message: `All overall time for user with id ='${client_id}'`,
+    Statsinfo: OverAll.rows[0],
+  });
 });
 
 exports.GiveFeedback = catchAsync(async (req, res, next) => {
@@ -84,11 +76,9 @@ exports.GiveFeedback = catchAsync(async (req, res, next) => {
     `INSERT INTO FEEDBACK_BISCOOT VALUES('${feedback_id.rows[0].id}','${client_id}','${BISCOOT_ID}')`
   );
 
-  res
-    .status(200)
-    .send({
-      Message: `Feedback has been given on bike with id '${BISCOOT_ID}'`,
-    });
+  res.status(200).send({
+    Message: `Feedback has been given on bike with id '${BISCOOT_ID}'`,
+  });
 });
 
 exports.GiveComplaint = catchAsync(async (req, res, next) => {
@@ -134,15 +124,14 @@ exports.MakeTransaction = catchAsync(async (req, res, next) => {
         `INSERT INTO TRANS_ACTION VALUES(DEFAULT,'${CARDOTP}','${STATUS}','${AMOUNT}','${DATE}','${client_id}');`
       );
     }
-  }
-  else if(STATUS == "Deposit")
-  {
+  } else if (STATUS == "Deposit") {
     let sum = numericValue + numericAmount;
-      await db.query(
-        `UPDATE CLIENT SET WALLET = '${sum}' WHERE ID='${client_id}'; `
-      );
-      await db.query(
-        `INSERT INTO TRANS_ACTION VALUES(DEFAULT,'${CARDOTP}','${STATUS}','${AMOUNT}','${DATE}','${client_id}');`);
+    await db.query(
+      `UPDATE CLIENT SET WALLET = '${sum}' WHERE ID='${client_id}'; `
+    );
+    await db.query(
+      `INSERT INTO TRANS_ACTION VALUES(DEFAULT,'${CARDOTP}','${STATUS}','${AMOUNT}','${DATE}','${client_id}');`
+    );
   }
 
   res.status(200).send({ Message: `Transaction Done!` });
@@ -188,11 +177,9 @@ exports.Reserving = catchAsync(async (req, res, next) => {
     `INSERT INTO RENT_BISCOOT VALUES ('${rent_id.rows[0].id}',${client_id},${BISCOOT_ID});`
   );
 
-  res
-    .status(200)
-    .send({
-      Message: `SUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`,
-    });
+  res.status(200).send({
+    Message: `SUCCESSFULLY RENTED BIKE ${BISCOOT_ID} TO CLIENT WITH ID ${client_id}!`,
+  });
 });
 
 exports.Canceling = catchAsync(async (req, res, next) => {
@@ -250,11 +237,9 @@ exports.OfferHisBike = catchAsync(async (req, res, next) => {
   await db.query(
     `INSERT INTO BIKE VALUES ('${TYPE_OF_BIKE}','${GEARS_NUM}','${BRAND}','${WEIGHT}','${offered_biscoot_id.rows[0].id}')RETURNING BIKE_ID;`
   );
-  res
-    .status(200)
-    .send({
-      Message: `Your bike has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
-    });
+  res.status(200).send({
+    Message: `Your bike has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
+  });
 });
 
 exports.OfferHisScooter = catchAsync(async (req, res, next) => {
@@ -291,11 +276,9 @@ exports.OfferHisScooter = catchAsync(async (req, res, next) => {
   await db.query(
     `INSERT INTO Scooter VALUES ('${BATTERY_CAPACITY}','${RANGE}','${MAX_SPEED}','${offered_biscoot_id.rows[0].id}')RETURNING SCOOTER_ID;`
   );
-  res
-    .status(200)
-    .send({
-      Message: `Your scooter has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
-    });
+  res.status(200).send({
+    Message: `Your scooter has been inserted successfully with id '${offered_biscoot_id.rows[0].id}'!`,
+  });
 });
 
 exports.RemoveHisScooter = catchAsync(async (req, res, next) => {
@@ -341,11 +324,18 @@ exports.ViewOfferedBikes = catchAsync(async (req, res, next) => {
   const offeredScooters = await db.query(`SELECT * FROM SCOOTER,BISCOOT
    WHERE BISCOOT.OWNER_ID='${client_id}' AND SCOOTER.SCOOTER_ID=BISCOOT.ID;`);
   console.log(offeredBikes);
-  res
-    .status(200)
-    .send({
-      Message: `Offered bikes and Scooters`,
-      Bikes: offeredBikes.rows[0],
-      Scooters: offeredScooters.rows[0],
-    });
+  res.status(200).send({
+    Message: `Offered bikes and Scooters`,
+    Bikes: offeredBikes.rows[0],
+    Scooters: offeredScooters.rows[0],
+  });
+});
+
+exports.ChangeProfileImage = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const { img_url } = req.body;
+  const changedImg = await db.query(`update client 
+  set profile_img = '${img_url}'
+  where id = ${id};`);
+  res.status(200).send();
 });
