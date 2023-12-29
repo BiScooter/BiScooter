@@ -11,7 +11,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       .toString(36)
       .substring(2, 2 + length);
   }
-  let randomString = generateRandomString(10);
+  let randomString = generateRandomString(8);
 
   const {
     FName,
@@ -48,7 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     return next(new ErrorHandling("Something is Wrong!!", 500));
   const newUser =
     await db.query(`INSERT INTO client Values(DEFAULT,'${Email}', '${Username}',
-        '${Telephone}','${randomString}', '${FName}', '${MName}',' ${LName}', '${hashedPassword}','5',7,null,'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')RETURNING ID,invitation_code;`);
+        '${Telephone}','${randomString.toUpperCase()}', '${FName}', '${MName}',' ${LName}', '${hashedPassword}','5',7,null,'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg')RETURNING ID,invitation_code, profile_img;`);
 
   res
     .status(200)
