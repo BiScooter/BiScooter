@@ -14,12 +14,11 @@ class OfferBike extends StatefulWidget {
 }
 
 class _OfferBikeState extends State<OfferBike> {
-  @override
   String url2 = "";
 
-  ///get if the user have scooter of biek for not
+  ///get if the user have scooter of bike for not
 
-  Future<int> havebike() async {
+  Future<int> haveBike() async {
     try {
       final response = await get(Uri.parse(url2));
       if (response.statusCode == 200) {
@@ -33,16 +32,17 @@ class _OfferBikeState extends State<OfferBike> {
     return 0;
   }
 
+  @override
   void initState() {
     super.initState();
-    mybike = Fetchbike();
-    stateData = havebike();
+    myBike = fetchBike();
+    stateData = haveBike();
   }
 
   String url = "";
-  late Future<My_Biscooter?> mybike;
+  late Future<MyBiscooter?> myBike;
 
-  Future<My_Biscooter?> Fetchbike() async {
+  Future<MyBiscooter?> fetchBike() async {
     try {
       final response = await get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -60,9 +60,11 @@ class _OfferBikeState extends State<OfferBike> {
   Future<int>? stateData; // if there data  =1  if no bike offered make it 0
 
   void scrollFunction() {
+    // ignore: unrelated_type_equality_checks
     if (stateData == 1) {
       _pageController.animateToPage(1,
           duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+    // ignore: unrelated_type_equality_checks
     } else if (stateData == 0) {
       _pageController.animateToPage(0,
           duration: const Duration(seconds: 1), curve: Curves.easeInOut);
@@ -113,8 +115,8 @@ class _OfferBikeState extends State<OfferBike> {
           ),
           SizedBox(
             height: 324,
-            child: FutureBuilder<My_Biscooter?>(
-              future: mybike,
+            child: FutureBuilder<MyBiscooter?>(
+              future: myBike,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -318,7 +320,7 @@ else{
   }
 }
 
-class My_Biscooter {
+class MyBiscooter {
   final String type;
   final int size;
   final String image;
@@ -327,7 +329,7 @@ class My_Biscooter {
   final int distance;
   final int totalTime;
 
-  My_Biscooter({
+  MyBiscooter({
     required this.image,
     required this.gearNumber,
     required this.type,
@@ -337,7 +339,7 @@ class My_Biscooter {
     required this.totalTime,
   });
 
-  static My_Biscooter fromJson(json) => My_Biscooter(
+  static MyBiscooter fromJson(json) => MyBiscooter(
       type: json['Type'],
       size: json['Size'],
       gearNumber: json['Gear_number'],

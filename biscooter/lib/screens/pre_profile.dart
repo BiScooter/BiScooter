@@ -62,7 +62,7 @@ class _PreProfileState extends State<PreProfile> {
             userInfo['mname'].toString(),
             userInfo['lname'].toString(),
             userInfo['invitation_code'].toString(),
-            'https://i.pinimg.com/736x/70/aa/28/70aa28f678193194b4a023e542ce4775.jpg',
+            userInfo['profile_img'].toString(),
             double.parse(userInfo['wallet'].toString().substring(1)),
             10,
           );

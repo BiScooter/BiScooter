@@ -1,6 +1,5 @@
 import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -18,9 +17,9 @@ class _MyDrawerState extends State<MyDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
+          DrawerHeader(
             // padding :EdgeInsets.all(10),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -35,17 +34,17 @@ class _MyDrawerState extends State<MyDrawer> {
             child: Column(
               children: [
                 CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                   radius: 50,
                   child: CircleAvatar(
                     radius: 47,
                     backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('assets/imgs/profile.jpg'),
+                    backgroundImage: NetworkImage(User().getProfileImage),
                   ),
                 ),
                 Text(
-                  'First name second name',
-                  style: TextStyle(
+                  '${User().getFName} ${User().getMName}${User().getLName}',
+                  style: const TextStyle(
                       fontFamily: 'PlayfairDisplay',
                       fontWeight: FontWeight.bold),
                 )

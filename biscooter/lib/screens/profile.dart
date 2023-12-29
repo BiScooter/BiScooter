@@ -1,6 +1,6 @@
-
 import 'dart:convert';
 
+import 'package:biscooter/screens/change_profile_image.dart';
 import 'package:biscooter/services/connection.dart';
 import 'package:biscooter/services/user.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +36,12 @@ class _ProfileState extends State<Profile> {
 
     super.initState();
     stations = fetchStations();
+  }
+
+  void updateProfileImg() {
+    setState(() {
+      imageUrl = user.getProfileImage;
+    });
   }
 
   Object? selectedMenu;
@@ -149,7 +155,14 @@ class _ProfileState extends State<Profile> {
                               PopupMenuItem<SampleItem>(
                                 value: SampleItem.uploadPhoto,
                                 child: const Text('Upload a new photo '),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: ((context) => ChangeProfileImage(
+                                          refresh: updateProfileImg)),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -230,7 +243,6 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               children: data.map((e) {
                                 return MYCard(
-                                  
                                     station_name: e.name,
                                     num_bike: e.amountBike,
                                     num_scooter: e.amountBike,
