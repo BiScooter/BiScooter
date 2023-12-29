@@ -2,7 +2,7 @@ GET http://localhost:8080/users/Home
 #  Content-Type: "application/json"
 ###
 //Get offered bikes and scooters
-GET http://localhost:8080/users/ViewOfferedBikes/1  HTTP/1.1
+GET http://localhost:8080/users/my-biscooter/1  HTTP/1.1
 
 
 
@@ -27,7 +27,7 @@ Content-Type: application/json
 
 {
         "DATE":"2-10-2008",
-        "DESCRIPTION":"Poor quality AND EVEN worse service",
+        "DESCRIPTION":"whawt the fa",
         "TYPE":"ON SCOOTER"
 }
 
@@ -67,33 +67,27 @@ Content-Type: application/json
 }
 ###
 //Offer Bike
-POST http://localhost:8080/users/ClientActions3/OfferBike/1  HTTP/1.1
+POST http://localhost:8080/users/offer/bike/1  HTTP/1.1
 Content-Type: application/json
 
 {
   "TYPE_OF_BIKE":"RACE",
-   "GEARS_NUM":"20kjhh"	,
+   "GEARS_NUM":"20"	,
    "BRAND":"NOKIA"	,
-   "WEIGHT":"1k5"	,
-  "RNT_COST":"23",
-  "SIZE":"5j5",
-  "PRICE":"220",
-   "IMG":"https://jjjkmjiaj.winred.com/photos/61afb905d184762c75e00411/master/pass/Gear-Jackbrabbit-Bike-Yellow-top.jpg"
+   "WEIGHT":"15"	,
+  "SIZE":"55"
 }
 ###
 //Offer Scooter
 
-POST http://localhost:8080/users/ClientActions3/OfferScooter/1  HTTP/1.1
+POST http://localhost:8080/users/offer/scooter/1  HTTP/1.1
 Content-Type: application/json
 
 {
   "BATTERY_CAPACITY":"500",
    "RANGE":"20"	,
    "MAX_SPEED":"15"	,
-  "RNT_COST":"23",
-  "SIZE":"55",
-  "PRICE":"220",
-   "IMG":"https://5k.imimg.com/data5/SELLER/Default/2022/5/XZ/HI/WI/68853065/honda-unicorn-bike.png"
+  "SIZE":"55"
 }
 
 ###
@@ -286,3 +280,9 @@ Content-Type: application/json
 {
    "img_url": "there"
 }
+
+###
+DELETE http://localhost:8080/users/my-biscooter/drop/1
+
+###
+GET http://localhost:8080/users/complaints/1

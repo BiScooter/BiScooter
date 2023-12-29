@@ -87,10 +87,14 @@ exports.GiveComplaint = catchAsync(async (req, res, next) => {
   if (!DATE || !DESCRIPTION || !TYPE) {
     return next(new ErrorHandling("Fill All Fields to give complaint!", 409));
   }
+  let date = new Date(DATE);
+  let formattedDate = date.toISOString().split("T")[0];
   const { client_id } = req.params;
   await db.query(
-    `INSERT INTO COMPLAINT VALUES(DEFAULT,'${DATE}','${DESCRIPTION}','PENDING','${TYPE}','${client_id}');`
+    `INSERT INTO COMPLAINT VALUES(DEFAULT, $1, $2, 'PENDING', $3, $4);`,
+    [formattedDate, DESCRIPTION, TYPE, client_id]
   );
+  console.log("I am here");
 
   res.status(200).send({ Message: `Complaint filed successfully!!` });
 });
@@ -205,34 +209,26 @@ exports.Canceling = catchAsync(async (req, res, next) => {
 });
 
 exports.OfferHisBike = catchAsync(async (req, res, next) => {
-  const { TYPE_OF_BIKE, GEARS_NUM, BRAND, WEIGHT, RNT_COST, SIZE, PRICE, IMG } =
-    req.body;
+  const { TYPE_OF_BIKE, GEARS_NUM, BRAND, WEIGHT, SIZE } = req.body;
 
-  if (
-    !TYPE_OF_BIKE ||
-    !GEARS_NUM ||
-    !BRAND ||
-    !WEIGHT ||
-    !RNT_COST ||
-    !SIZE ||
-    !PRICE
-  ) {
+  if (!TYPE_OF_BIKE || !GEARS_NUM || !BRAND || !WEIGHT || !SIZE) {
     return next(new ErrorHandling("Fill All Fields to Offer your bike!", 409));
   }
   if (
     !User.phoneCheck(GEARS_NUM) ||
     !User.phoneCheck(WEIGHT) ||
-    !User.phoneCheck(RNT_COST) ||
-    !User.phoneCheck(SIZE) ||
-    User.phoneCheck(PRICE)
+    !User.phoneCheck(SIZE)
   ) {
     return next(new ErrorHandling("Enter numbers only!!!!", 400));
   }
 
-  const { client_id } = req.params;
+  const { id } = req.params;
 
+  let RNT_COST = 10;
+  let IMG = "assets/imgs/bike.png";
+  let PRICE = 120;
   const offered_biscoot_id = await db.query(
-    `INSERT INTO BISCOOT VALUES (DEFAULT,'${RNT_COST}','${SIZE}','${PRICE}','${IMG}','${client_id}',null,'0')RETURNING ID;`
+    `INSERT INTO BISCOOT VALUES (DEFAULT,'${RNT_COST}','${SIZE}','${PRICE}','${IMG}','${id}',null,'1')RETURNING ID;`
   );
   await db.query(
     `INSERT INTO BIKE VALUES ('${TYPE_OF_BIKE}','${GEARS_NUM}','${BRAND}','${WEIGHT}','${offered_biscoot_id.rows[0].id}')RETURNING BIKE_ID;`
@@ -243,35 +239,27 @@ exports.OfferHisBike = catchAsync(async (req, res, next) => {
 });
 
 exports.OfferHisScooter = catchAsync(async (req, res, next) => {
-  const { BATTERY_CAPACITY, RANGE, MAX_SPEED, RNT_COST, SIZE, PRICE, IMG } =
-    req.body;
-
-  if (
-    !BATTERY_CAPACITY ||
-    !RANGE ||
-    !MAX_SPEED ||
-    !RNT_COST ||
-    !RNT_COST ||
-    !SIZE ||
-    !PRICE
-  ) {
+  const { BATTERY_CAPACITY, RANGE, MAX_SPEED, SIZE } = req.body;
+  console.log(req.body);
+  if (!BATTERY_CAPACITY || !RANGE || !MAX_SPEED || !SIZE) {
     return next(
       new ErrorHandling("Fill All Fields to Offer your scooter!", 409)
     );
   }
-  const { client_id } = req.params;
+  const { id } = req.params;
   if (
     !User.phoneCheck(BATTERY_CAPACITY) ||
     !User.phoneCheck(RANGE) ||
     !User.phoneCheck(MAX_SPEED) ||
-    !User.phoneCheck(RNT_COST) ||
-    User.phoneCheck(SIZE) ||
-    User.phoneCheck(PRICE)
+    !User.phoneCheck(SIZE)
   ) {
     return next(new ErrorHandling("Enter numbers only!!!!", 400));
   }
+  let PRICE = 200;
+  let RNT_COST = 15;
+  let IMG = "assets/imgs/MiScooter.png";
   const offered_biscoot_id = await db.query(
-    `INSERT INTO BISCOOT VALUES (DEFAULT,'${RNT_COST}','${SIZE}','${PRICE}','${IMG}','${client_id}',null,'0')RETURNING ID;`
+    `INSERT INTO BISCOOT VALUES (DEFAULT,'${RNT_COST}','${SIZE}','${PRICE}','${IMG}','${id}',null,'1')RETURNING ID;`
   );
   await db.query(
     `INSERT INTO Scooter VALUES ('${BATTERY_CAPACITY}','${RANGE}','${MAX_SPEED}','${offered_biscoot_id.rows[0].id}')RETURNING SCOOTER_ID;`
@@ -281,53 +269,25 @@ exports.OfferHisScooter = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.RemoveHisScooter = catchAsync(async (req, res, next) => {
-  const { SCOOTER_ID } = req.body;
+exports.RemoveHisBiscooter = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  await db.query(`DELETE FROM BISCOOT WHERE BISCOOT.OWNER_ID='${id}';`);
 
-  if (!SCOOTER_ID) {
-    return next(
-      new ErrorHandling("Fill All Fields to REMOVE your scooter!", 409)
-    );
-  }
-  const { client_id } = req.params;
-  if (!User.phoneCheck(SCOOTER_ID)) {
-    return next(new ErrorHandling("Enter numbers only!!!!", 400));
-  }
-  await db.query(`DELETE FROM BISCOOT WHERE BISCOOT.OWNER_ID='${client_id}';`);
-
-  res
-    .status(200)
-    .send({ Message: `SCOOTER WITH ID '${SCOOTER_ID} HAS BEEN REMOVED` });
-});
-
-exports.RemoveHisBike = catchAsync(async (req, res, next) => {
-  const { BIKE_ID } = req.body;
-
-  if (!BIKE_ID) {
-    return next(new ErrorHandling("Fill All Fields to REMOVE your bike!", 409));
-  }
-  const { client_id } = req.params;
-  if (!User.phoneCheck(BIKE_ID)) {
-    return next(new ErrorHandling("Enter numbers only!!!!", 400));
-  }
-  await db.query(`DELETE FROM BISCOOT WHERE BISCOOT.OWNER_ID='${client_id}';`);
-
-  res
-    .status(200)
-    .send({ Message: `BIKE WITH ID '${BIKE_ID} HAS BEEN REMOVED` });
+  res.status(200).send({ Message: `Biscooter dropped successfully` });
 });
 
 exports.ViewOfferedBikes = catchAsync(async (req, res, next) => {
-  const { client_id } = req.params;
+  const { id } = req.params;
   const offeredBikes = await db.query(`SELECT * FROM BIKE,BISCOOT
-   WHERE BISCOOT.OWNER_ID='${client_id}' AND BIKE.BIKE_ID=BISCOOT.ID;`);
+   WHERE BISCOOT.OWNER_ID='${id}' AND BIKE.BIKE_ID=BISCOOT.ID;`);
   const offeredScooters = await db.query(`SELECT * FROM SCOOTER,BISCOOT
-   WHERE BISCOOT.OWNER_ID='${client_id}' AND SCOOTER.SCOOTER_ID=BISCOOT.ID;`);
-  console.log(offeredBikes);
+   WHERE BISCOOT.OWNER_ID='${id}' AND SCOOTER.SCOOTER_ID=BISCOOT.ID;`);
+  const myBiscooter = offeredBikes.rows[0] ?? offeredScooters.rows[0];
+  myBiscooter.type = offeredBikes.rows[0] ? "bike" : "scooter";
+  console.log(myBiscooter);
   res.status(200).send({
     Message: `Offered bikes and Scooters`,
-    Bikes: offeredBikes.rows[0],
-    Scooters: offeredScooters.rows[0],
+    Biscooter: myBiscooter,
   });
 });
 
@@ -338,4 +298,12 @@ exports.ChangeProfileImage = catchAsync(async (req, res, next) => {
   set profile_img = '${img_url}'
   where id = ${id};`);
   res.status(200).send();
+});
+
+exports.ComplaintResponse = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  const complaints = await db.query(
+    `select * from complaint where client_id = '${id}'`
+  );
+  res.status(200).send(complaints.rows);
 });
