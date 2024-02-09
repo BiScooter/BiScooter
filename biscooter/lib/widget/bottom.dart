@@ -9,7 +9,7 @@ class Bottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 350,
+      width: 35,
       height: 70,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(35),
