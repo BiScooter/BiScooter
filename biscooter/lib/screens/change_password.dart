@@ -48,24 +48,25 @@ class _ChangePasswordState extends State<ChangePassword> {
               'Content-Type': 'application/json',
             },
             body: jsonEncode(<String, String>{
-              // "oldpassward": _oldPassword.text,
+              // "oldPassword": _oldPassword.text,
               "NeededPassword": _newPassword.text,
             }),
           );
 
 
-          print(response.body);
+          debugPrint(response.body);
           // check if the login was successful
           if (response.statusCode == 200) {
             // Decode the response body
             Fluttertoast.showToast(
-              msg: "Password Changed Sucssefully",
+              msg: "Password Changed Successfully",
               toastLength: Toast.LENGTH_LONG,
               gravity: ToastGravity.CENTER,
               backgroundColor: Colors.red,
               textColor: Colors.white,
               fontSize: 16,
             );
+            // ignore: use_build_context_synchronously
             Navigator.pop(context);
           }
           else if (response.statusCode == 401) {

@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
   final String stationName = arguments['stationName'];
   final int id = arguments['id'];
   return Station(
-    station_name: stationName,
+    stationName: stationName,
     id: id,
   );},
         "/my_wallet": (context) => const MyWallet(),

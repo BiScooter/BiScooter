@@ -11,12 +11,12 @@ class _RentBikeCardState extends State<RentBikeCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         elevation: 10,
         shadowColor: Colors.black,
         color: Colors.white,
         child: Container(
-            constraints: BoxConstraints(maxWidth: 300),
+            constraints: const BoxConstraints(maxWidth: 300),
             height: 340,
             alignment: Alignment.center,
             padding: const EdgeInsets.all(10),
@@ -38,8 +38,8 @@ class _RentBikeCardState extends State<RentBikeCard> {
     return Row(
       children: [
         Text(
-          '${title} :',
-          style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
+          '$title :',
+          style: const TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
         ),
         Text(
           value,

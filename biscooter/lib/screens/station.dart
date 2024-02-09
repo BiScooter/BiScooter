@@ -9,27 +9,27 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 class Station extends StatefulWidget {
-  final String station_name;
+  final String stationName;
   final int id;
-  const Station({super.key, required this.station_name, required this.id});
+  const Station({super.key, required this.stationName, required this.id});
 
   @override
   State<Station> createState() => _StationState();
 }
 
 class _StationState extends State<Station> {
-  late Future<List<bikes>?> bike_list;
+  late Future<List<Bikes>?> bikeList;
 
-  late Future<List<scooter>?> scooter_list;
+  late Future<List<Scooter>?> scooterList;
   @override
   void initState() {
     super.initState();
-    bike_list = Fetchbike();
-    scooter_list = Fetchscooter();
+    bikeList = fetchBike();
+    scooterList = fetchScooter();
   }
 
 
-  Future<List<bikes>?> Fetchbike() async {
+  Future<List<Bikes>?> fetchBike() async {
     try {
       final response = await get(Uri.parse("${const Connection().baseUrl}StationListing/Bikes/${widget.id}"));
       if (response.statusCode == 200) {
@@ -44,7 +44,7 @@ class _StationState extends State<Station> {
   }
 
   String scooterUrl = "";
-  Future<List<scooter>?> Fetchscooter() async {
+  Future<List<Scooter>?> fetchScooter() async {
     try {
       final response = await get(Uri.parse("${const Connection().baseUrl}StationListing/Scooters/${widget.id}"));
       if (response.statusCode == 200) {
@@ -58,10 +58,10 @@ class _StationState extends State<Station> {
     return null;
   }
 
-  final controller_scooter = PageController(initialPage: 1);
-  final controller_Bike = PageController(initialPage: 1);
-  var index_bike = 0;
-  var index_scooter = 0;
+  final controllerScooter = PageController(initialPage: 1);
+  final controllerBike = PageController(initialPage: 1);
+  var indexBike = 0;
+  var indexScooter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -78,26 +78,26 @@ class _StationState extends State<Station> {
         child: Scaffold(
           appBar: AppBar(
             title:  Text(
-              widget.station_name,
+              widget.stationName,
               style: const TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 30),
             ),
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
           backgroundColor: Colors.transparent,
-          drawer: MyDrawer(),
+          drawer: const MyDrawer(),
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: true,
           body: SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.only(top: 100),
+              margin: const EdgeInsets.only(top: 100),
               child: Column(children: [
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Bikes',
                         style: TextStyle(
                           fontFamily: 'PlayfairDisplay',
@@ -106,14 +106,14 @@ class _StationState extends State<Station> {
                       ),
                       IconButton(
                         onPressed: () {
-                          controller_Bike.animateToPage(index_bike + 1,
-                              duration: Duration(seconds: 1),
+                          controllerBike.animateToPage(indexBike + 1,
+                              duration: const Duration(seconds: 1),
                               curve: Curves.easeInOut);
                           setState(() {
-                            index_bike = (index_bike + 1) % 6;
+                            indexBike = (indexBike + 1) % 6;
                           });
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.navigate_next_outlined,
                           size: 35,
                           color: Colors.black,
@@ -122,10 +122,10 @@ class _StationState extends State<Station> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 380,
-                  child: FutureBuilder<List<bikes>?>(
-                    future: bike_list,
+                  child: FutureBuilder<List<Bikes>?>(
+                    future: bikeList,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -140,18 +140,18 @@ class _StationState extends State<Station> {
                         }
                         final data = snapshot.data;
                         if (data == null || data.isEmpty) {
-                          return Center(
+                          return const Center(
                             child: Text('No bikes found.'),
                           );
                         } else {
                           return SingleChildScrollView(
-                            controller: controller_Bike,
+                            controller: controllerBike,
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: data.map((e) {
                                 return BikeCard(
                                   id: e.id,
-                                  gear_num: e.gear_num,
+                                  gearNum: e.gearNum,
                                   size: e.size,
                                   wight: e.wight,
                                   type: e.type,
@@ -165,15 +165,15 @@ class _StationState extends State<Station> {
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Scooters',
                         style: TextStyle(
                           fontFamily: 'PlayfairDisplay',
@@ -182,14 +182,14 @@ class _StationState extends State<Station> {
                       ),
                       IconButton(
                         onPressed: () {
-                          controller_scooter.animateToPage(index_scooter + 1,
-                              duration: Duration(seconds: 1),
+                          controllerScooter.animateToPage(indexScooter + 1,
+                              duration: const Duration(seconds: 1),
                               curve: Curves.easeInOut);
                           setState(() {
-                            index_scooter = (index_scooter + 1) % 6;
+                            indexScooter = (indexScooter + 1) % 6;
                           });
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.navigate_next_outlined,
                           size: 35,
                           color: Colors.black,
@@ -198,10 +198,10 @@ class _StationState extends State<Station> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 380,
-                  child: FutureBuilder<List<scooter>?>(
-                      future: scooter_list,
+                  child: FutureBuilder<List<Scooter>?>(
+                      future: scooterList,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -217,19 +217,19 @@ class _StationState extends State<Station> {
                           }
                           final data = snapshot.data;
                           if (data == null || data.isEmpty) {
-                            return Center(
+                            return const Center(
                               child: Text('No scooter found.'),
                             );
                           } else {
                             return SingleChildScrollView(
-                              controller: controller_scooter,
+                              controller: controllerScooter,
                               scrollDirection: Axis.horizontal,
                               child: Row(
                                 children: data.map((e) {
                                   return ScooterCard(
                                     id: e.id,
-                                    battery_capacity: e.battery_capacity,
-                                    max_speed: e.max_speed,
+                                    batteryCapacity: e.batteryCapacity,
+                                    maxSpeed: e.maxSpeed,
                                     range: e.range,
                                     img: e.img,
                                   );
@@ -247,52 +247,52 @@ class _StationState extends State<Station> {
   }
 }
 
-class bikes {
+class Bikes {
   final int id;
   final String type;
-  final int gear_num;
+  final int gearNum;
   final int wight;
   final String img;
   final int size;
 
-  bikes({
+  Bikes({
     required this.id,
     required this.type,
-    required this.gear_num,
+    required this.gearNum,
     required this.wight,
     required this.img,
     required this.size,
   });
 
-  static bikes fromJson(json) => bikes(
+  static Bikes fromJson(json) => Bikes(
         id: json['id'],
         type: json['type'],
-        gear_num: json['gear_number'],
+        gearNum: json['gear_number'],
         wight: json['wight'],
         img: json['imageUrl'],
         size: json['size'],
       );
 }
 
-class scooter {
+class Scooter {
   final int id;
-  final String max_speed;
+  final String maxSpeed;
   final int range;
-  final int battery_capacity;
+  final int batteryCapacity;
   final String img;
 
-  scooter({
+  Scooter({
     required this.id,
-    required this.max_speed,
+    required this.maxSpeed,
     required this.range,
-    required this.battery_capacity,
+    required this.batteryCapacity,
     required this.img,
   });
 
-  static scooter fromJson(json) => scooter(
+  static Scooter fromJson(json) => Scooter(
       id: json['id'],
-      max_speed: json['max_speed'],
+      maxSpeed: json['max_speed'],
       range: json['range'],
-      battery_capacity: json['battery_capacity'],
+      batteryCapacity: json['battery_capacity'],
       img: json['imageUrl']);
 }

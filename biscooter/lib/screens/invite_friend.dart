@@ -12,15 +12,16 @@ class InviteFriend extends StatefulWidget {
 
 class _InviteFriendState extends State<InviteFriend> {
 
-  String? invitecode;
+  String? inviteCode;
  User user = User();
 
   @override
   void initState() {
-    invitecode = user.getInvitationCode;
+    inviteCode = user.getInvitationCode;
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
@@ -110,7 +111,7 @@ class _InviteFriendState extends State<InviteFriend> {
                               border: Border.all(color: Colors.black),
                               borderRadius: BorderRadius.circular(8)),
                           child:  Text(
-                            invitecode!,
+                            inviteCode!,
                             style: const TextStyle(fontSize: 30),
                           ),
                         ),

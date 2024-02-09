@@ -243,9 +243,9 @@ class _ProfileState extends State<Profile> {
                             child: Row(
                               children: data.map((e) {
                                 return MYCard(
-                                    station_name: e.name,
-                                    num_bike: e.amountBike,
-                                    num_scooter: e.amountBike,
+                                    stationName: e.name,
+                                    numBike: e.amountBike,
+                                    numScooter: e.amountBike,
                                     id: e.id);
                               }).toList(),
                             ),

@@ -65,10 +65,10 @@ class _OfferBikeState extends State<OfferBike> {
     );
   }
 
-  String dropURl = "${const Connection().baseUrl}/users/my-biscooter/drop/${User().getId}";
+  String dropURl =
+      "${const Connection().baseUrl}/users/my-biscooter/drop/${User().getId}";
   void dropBike() async {
     try {
-
       debugPrint('called drop');
       final response = await delete(Uri.parse(dropURl));
       debugPrint(response.body);
@@ -81,7 +81,6 @@ class _OfferBikeState extends State<OfferBike> {
       debugPrint(e.toString());
     }
   }
-
 
   ///get if the user have scooter of bike for not
 
@@ -110,7 +109,7 @@ class _OfferBikeState extends State<OfferBike> {
         return MyBiscooter.fromJson(responseData['Biscooter']);
       }
     } catch (e) {
-      print('this error');
+      debugPrint('this error');
       debugPrint(e.toString());
     }
     return null;
@@ -275,8 +274,16 @@ class _OfferBikeState extends State<OfferBike> {
                                       ],
                                     )),
                               ),
+                              // ignore: avoid_unnecessary_containers
                               Container(
-                                child: Bottom((){ Navigator.push(context, MaterialPageRoute(builder: ((context) => AddBiscooter(refresh: refresh,))));}, 'Add Biscooter'),
+                                child: Bottom(() {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) => AddBiscooter(
+                                                refresh: refresh,
+                                              ))));
+                                }, 'Add Biscooter'),
                               )
                             ],
                           ),

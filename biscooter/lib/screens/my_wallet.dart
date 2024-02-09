@@ -210,7 +210,7 @@ class _WhiteCardContentState extends State<WhiteCardContent> {
       if (response.statusCode == 200) {
         // Decode the response body
         Map<String, dynamic> responseData = jsonDecode(response.body);
-        final trans = responseData["Transactioninfo"];
+        final trans = responseData["TransactionInfo"];
         return trans.map<Transaction>(Transaction.fromJson).toList();
       }
     } catch (e) {

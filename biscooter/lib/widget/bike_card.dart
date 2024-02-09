@@ -1,20 +1,21 @@
-
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
   final int id;
   final String type;
-  final int gear_num;
+  final int gearNum;
   final int wight;
   final String img;
   final int size;
-  const BikeCard(
-      {super.key,
-      required this.id,
-      required this.type,
-      required this.gear_num,
-      required this.wight,
-      required this.img, required this.size});
+  const BikeCard({
+    super.key,
+    required this.id,
+    required this.type,
+    required this.gearNum,
+    required this.wight,
+    required this.img,
+    required this.size,
+  });
 
   @override
   State<BikeCard> createState() => _BikeCardState();
@@ -24,12 +25,12 @@ class _BikeCardState extends State<BikeCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       elevation: 10,
       shadowColor: Colors.black,
       color: Colors.white,
       child: Container(
-        constraints: BoxConstraints(maxWidth: 300),
+        constraints: const BoxConstraints(maxWidth: 300),
         height: 380,
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -39,10 +40,10 @@ class _BikeCardState extends State<BikeCard> {
               height: 200,
               child: Image.network(widget.img),
             ),
-            rowdata(context,'Type : ',widget.type),
-            rowdata(context,'Gear Num : ',widget.gear_num.toString()),
-rowdata(context,'size : ',widget.size.toString()),
-rowdata(context,'wight : ',widget.wight.toString()),
+            rowData(context, 'Type : ', widget.type),
+            rowData(context, 'Gear Num : ', widget.gearNum.toString()),
+            rowData(context, 'size : ', widget.size.toString()),
+            rowData(context, 'wight : ', widget.wight.toString()),
             Container(
               width: 180,
               height: 40,
@@ -60,15 +61,19 @@ rowdata(context,'wight : ',widget.wight.toString()),
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     shadowColor: Colors.transparent),
-                onPressed: () {   Navigator.pushNamed(context, '/rent',arguments: {
-    'state': 0,
-    'id': widget.id,
-  },);
-
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/rent',
+                    arguments: {
+                      'state': 0,
+                      'id': widget.id,
+                    },
+                  );
                 },
-                child: Text(
+                child: const Text(
                   'RENT NOW',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
                     fontFamily: 'PlayfairDisplay',
@@ -83,21 +88,22 @@ rowdata(context,'wight : ',widget.wight.toString()),
     );
   }
 
-  Row rowdata(BuildContext context,String title,String data) {
+  Row rowData(BuildContext context, String title, String data) {
     return Row(
-            children: [
-              Text(
-                title,
-                style: TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
-              ),
-              Text(
-                data,
-                style: TextStyle(
-                    fontFamily: 'PlayfairDisplay',
-                    fontSize: 20,
-                    color: Theme.of(context).colorScheme.secondary),
-              ),
-            ],
-          );
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontFamily: 'PlayfairDisplay', fontSize: 20),
+        ),
+        Text(
+          data,
+          style: TextStyle(
+            fontFamily: 'PlayfairDisplay',
+            fontSize: 20,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      ],
+    );
   }
 }

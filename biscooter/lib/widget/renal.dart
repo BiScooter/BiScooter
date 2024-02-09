@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class RentalHistoryCard extends StatefulWidget {
-   final KICK_OFF_STATION;
-  final DESTINATION_STATION;
-  final int Total_price;
+  final String kickoffStation;
+  final String destinationStation;
+  final int totalPrice;
   final String date;
-  const RentalHistoryCard({super.key, this.KICK_OFF_STATION, this.DESTINATION_STATION, required this.Total_price, required this.date});
+  const RentalHistoryCard(
+      {super.key,
+      required this.kickoffStation,
+      required this.destinationStation,
+      required this.totalPrice,
+      required this.date});
 
   @override
   State<RentalHistoryCard> createState() => _RentalHistoryCardState();
@@ -35,20 +40,18 @@ class _RentalHistoryCardState extends State<RentalHistoryCard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              rowData(context,'KICK OFF STATION :',widget.KICK_OFF_STATION),
+              rowData(context, 'KICK OFF STATION :', widget.kickoffStation),
               const SizedBox(
                 height: 10,
               ),
-              rowData(context,'DESTINATION STATION :',widget.DESTINATION_STATION),
-
+              rowData(
+                  context, 'DESTINATION STATION :', widget.destinationStation),
               const SizedBox(
                 height: 10,
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-
                   const Text('Date : ',
                       style: TextStyle(
                           fontSize: 18, fontFamily: 'PlayfairDisplay')),
@@ -64,7 +67,7 @@ class _RentalHistoryCardState extends State<RentalHistoryCard> {
               const SizedBox(
                 height: 10,
               ),
-              rowData(context,'Total Price : ',widget.Total_price.toString()),
+              rowData(context, 'Total Price : ', widget.totalPrice.toString()),
               const SizedBox(
                 height: 10,
               ),
@@ -108,20 +111,20 @@ class _RentalHistoryCardState extends State<RentalHistoryCard> {
     );
   }
 
-  Row rowData(BuildContext context,String title,String data) {
+  Row rowData(BuildContext context, String title, String data) {
     return Row(
-              children: [
-                 Text(title,
-                    style: const TextStyle(
-                        fontSize: 16, fontFamily: 'PlayfairDisplay')),
-                Text(
-                  data,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'PlayfairDisplay',
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-              ],
-            );
+      children: [
+        Text(title,
+            style:
+                const TextStyle(fontSize: 16, fontFamily: 'PlayfairDisplay')),
+        Text(
+          data,
+          style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'PlayfairDisplay',
+              color: Theme.of(context).colorScheme.secondary),
+        ),
+      ],
+    );
   }
 }

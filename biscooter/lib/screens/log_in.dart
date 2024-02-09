@@ -47,7 +47,6 @@ class _LogInState extends State<LogIn> {
           // Decode the response body
           final responseData = jsonDecode(response.body);
           Map<String, dynamic> userInfo = responseData['user_info'];
-          print(userInfo['invitation_code'].toString());
           // set the user service
           User.setUserService(
             int.parse(userInfo['id']),
@@ -59,7 +58,6 @@ class _LogInState extends State<LogIn> {
             double.parse(userInfo['wallet'].toString().substring(1)),
             10,
           );
-          print('done');
           // set the login status to true
           User.setLoggedIn();
           User.setID(int.parse(userInfo['id']));

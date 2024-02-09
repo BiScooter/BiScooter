@@ -24,9 +24,9 @@ class _RentalHistoryState extends State<RentalHistory> {
     rentals = fetchStations();
   }
 
-  late Future<List<Rental_HistoryCard>?> rentals;
+  late Future<List<RentalHistoryCardInfo>?> rentals;
 
-  Future<List<Rental_HistoryCard>?> fetchStations() async {
+  Future<List<RentalHistoryCardInfo>?> fetchStations() async {
     try {
       final response = await get(Uri.parse("${const Connection().baseUrl}/ClientViews1/${User().getId}"));
       if (response.statusCode == 200) {
@@ -35,7 +35,7 @@ class _RentalHistoryState extends State<RentalHistory> {
         Map<String, dynamic> responseData = jsonDecode(response.body);
         final stations = responseData["Stations_Bikesinfo"];
         return stations
-            .map<Rental_HistoryCard>(Rental_HistoryCard.fromJson)
+            .map<RentalHistoryCardInfo>(RentalHistoryCardInfo.fromJson)
             .toList();
       }
     } catch (e) {
@@ -82,10 +82,10 @@ class _RentalHistoryState extends State<RentalHistory> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 324,
                 height: MediaQuery.of(context).size.height,
-                child: FutureBuilder<List<Rental_HistoryCard>?>(
+                child: FutureBuilder<List<RentalHistoryCardInfo>?>(
                     future: rentals,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -110,10 +110,10 @@ class _RentalHistoryState extends State<RentalHistory> {
                             child: Row(
                               children: data.map((e) {
                                 return RentalHistoryCard(
-                                  Total_price: e.Total_price,
+                                  totalPrice: e.totalPrice,
                                   date: e.date,
-                                  DESTINATION_STATION: e.DESTINATION_STATION,
-                                  KICK_OFF_STATION: e.KICK_OFF_STATION,
+                                  destinationStation: e.destinationStation,
+                                  kickoffStation: e.kickoffStation,
                                 );
                               }).toList(),
                             ),
@@ -130,26 +130,26 @@ class _RentalHistoryState extends State<RentalHistory> {
   }
 }
 
-class Rental_HistoryCard {
-  final KICK_OFF_STATION;
-  final DESTINATION_STATION;
-  final int Total_price;
+class RentalHistoryCardInfo {
+  final String kickoffStation;
+  final String destinationStation;
+  final int totalPrice;
   final String date;
 
-  Rental_HistoryCard({
-    required this.DESTINATION_STATION,
-    required this.KICK_OFF_STATION,
-    required this.Total_price,
+  RentalHistoryCardInfo({
+    required this.destinationStation,
+    required this.kickoffStation,
+    required this.totalPrice,
     required this.date,
   });
 
-  static Rental_HistoryCard fromJson(json) {
+  static RentalHistoryCardInfo fromJson(json) {
      DateTime parsedDate = DateTime.parse(json['DATE_OF_RENTAL']);
     DateFormat formatter = DateFormat('dd/MM/yyyy');
       String date = formatter.format(parsedDate).toString();
-       return  Rental_HistoryCard( DESTINATION_STATION: json['DESTINATION_STATION'],
-        KICK_OFF_STATION: json['KICK_OFF_STATION'],
-        Total_price: int.parse(json['COST']),
+       return  RentalHistoryCardInfo( destinationStation: json['DESTINATION_STATION'],
+        kickoffStation: json['KICK_OFF_STATION'],
+        totalPrice: int.parse(json['COST']),
         date: date,
       );
   }

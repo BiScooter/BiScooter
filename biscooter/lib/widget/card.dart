@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class MYCard extends StatefulWidget {
   final int id;
-  final String station_name;
-  final int num_bike;
-  final int num_scooter;
+  final String stationName;
+  final int numBike;
+  final int numScooter;
 
   const MYCard(
       {super.key,
-      required this.station_name,
-      required this.num_bike,
-      required this.num_scooter, required this.id});
+      required this.stationName,
+      required this.numBike,
+      required this.numScooter, required this.id});
 
   @override
   State<MYCard> createState() => _MYCardState();
@@ -22,29 +22,29 @@ class _MYCardState extends State<MYCard> {
     return GestureDetector(
       onTap: () {
 Navigator.pushNamed(context, '/station',arguments: {
-    'stationName': widget.station_name,
+    'stationName': widget.stationName,
     'id': widget.id,
   },);
       },
       child: Card(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           width: 322,
           height: 324,
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
+                SizedBox(
                     height: 100,
                     width: 200,
                     child: Image.asset('assets/imgs/S.png')),
                 Text(
-                  widget.station_name,
+                  widget.stationName,
                   style: TextStyle(
                       fontSize: 30,
                       fontFamily: 'PlayfairDisplay',
@@ -61,18 +61,18 @@ Navigator.pushNamed(context, '/station',arguments: {
                           Icons.directions_bike_outlined,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Available bikes : ',
                               style: TextStyle(
                                   fontSize: 18, fontFamily: 'PlayfairDisplay'),
                             ),
                             Text(
-                              widget.num_bike.toString(),
+                              widget.numBike.toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
@@ -84,7 +84,7 @@ Navigator.pushNamed(context, '/station',arguments: {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(
@@ -92,18 +92,18 @@ Navigator.pushNamed(context, '/station',arguments: {
                       children: [
                         Icon(Icons.electric_scooter_rounded,
                             color: Theme.of(context).colorScheme.secondary),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               'Available Scooter : ',
                               style: TextStyle(
                                   fontSize: 18, fontFamily: 'PlayfairDisplay'),
                             ),
                             Text(
-                              widget.num_scooter.toString(),
+                              widget.numScooter.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
